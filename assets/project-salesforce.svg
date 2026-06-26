@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 113" width="100%" height="100%">
+  <rect width="200" height="113" fill="#070a13" />
+  <path d="M0 20 h200 M0 40 h200 M0 60 h200 M0 80 h200 M0 100 h200 M40 0 v113 M80 0 v113 M120 0 v113 M160 0 v113" stroke="rgba(255,255,255,0.015)" stroke-width="1" />
+  <g transform="translate(10, 20)">
+    <rect x="15" y="20" width="36" height="32" rx="4" fill="#0b0f19" stroke="#3b82f6" stroke-width="1" />
+    <ellipse cx="33" cy="27" rx="10" ry="4" fill="none" stroke="#3b82f6" stroke-width="1" />
+    <line x1="23" y1="27" x2="23" y2="43" stroke="#3b82f6" />
+    <line x1="43" y1="27" x2="43" y2="43" stroke="#3b82f6" />
+    <path d="M 23 35 A 10 4 0 0 0 43 35" fill="none" stroke="#3b82f6" />
+    <path d="M 23 43 A 10 4 0 0 0 43 43" fill="none" stroke="#3b82f6" />
+    <text x="33" y="14" fill="#6b7280" font-size="5.5" font-family="system-ui" text-anchor="middle">LOCAL</text>
+
+    <g transform="translate(70, 22)">
+      <rect x="0" y="0" width="40" height="28" rx="4" fill="#0b0f19" stroke="#06b6d4" stroke-width="1" />
+      <text x="20" y="12" fill="#06b6d4" font-size="6" font-family="system-ui" text-anchor="middle" font-weight="bold">RCA</text>
+      <text x="20" y="22" fill="#9ca3af" font-size="5" font-family="system-ui" text-anchor="middle">VALIDATION</text>
+    </g>
+    
+    <rect x="130" y="20" width="36" height="32" rx="4" fill="#0b0f19" stroke="#10b981" stroke-width="1" />
+    <path d="M 138 42 a 5 5 0 0 1 5 -5 a 6 6 0 0 1 8 1 a 4 4 0 0 1 1 9 h -14 z" fill="none" stroke="#10b981" stroke-width="1" />
+    <text x="148" y="14" fill="#6b7280" font-size="5.5" font-family="system-ui" text-anchor="middle">SFDC API</text>
+
+    <path d="M 51 36 L 70 36" stroke="#3b82f6" stroke-width="1" marker-end="url(#arrow)" />
+    <path d="M 110 36 L 130 36" stroke="#10b981" stroke-width="1" marker-end="url(#arrow)" />
+  </g>
+  <text x="100" y="105" fill="#6b7280" font-size="6.5" font-family="system-ui" text-anchor="middle" font-weight="600" letter-spacing="0.1em">SALESFORCE INTEGRATION RCA</text>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#06b6d4" />
+    </marker>
+  </defs>
+</svg>

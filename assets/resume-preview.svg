@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 297" width="100%" height="100%">
+  <rect width="210" height="297" fill="#070a13" rx="12" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+  <rect x="15" y="15" width="80" height="8" rx="2" fill="#06b6d4" />
+  <rect x="15" y="27" width="180" height="2" fill="rgba(255,255,255,0.1)" />
+  
+  <rect x="15" y="38" width="50" height="5" rx="1.5" fill="#3b82f6" opacity="0.6" />
+  <rect x="15" y="47" width="45" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  <rect x="15" y="52" width="40" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  <rect x="15" y="57" width="42" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  
+  <rect x="15" y="67" width="50" height="5" rx="1.5" fill="#3b82f6" opacity="0.6" />
+  <rect x="15" y="76" width="45" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  <rect x="15" y="81" width="40" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  
+  <rect x="80" y="38" width="115" height="5" rx="1.5" fill="#10b981" opacity="0.6" />
+  <rect x="80" y="47" width="80" height="3" rx="1.5" fill="#ffffff" opacity="0.8" />
+  <rect x="80" y="53" width="115" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  <rect x="80" y="58" width="110" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  <rect x="80" y="63" width="95" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  
+  <rect x="80" y="73" width="80" height="3" rx="1.5" fill="#ffffff" opacity="0.8" />
+  <rect x="80" y="79" width="115" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  <rect x="80" y="84" width="110" height="2" rx="1" fill="rgba(255,255,255,0.2)" />
+  
+  <rect x="15" y="110" width="180" height="15" rx="3" fill="rgba(6,182,212,0.05)" stroke="#06b6d4" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <text x="105" y="119" fill="#06b6d4" font-size="5" font-family="system-ui" font-weight="600" text-anchor="middle">MUNI PRASAD RESUME PREVIEW</text>
+</svg>

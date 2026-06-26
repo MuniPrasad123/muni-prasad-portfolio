@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <rect width="200" height="200" rx="24" fill="#070a13" />
+  <defs>
+    <linearGradient id="avatarGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <path d="M 0 40 L 200 40 M 0 80 L 200 80 M 0 120 L 200 120 M 0 160 L 200 160 M 40 0 L 40 200 M 80 0 L 80 200 M 120 0 L 120 200 M 160 0 L 160 200" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+  <polygon points="100,20 170,60 170,140 100,180 30,140 30,60" fill="rgba(6, 182, 212, 0.05)" stroke="url(#avatarGlow)" stroke-width="2" />
+  <path d="M100 65a25 25 0 1 0 0 50 25 25 0 0 0 0-50zM55 160c0-20 20-35 45-35s45 15 45 35" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" />
+  <path d="M 45 80 L 35 90 L 45 100 M 155 80 L 165 90 L 155 100" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

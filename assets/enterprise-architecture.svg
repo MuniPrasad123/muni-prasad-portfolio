@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="100%" height="100%" rx="16" fill="#0b0f19" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+  <defs>
+    <linearGradient id="archGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#06b6d4" />
+    </marker>
+  </defs>
+  <rect x="25" y="25" width="100" height="35" rx="6" fill="#070a13" stroke="#3b82f6" stroke-width="1" />
+  <text x="75" y="46" fill="#ffffff" font-size="9" font-family="system-ui" font-weight="600" text-anchor="middle">React Storefront</text>
+
+  <rect x="150" y="25" width="100" height="35" rx="6" fill="#070a13" stroke="#6b7280" stroke-dasharray="3,3" stroke-width="1" />
+  <text x="200" y="46" fill="#9ca3af" font-size="9" font-family="system-ui" text-anchor="middle">Edge CDN / WAF</text>
+
+  <rect x="70" y="110" width="260" height="65" rx="8" fill="rgba(6, 182, 212, 0.03)" stroke="url(#archGlow)" stroke-width="1.5" />
+  <text x="200" y="132" fill="#ffffff" font-size="11" font-family="system-ui" font-weight="700" text-anchor="middle">Oracle ATG &amp; Spring Boot Core</text>
+  <text x="200" y="152" fill="#a5f3fc" font-size="8" font-family="system-ui" text-anchor="middle">Checkout / Promotions / Pricing Engine</text>
+
+  <rect x="20" y="230" width="90" height="38" rx="6" fill="#070a13" stroke="#10b981" stroke-width="1.2" />
+  <text x="65" y="253" fill="#ffffff" font-size="8.5" font-family="system-ui" font-weight="600" text-anchor="middle">Oracle SQL DB</text>
+
+  <rect x="130" y="230" width="90" height="38" rx="6" fill="#070a13" stroke="#3b82f6" stroke-width="1.2" />
+  <text x="175" y="253" fill="#ffffff" font-size="8.5" font-family="system-ui" font-weight="600" text-anchor="middle">Salesforce API</text>
+
+  <rect x="240" y="230" width="90" height="38" rx="6" fill="#070a13" stroke="#06b6d4" stroke-width="1.2" />
+  <text x="285" y="253" fill="#ffffff" font-size="8.5" font-family="system-ui" font-weight="600" text-anchor="middle">Payment Gateway</text>
+
+  <rect x="320" y="60" width="60" height="30" rx="4" fill="#070a13" stroke="#10b981" stroke-width="1" />
+  <text x="350" y="78" fill="#34d399" font-size="8" font-family="system-ui" text-anchor="middle">ELK Stack</text>
+
+  <path d="M 125 42 L 144 42" stroke="#06b6d4" stroke-width="1.2" marker-end="url(#arrow)" />
+  <path d="M 200 60 L 200 104" stroke="#06b6d4" stroke-width="1.2" marker-end="url(#arrow)" />
+  
+  <path d="M 130 175 L 80 224" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrow)" />
+  <path d="M 200 175 L 175 224" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrow)" />
+  <path d="M 270 175 L 285 224" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrow)" />
+  <path d="M 300 110 L 330 90" stroke="#10b981" stroke-dasharray="2,2" stroke-width="1" />
+</svg>
