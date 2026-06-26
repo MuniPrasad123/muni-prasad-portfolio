@@ -8,8 +8,8 @@ type PageProps = {
 }
 
 export const generateMetadata = ({ params, searchParams }: PageProps) =>
-  generatePageMetadata({ config, params, searchParams })
+  generatePageMetadata({ config, params, searchParams: searchParams as Promise<{ [key: string]: string | string[] }> })
 
 export default async function Page({ params, searchParams }: PageProps) {
-  return <RootPage config={config} importMap={importMap} params={params} searchParams={searchParams} />
+  return <RootPage config={config} importMap={importMap} params={params} searchParams={searchParams as Promise<{ [key: string]: string | string[] }>} />
 }
