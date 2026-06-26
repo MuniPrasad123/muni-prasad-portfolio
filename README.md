@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Muni Prasad - Professional Web Portfolio
 
-## Getting Started
+Welcome to my professional web portfolio! This project showcases my experience, projects, skills, and certifications as a Senior Software Engineer & Technical Consultant.
 
-First, run the development server:
+It is built as a highly performant **Single Page Application (SPA)** using **Next.js 16 (App Router)** and **Tailwind CSS**, and is fully content-managed via an integrated **Payload CMS v3** backed by a **Neon PostgreSQL** database.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Modern UI**: Smooth scrolling and responsive design powered by Tailwind CSS 4.
+- **Dynamic Content Management**: No hard-coded content. Projects, Experience, and Certifications are dynamically fetched from the database and can be edited securely via the `/admin` dashboard.
+- **Server-Side Rendering (SSR)**: Optimal performance and SEO through Next.js server components and Payload's Local API.
+- **Robust Database**: Serverless Neon PostgreSQL integration via Drizzle ORM.
+- **Custom Deployment**: Deployed on Vercel Edge Network with a custom domain (`www.muniprasad.in`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS v4
+- **Backend / CMS**: Payload CMS v3 (Headless CMS integrated within Next.js)
+- **Database**: Neon PostgreSQL
+- **Deployment**: Vercel
+- **Language**: TypeScript
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📖 Complete Documentation
 
-## Deploy on Vercel
+For an in-depth, professional breakdown of the project architecture, detailed folder structure, deployment steps, and interview talking points, please refer to the detailed documentation:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+👉 **[Read the Full Project Documentation (PROJECT_DOCUMENTATION.md)](./PROJECT_DOCUMENTATION.md)**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For deployment specific instructions (Vercel + GoDaddy), see the **[Deployment Guide](./DEPLOYMENT_GUIDE.md)**.
+
+---
+
+## 💻 Running Locally
+
+### Prerequisites
+- Node.js v18+
+- npm
+- A Neon PostgreSQL Database connection string.
+
+### Setup Steps
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/MuniPrasad123/muni-prasad-portfolio.git
+   cd muni-prasad-portfolio
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup:**
+   Create a `.env` file in the root directory:
+   ```env
+   DATABASE_URL=postgresql://user:password@hostname/dbname?sslmode=require
+   PAYLOAD_SECRET=your_32_character_secret_string
+   NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+   ```
+
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Access the application:**
+   - **Frontend:** [http://localhost:3000](http://localhost:3000)
+   - **CMS Admin Dashboard:** [http://localhost:3000/admin](http://localhost:3000/admin)
+
+---
+
+## 📝 License
+
+This project is open-source and available under the [MIT License](LICENSE).
