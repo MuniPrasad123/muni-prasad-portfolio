@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import PortfolioClient from '@/components/PortfolioClient'
