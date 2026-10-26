@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { skillCategories } from '@/data/profile'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
@@ -11,28 +12,6 @@ const CheckBadgeIcon = () => (
   </svg>
 )
 
-const skillCategories = [
-  {
-    title: 'Backend & Commerce Platforms',
-    skills: ['Java', 'J2EE', 'Spring Boot', 'Microservices', 'Oracle ATG Commerce', 'KIBO Commerce', 'E-Commerce Architecture'],
-  },
-  {
-    title: 'Frontend & UI Design',
-    skills: ['React.js', 'Figma', 'Web Accessibility (a11y)'],
-  },
-  {
-    title: 'Cloud, Infrastructure & DevOps',
-    skills: ['AWS', 'Docker', 'Kubernetes', 'Jenkins', 'Git', 'Linux'],
-  },
-  {
-    title: 'Databases & Middleware APIs',
-    skills: ['Oracle SQL', 'PostgreSQL', 'APIGEE Gateway', 'REST APIs'],
-  },
-  {
-    title: 'Support, Integrations & Tracking',
-    skills: ['Salesforce Integration', 'Payment Gateway Integration', 'GTM / Server-side Tracking', 'ELK Stack', 'Root Cause Analysis', 'Production Support', 'Jira'],
-  },
-]
 
 export function LinkedInSkills() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -49,7 +28,7 @@ export function LinkedInSkills() {
         >
           <span className="section__eyebrow">Skills Matrix</span>
           <h2 className="section__title">
-            LinkedIn <strong>Skills &amp; Endorsements</strong>
+            Technical <strong>Stack &amp; Tools</strong>
           </h2>
         </motion.div>
 

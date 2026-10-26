@@ -1,0 +1,6 @@
+import type { Metadata } from 'next'
+import { PageHero } from '@/components/site/PageHero'
+import { ProjectGallery } from '@/components/site/ProjectGallery'
+export const metadata: Metadata = { title: 'Selected Work | Muni Prasad', description: 'Java and Spring Boot services, Oracle ATG modernization, payments, Kafka, PostgreSQL, and independent applications.', alternates: { canonical: '/portfolio' } }
+export default function PortfolioPage(){return <div className="page"><PageHero label="Selected work" title={<>Engineering work.<br/><em>Clear contributions.</em></>} description="Explore Java and Spring Boot services, commerce modernization, event workflows, React.js applications, and AWS cloud integrations. Each case study explains my contribution, the technical approach, and the evidence behind it."/><ProjectGallery/><section className="content-section"><div className="eyebrow"><span className="eyebrow-line"/>Code you can inspect</div><h2>Behind this <em>portfolio.</em></h2><p className="body-copy">The public portfolio repository contains the Next.js application, components, and Payload CMS setup.</p><a className="text-link" href="https://github.com/MuniPrasad123/muni-prasad-portfolio" target="_blank" rel="noreferrer">Explore the portfolio repository ↗</a></section></div>}
+

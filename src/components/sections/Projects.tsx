@@ -83,32 +83,32 @@ function ProjectCard({ proj, idx }: CardProps) {
         />
         {/* Category tag */}
         <div className="absolute top-4 left-4 bg-[#030712]/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-slate-300 border border-white/5">
-          E-Commerce Blueprint
+          {proj.category || 'Engineering project'}
         </div>
       </div>
 
       {/* Body content */}
       <div className="p-6 flex flex-col flex-1">
-        <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[#1da1f2] transition-colors line-clamp-1">{proj.title}</h3>
+        <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[#1da1f2] transition-colors ">{proj.title}</h3>
         
         {/* Problem - Role - Outcome Format */}
         <div className="flex flex-col gap-3.5 mb-6 text-sm text-slate-300 flex-1">
           {proj.problemStatement && (
             <div>
               <strong className="block text-[11px] uppercase tracking-wider text-[#14b8a6] mb-0.5">Problem</strong>
-              <p className="line-clamp-2 text-slate-300/90 leading-relaxed font-normal">{proj.problemStatement}</p>
+              <p className=" text-slate-300/90 leading-relaxed font-normal">{proj.problemStatement}</p>
             </div>
           )}
           {proj.role && (
             <div>
               <strong className="block text-[11px] uppercase tracking-wider text-[#8b5cf6] mb-0.5">My Role</strong>
-              <p className="line-clamp-2 text-slate-300/90 leading-relaxed font-normal">{proj.role}</p>
+              <p className=" text-slate-300/90 leading-relaxed font-normal">{proj.role}</p>
             </div>
           )}
           {proj.outcome && (
             <div>
               <strong className="block text-[11px] uppercase tracking-wider text-[#22c55e] mb-0.5">Outcome</strong>
-              <p className="line-clamp-2 text-slate-300/90 leading-relaxed font-normal">{proj.outcome}</p>
+              <p className=" text-slate-300/90 leading-relaxed font-normal">{proj.outcome}</p>
             </div>
           )}
         </div>

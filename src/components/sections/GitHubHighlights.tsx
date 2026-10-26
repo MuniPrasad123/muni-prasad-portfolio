@@ -4,22 +4,6 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
-const StarIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline mr-1 text-yellow-500">
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-  </svg>
-)
-
-const ForkIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline mr-1 text-slate-400">
-    <circle cx="18" cy="18" r="3" />
-    <circle cx="6" cy="6" r="3" />
-    <circle cx="6" cy="18" r="3" />
-    <path d="M18 15V9a4 4 0 0 0-4-4H9" />
-    <line x1="6" x2="6" y1="9" y2="15" />
-  </svg>
-)
-
 export function GitHubHighlights() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
 
@@ -67,10 +51,6 @@ export function GitHubHighlights() {
             </div>
 
             <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center text-xs text-slate-400 bg-white/[0.02] border border-white/5 p-3 rounded-xl">
-                <span>Public Repositories</span>
-                <strong className="text-white font-bold">12+</strong>
-              </div>
               <a
                 href="https://github.com/MuniPrasad123"
                 target="_blank"
@@ -109,8 +89,6 @@ export function GitHubHighlights() {
                 </div>
 
                 <div className="flex gap-4 text-xs font-semibold text-slate-500">
-                  <span className="flex items-center"><StarIcon /> 3 Stars</span>
-                  <span className="flex items-center"><ForkIcon /> 1 Fork</span>
                   <span className="h-2 w-2 rounded-full bg-[#3178c6] self-center ml-auto" />
                   <span>TypeScript</span>
                 </div>
@@ -140,8 +118,6 @@ export function GitHubHighlights() {
                 </div>
 
                 <div className="flex gap-4 text-xs font-semibold text-slate-500">
-                  <span className="flex items-center"><StarIcon /> 2 Stars</span>
-                  <span className="flex items-center"><ForkIcon /> 0 Forks</span>
                   <span className="h-2 w-2 rounded-full bg-[#8b5cf6] self-center ml-auto" />
                   <span>Markdown</span>
                 </div>

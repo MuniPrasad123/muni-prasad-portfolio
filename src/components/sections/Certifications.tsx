@@ -33,24 +33,8 @@ interface CardProps {
 
 function CertCard({ cert, idx }: CardProps) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
-  const isCompleted = cert.status === 'completed' || !cert.status || cert.status.toLowerCase() !== 'pending'
+  const isCompleted = cert.status === 'completed'
 
-  // Map certificate title to local SVG asset for maximum recruiter trust and premium visuals
-  let localBadgePath = ''
-  const titleLower = cert.title.toLowerCase()
-  if (titleLower.includes('aws') || titleLower.includes('amazon')) {
-    localBadgePath = '/assets/cert-aws.svg'
-  } else if (titleLower.includes('java') || titleLower.includes('oracle')) {
-    localBadgePath = '/assets/cert-java.svg'
-  } else if (titleLower.includes('spring')) {
-    localBadgePath = '/assets/cert-spring.svg'
-  } else if (titleLower.includes('github')) {
-    localBadgePath = '/assets/cert-github.svg'
-  } else if (titleLower.includes('hackerrank')) {
-    localBadgePath = '/assets/cert-hackerrank.svg'
-  } else if (titleLower.includes('freecodecamp')) {
-    localBadgePath = '/assets/cert-freecodecamp.svg'
-  }
 
   return (
     <motion.div
@@ -62,21 +46,7 @@ function CertCard({ cert, idx }: CardProps) {
     >
       {/* Icon or SVG badge */}
       <div className="w-16 h-16 rounded-full bg-white/[0.02] border border-white/10 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
-        {localBadgePath ? (
-          <img
-            src={localBadgePath}
-            alt={cert.title}
-            className="w-10 h-10 object-contain"
-            onError={(e) => {
-              const t = e.target as HTMLImageElement
-              t.style.display = 'none' // Hide image if fails, falls back to placeholder below
-            }}
-          />
-        ) : (
-          <div className="text-[#1da1f2]">
-            <AwardIcon />
-          </div>
-        )}
+        <div className="text-[#bba5ea]"><AwardIcon /></div>
       </div>
 
       <h3 className="text-base font-bold text-white mb-2 group-hover:text-[#1da1f2] transition-colors">{cert.title}</h3>
@@ -94,7 +64,7 @@ function CertCard({ cert, idx }: CardProps) {
           : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'
       }`}>
         {isCompleted ? <CheckIcon /> : <ClockIcon />}
-        {isCompleted ? 'Verified' : 'In Progress'}
+        {isCompleted ? 'Completed' : cert.status === 'pending' ? 'In Progress' : 'Status not supplied'}
       </div>
     </motion.div>
   )
@@ -113,9 +83,9 @@ export function Certifications({ certifications }: { certifications: Certificati
           transition={{ duration: 0.5 }}
           className="text-left mb-16"
         >
-          <span className="section__eyebrow">Credentials &amp; Endorsements</span>
+          <span className="section__eyebrow">Continuous Learning</span>
           <h2 className="section__title">
-            Professional <strong>Certifications</strong>
+            Certifications &amp; <strong>Training</strong>
           </h2>
         </motion.div>
 

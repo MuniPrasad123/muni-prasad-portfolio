@@ -22,7 +22,6 @@ export const Certifications: CollectionConfig = {
         { label: 'Completed', value: 'completed' },
         { label: 'Pending', value: 'pending' },
       ],
-      defaultValue: 'completed',
     },
     {
       name: 'badge',

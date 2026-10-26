@@ -1,0 +1,5 @@
+import type { Metadata } from 'next'
+import { PageHero } from '@/components/site/PageHero'
+
+export const metadata: Metadata = { title: 'Privacy | Muni Prasad', description: 'Privacy information for visitors to Muni Prasad’s portfolio.' }
+export default function PrivacyPage(){return <div className="page"><PageHero label="Privacy" title={<>A simple, clear<br/><em>privacy approach.</em></>} description="This portfolio shares professional profile and project information."/><article className="article-body"><h2>Information and contact</h2><p>This site does not provide a message-submission form or store contact messages. If you choose to email Muni or contact him through LinkedIn, that service handles the information you share.</p><h2>External links</h2><p>Links to LinkedIn, GitHub, and resume files take you to those destinations. Their privacy practices apply when you use them.</p><h2>Analytics</h2><p>No analytics or advertising trackers are intentionally included in this portfolio.</p></article></div>}

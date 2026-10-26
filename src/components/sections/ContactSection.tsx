@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { profile } from '@/data/profile'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
@@ -52,7 +53,7 @@ export function ContactSection() {
             Let&apos;s <strong>Connect</strong>
           </h2>
           <p className="text-slate-300 text-base leading-relaxed mb-8 font-normal">
-            Looking for a Senior Software Engineer, E-Commerce Specialist, or Technical Consultant? I am available for full-time opportunities, consulting contracts, and system architecture audits. Let&apos;s talk.
+            Looking for a Senior Java Backend Engineer, E-Commerce Specialist, or Technical Consultant? I am available for full-time opportunities, consulting contracts, and system architecture audits. Let&apos;s talk.
           </p>
 
           <div className="flex flex-col gap-5 w-full">
@@ -63,7 +64,7 @@ export function ContactSection() {
               </div>
               <div>
                 <strong className="block text-xs uppercase tracking-wider text-slate-500 font-bold">Location</strong>
-                <span className="text-slate-300 text-sm font-semibold">Bengaluru, India (Open to Remote / Relocation)</span>
+                <span className="text-slate-300 text-sm font-semibold">{profile.location}</span>
               </div>
             </div>
 
@@ -87,7 +88,7 @@ export function ContactSection() {
               </div>
               <div>
                 <strong className="block text-xs uppercase tracking-wider text-slate-500 font-bold">LinkedIn Profile</strong>
-                <a href="https://www.linkedin.com/in/muni-prasad-k-7600bb105" target="_blank" rel="noopener noreferrer" className="text-slate-300 text-sm font-semibold hover:text-[#1da1f2] transition-colors">
+                <a href="https://www.linkedin.com/in/muni-prasad-k" target="_blank" rel="noopener noreferrer" className="text-slate-300 text-sm font-semibold hover:text-[#1da1f2] transition-colors">
                   linkedin.com/in/muni-prasad-k
                 </a>
               </div>
@@ -118,7 +119,7 @@ export function ContactSection() {
 
           {/* Action 2 */}
           <a
-            href="https://www.linkedin.com/in/muni-prasad-k-7600bb105"
+            href="https://www.linkedin.com/in/muni-prasad-k"
             target="_blank"
             rel="noopener noreferrer"
             className="glass-panel border border-white/5 bg-white/[0.01] hover:bg-[#1da1f2]/5 hover:border-[#1da1f2]/30 p-6 rounded-2xl flex items-center justify-between group transition-all duration-300 cursor-pointer"
@@ -150,14 +151,13 @@ export function ContactSection() {
 
           {/* Action 4 */}
           <a
-            href="https://github.com/MuniPrasad123"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={profile.resume}
+            download
             className="glass-panel border border-white/5 bg-white/[0.01] hover:bg-[#1da1f2]/5 hover:border-[#1da1f2]/30 p-6 rounded-2xl flex items-center justify-between group transition-all duration-300 cursor-pointer"
           >
             <div>
               <h3 className="text-white font-bold text-base mb-1">Resume Download</h3>
-              <p className="text-xs text-slate-400 font-normal">Download ATS-ready copy</p>
+              <p className="text-xs text-slate-400 font-normal">Download updated PDF resume</p>
             </div>
             <div className="text-slate-400 group-hover:text-white transition-colors">
               <ArrowUpRight />

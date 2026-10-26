@@ -60,7 +60,7 @@ export function CoreExpertise() {
     },
     {
       title: 'Java / J2EE',
-      description: 'Engineering robust server-side business logic, object structures, multithreading logic, memory optimization, and JVM tuning.',
+      description: 'Developing enterprise backend services with Java, J2EE, Spring Boot, Quarkus, and JPA/Hibernate.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M10 2v20" />
@@ -71,7 +71,7 @@ export function CoreExpertise() {
     },
     {
       title: 'Spring Boot Microservices',
-      description: 'Building REST APIs, securing endpoints (OAuth2), decoupling components via queues, and managing Hibernate ORM database sessions.',
+      description: 'Building Java/Spring Boot REST APIs with JPA/Hibernate, event-driven messaging, and hexagonal architecture patterns.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect width="18" height="18" x="3" y="3" rx="2" />
@@ -81,7 +81,7 @@ export function CoreExpertise() {
     },
     {
       title: 'React.js Frontend',
-      description: 'Creating modular dashboards, custom admin UIs, catalog managers, event visualization grids, and responsive layouts.',
+      description: 'Building React.js pages integrated with Java/Spring Boot APIs and Angular tools for log analysis and troubleshooting.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(30 12 12)" />
@@ -92,8 +92,8 @@ export function CoreExpertise() {
       ),
     },
     {
-      title: 'AWS Cloud & DevOps',
-      description: 'Deploying ECS container tasks, automating Jenkins jobs, configuring Docker setups, and optimizing Oracle SQL query paths.',
+      title: 'Cloud & DevOps',
+      description: 'Delivering services across AWS, GCP, and OCI; deploying Docker and Kubernetes workloads with Jenkins and Azure DevOps.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M17.5 19A3.5 3.5 0 0 0 21 15.5c0-2.79-2.54-4.5-5-4.5-.42-1.04-1.28-1.97-2.31-2.5C12.44 7.82 11.23 7.5 10 7.5c-3 0-5.5 2.1-6 5-.07.4-.1.8-.1 1.25A3.25 3.25 0 0 0 7.15 17" />

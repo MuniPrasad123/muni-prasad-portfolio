@@ -73,15 +73,6 @@ function TimelineCard({ exp, idx }: TimelineCardProps) {
           </p>
         )}
 
-        {/* Highlighted bullets if OLR role (custom items mapping for richness) */}
-        {exp.company.toLowerCase().includes('olr') && (
-          <ul className="list-disc pl-4 space-y-2 mb-6 text-xs text-slate-400 font-normal">
-            <li>Lead ATG core configurations, payment validation classes, and promotions integrations.</li>
-            <li>Maintain zero-downtime deployment runs on AWS ECS with custom Jenkins task scripts.</li>
-            <li>Analyze high-priority system events and bottlenecks using ELK Stack Kibana dashboard filters.</li>
-          </ul>
-        )}
-
         {exp.skillsUsed && (
           <div className="flex flex-wrap gap-1.5">
             {(Array.isArray(exp.skillsUsed) ? exp.skillsUsed : []).map((skill, si) => {

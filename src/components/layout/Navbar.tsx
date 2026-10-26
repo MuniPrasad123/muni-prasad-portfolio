@@ -132,7 +132,7 @@ export function Navbar() {
             <a href="https://github.com/MuniPrasad123" target="_blank" rel="noreferrer" className="navbar__social-btn border border-white/10 hover:border-[#1da1f2]/40 hover:bg-[#1da1f2]/10 hover:text-[#1da1f2] p-2 rounded-full transition-all text-[#94a3b8]" aria-label="GitHub">
               <GithubIcon />
             </a>
-            <a href="https://www.linkedin.com/in/muni-prasad-k-7600bb105" target="_blank" rel="noreferrer" className="navbar__social-btn border border-white/10 hover:border-[#1da1f2]/40 hover:bg-[#1da1f2]/10 hover:text-[#1da1f2] p-2 rounded-full transition-all text-[#94a3b8]" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/muni-prasad-k" target="_blank" rel="noreferrer" className="navbar__social-btn border border-white/10 hover:border-[#1da1f2]/40 hover:bg-[#1da1f2]/10 hover:text-[#1da1f2] p-2 rounded-full transition-all text-[#94a3b8]" aria-label="LinkedIn">
               <LinkedinIcon />
             </a>
             <a href="mailto:prasad.krish95@gmail.com" className="navbar__social-btn border border-white/10 hover:border-[#1da1f2]/40 hover:bg-[#1da1f2]/10 hover:text-[#1da1f2] p-2 rounded-full transition-all text-[#94a3b8]" aria-label="Email">
@@ -185,7 +185,7 @@ export function Navbar() {
                 <GithubIcon />
                 <span>GitHub</span>
               </a>
-              <a href="https://www.linkedin.com/in/muni-prasad-k-7600bb105" target="_blank" rel="noreferrer" className="flex items-center gap-2 border border-white/10 hover:border-[#1da1f2]/40 hover:bg-[#1da1f2]/10 hover:text-[#1da1f2] px-4 py-2 rounded-full transition-all text-[#94a3b8] text-sm font-semibold w-1/3 justify-center" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/muni-prasad-k" target="_blank" rel="noreferrer" className="flex items-center gap-2 border border-white/10 hover:border-[#1da1f2]/40 hover:bg-[#1da1f2]/10 hover:text-[#1da1f2] px-4 py-2 rounded-full transition-all text-[#94a3b8] text-sm font-semibold w-1/3 justify-center" aria-label="LinkedIn">
                 <LinkedinIcon />
                 <span>LinkedIn</span>
               </a>

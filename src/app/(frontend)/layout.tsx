@@ -1,9 +1,23 @@
 import './globals.css'
+import './portfolio.css'
+import './hero-refinement.css'
 import { Plus_Jakarta_Sans } from 'next/font/google'
+import { SiteShell } from '@/components/site/SiteShell'
+import { StudioControls } from '@/components/sections/StudioControls'
+import { profile } from '@/data/profile'
+
+const person = {
+  '@context': 'https://schema.org', '@type': 'Person', name: profile.name,
+  jobTitle: 'Senior Software Engineer', description: profile.headline,
+  url: 'https://www.muniprasad.in', image: 'https://www.muniprasad.in/media/muni-profile.png.jpg',
+  sameAs: [profile.linkedin, profile.github],
+  homeLocation: { '@type': 'Place', name: profile.location },
+  knowsAbout: ['Java', 'Spring Boot', 'Microservices', 'Oracle ATG Commerce', 'Enterprise integration', 'React.js', 'AWS cloud services'],
+}
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
 })
 
@@ -14,7 +28,7 @@ export default function FrontendLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={plusJakartaSans.className}>{children}</body>
+      <body className={plusJakartaSans.className}><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person).replace(/</g, '\\u003c') }} /><SiteShell>{children}</SiteShell><StudioControls /></body>
     </html>
   )
 }

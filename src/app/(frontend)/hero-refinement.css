@@ -1,0 +1,61 @@
+/* Recruiter-facing hierarchy: role, name, then a concise technical tagline. */
+.hero-home h1.hero-name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(54px, 6.5vw, 88px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -2px;
+  margin: 20px 0 18px;
+  color: #f5f1e7;
+  text-wrap: balance;
+}
+.hero-home .hero-home-copy > .eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 1.8px;
+  color: #edce85;
+}
+.hero-home .hero-specialties {
+  max-width: 100%;
+  font: italic 400 clamp(17px, 1.6vw, 23px)/1.65 Georgia, 'Times New Roman', serif;
+  color: #dfc17b;
+  margin: 0 0 25px;
+  text-wrap: balance;
+}
+.hero-home .hero-specialties em { font-style: italic; color: inherit; }
+.glance-supporting-stack { display: inline-block; margin-top: 7px; color: inherit; }
+@media (min-width: 1101px) {
+  .hero-home .hero-specialties { font-size: clamp(16px, 1.35vw, 21px); white-space: nowrap; }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .hero-home h1.hero-name { font-size: 58px; }
+  .hero-home .hero-specialties { font-size: 19px; }
+}
+@media (max-width: 760px) {
+  .hero-home h1.hero-name { font-size: clamp(40px, 10.8vw, 64px); letter-spacing: -1.3px; }
+  .hero-home .hero-home-copy > .eyebrow { font-size: 11px; letter-spacing: 1.2px; }
+  .hero-home .hero-specialties { font-size: 18px; white-space: normal; }
+}
+
+/* Persistent controls remain available throughout client-side navigation. */
+.site-playback-controls{position:fixed;right:22px;bottom:18px;z-index:65;max-width:min(440px,calc(100vw - 32px));padding:12px 14px;border:1px solid #d6b56866;border-radius:12px;background:#092016f5;box-shadow:0 8px 32px #0007;color:#f5f1e7;backdrop-filter:blur(12px)}
+.playback-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.playback-buttons button{min-height:44px;padding:9px 12px;border:1px solid #d6b56866;border-radius:7px;color:#e8d6a4;font-size:12px;background:#10291d}
+.playback-buttons button[aria-pressed=true]{background:#d6b568;color:#102017;border-color:#d6b568}
+.playback-buttons button:hover:not(:disabled){border-color:#f1d794}
+.playback-buttons button:disabled{opacity:.75;cursor:default}
+.playback-status{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:7px;color:#c7d4c5;font-size:10px;line-height:1.6}
+.playback-status label{display:flex;align-items:center;gap:7px}
+.playback-status input{width:90px;height:24px;accent-color:#d6b568}
+.playback-message{font-size:11px;line-height:1.6;max-width:360px;margin-top:7px;color:#edd59e}
+.site-main>main{padding-bottom:160px}
+@media(max-width:760px){.site-playback-controls{left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));max-width:none;padding:10px}.playback-buttons{flex-wrap:nowrap;gap:7px}.playback-buttons button{flex:1;min-width:0;font-size:10px;padding:8px 6px}.site-main>main{padding-bottom:190px}}
+@media print{.site-playback-controls{display:none!important}}
+
+.filter-count{display:inline-grid;place-items:center;min-width:20px;margin-left:5px;padding:1px 4px;border-radius:4px;background:#d6b56818;font-size:10px}
+.filter-chip[aria-pressed=true] .filter-count{background:#10201720}
+.filter-feedback{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:46px;margin:4px 0 14px;color:#c7d1c1;font-size:12px}
+.filter-feedback p{overflow-wrap:anywhere}
+.filter-feedback button{flex-shrink:0;min-height:44px;padding:8px 12px;color:var(--gold);text-decoration:underline;text-underline-offset:4px}
+.empty-state .button{margin-top:15px}
