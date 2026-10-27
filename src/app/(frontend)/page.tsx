@@ -1,11 +1,13 @@
 import Link from 'next/link'
+import { articleSummaries } from '@/lib/blog'
 import { ArrowUpRight, Download } from 'lucide-react'
-import { careerHistory, draftArticles, pillars, portfolioProjects, siteFacts, personProfile } from '@/data/site'
+import { careerHistory, pillars, portfolioProjects, siteFacts, personProfile } from '@/data/site'
 import { KoiAnimation } from '@/components/site/KoiAnimation'
 
 export const metadata = { title: 'Muni Prasad K | Senior Software Engineer | Java, Spring Boot, Microservices & Oracle ATG Commerce', description: personProfile.summary, alternates: { canonical: '/' } }
 
 export default function HomePage() {
+  const articles = articleSummaries()
   const featured = ['java-spring-boot-services', 'enterprise-checkout-payments', 'oracle-atg-modernization']
   return <div className="page home-page">
     <section className="hero hero-home">
@@ -40,9 +42,9 @@ export default function HomePage() {
       <div className="project-followup"><p>Looking for event workflows, data work, or independent applications?</p><Link className="text-link" href="/portfolio/kafka-order-events">Kafka order events ↗</Link><Link className="text-link" href="/portfolio/helpcorner">HelpCorner & AWS ↗</Link><Link className="text-link" href="/portfolio/muniai">MuniAI ↗</Link></div>
     </section>
     <section className="content-section home-notes">
-      <div className="section-heading"><div><div className="eyebrow"><span className="eyebrow-line"/>Engineering notebook</div><h2>Thinking through<br/><em>the details.</em></h2></div><Link className="text-link" href="/blog">Browse drafts <ArrowUpRight size={15}/></Link></div>
-      <p className="body-copy">Work in progress on service design, payment boundaries, and event workflows. These notes are drafts, open for further development.</p>
-      <div className="notes-list">{draftArticles.slice(0,3).map(article=><Link href={`/blog/${article.slug}`} key={article.slug}><span className="draft-label">Draft · {article.category}</span><h3>{article.title}</h3><ArrowUpRight size={16}/></Link>)}</div>
+      <div className="section-heading"><div><div className="eyebrow"><span className="eyebrow-line"/>Engineering notebook</div><h2>Thinking through<br/><em>the details.</em></h2></div><Link className="text-link" href="/blog">Browse articles <ArrowUpRight size={15}/></Link></div>
+      <p className="body-copy">Practical lessons on backend systems and enterprise commerce, with examples you can read and explore.</p>
+      <div className="notes-list">{articles.slice(0,3).map(article=><Link href={`/blog/${article.slug}`} key={article.slug}><span className="draft-label">{article.draft ? 'Draft · ' : article.sample ? 'Sample · ' : ''}{article.tags[0]}</span><h3>{article.title}</h3><ArrowUpRight size={16}/></Link>)}</div>
     </section>
     <section className="closing-card"><div className="eyebrow"><span className="eyebrow-line"/>Build with purpose</div><h2>Have a backend challenge<br/><em>or a role in mind?</em></h2><p>I’m interested in Java and Spring Boot engineering, microservices, enterprise integrations, and commerce opportunities with teams working internationally.</p><Link className="button button-gold" href="/contact">Start a conversation <ArrowUpRight size={16}/></Link></section>
   </div>

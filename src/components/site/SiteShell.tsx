@@ -5,12 +5,12 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { profile } from '@/data/profile'
-import { draftArticles } from '@/data/site'
+import type { ArticleMeta } from '@/lib/blog'
 const groups=[
   {label:'Explore',links:[{href:'/',label:'Overview',icon:'◎'},{href:'/cv',label:'Experience & CV',icon:'▤'},{href:'/portfolio',label:'Selected work',icon:'▧'},{href:'/expertise',label:'Capabilities & tools',icon:'▱'}]},
   {label:'Connect & learn',links:[{href:'/hire-me',label:'Role fit',icon:'↗'},{href:'/highlights',label:'Credentials',icon:'✳'},{href:'/blog',label:'Blog',icon:'▥'},{href:'/contact',label:'Contact',icon:'✉'}]},
 ]
-export function SiteShell({children}:{children:ReactNode}) {
+export function SiteShell({children, articles}:{children:ReactNode; articles:ArticleMeta[]}) {
   const pathname=usePathname()
   const [open,setOpen]=useState(false)
   const sidebar=useRef<HTMLElement>(null)
@@ -45,7 +45,7 @@ export function SiteShell({children}:{children:ReactNode}) {
       <Link className="identity" href="/" aria-label="Muni Prasad, home" onClick={close}><span className="avatar-frame"><Image src="/media/muni-profile.png.jpg" alt="" width={94} height={94} priority/></span><strong>{profile.name}</strong><small>Senior Software Engineer</small><span className="identity-stack">Building reliable backends.<br/>Connecting enterprise commerce.</span></Link>
       <div className="sidebar-status"><span className="status-dot"/> International remote · relocation</div>
       <nav id="primary-navigation" aria-label="Main navigation">{groups.map(group=><div className="nav-group" key={group.label}><p>{group.label}</p>{group.links.map(item=><Link className={`nav-link${active(item.href)?' active':''}`} aria-current={active(item.href)?'page':undefined} href={item.href} key={item.href} onClick={close}><span aria-hidden="true" className="nav-icon">{item.icon}</span>{item.label}<span aria-hidden="true" className="nav-arrow">↗</span></Link>)}</div>)}</nav>
-      <section className="sidebar-latest" aria-labelledby="sidebar-latest-title"><p id="sidebar-latest-title">Engineering notes <span>Drafts</span></p>{draftArticles.slice(0,2).map((article,index)=><Link href={`/blog/${article.slug}`} key={article.slug} onClick={close}><span>0{index+1}</span>{article.title}</Link>)}</section>
+      <section className="sidebar-latest" aria-labelledby="sidebar-latest-title"><p id="sidebar-latest-title">Engineering journal</p>{articles.slice(0,2).map((article,index)=><Link href={`/blog/${article.slug}`} key={article.slug} onClick={close}><span>0{index+1}</span>{article.title}</Link>)}</section>
       <div className="sidebar-connect"><p>Find me online</p><div className="social-row"><a href={profile.github} target="_blank" rel="noreferrer">GitHub ↗</a><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a></div></div>
       <footer className="sidebar-footer">© {new Date().getFullYear()} {profile.name}<br/>{profile.location} <span aria-hidden="true">◆</span> <Link href="/privacy" onClick={close}>Privacy</Link></footer>
     </div></aside>

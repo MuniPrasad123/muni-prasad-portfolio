@@ -1,6 +1,9 @@
 import './globals.css'
 import './portfolio.css'
 import './hero-refinement.css'
+import './blog.css'
+import 'highlight.js/styles/github-dark.css'
+import { articleSummaries } from '@/lib/blog'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { SiteShell } from '@/components/site/SiteShell'
 import { StudioControls } from '@/components/sections/StudioControls'
@@ -28,7 +31,7 @@ export default function FrontendLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={plusJakartaSans.className}><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person).replace(/</g, '\\u003c') }} /><SiteShell>{children}</SiteShell><StudioControls /></body>
+      <body className={plusJakartaSans.className}><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person).replace(/</g, '\\u003c') }} /><SiteShell articles={articleSummaries()}>{children}</SiteShell><StudioControls /></body>
     </html>
   )
 }

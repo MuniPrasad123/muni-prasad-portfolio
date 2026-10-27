@@ -1,0 +1,37 @@
+'use client'
+import { useState } from 'react'
+import { advance, burst, initialLimiter } from '@/lib/rate-limit'
+export function ArchitectureFlow({ accepted, rejected, run }: { accepted: number; rejected: number; run: number }) {
+  const [node, setNode] = useState('gateway')
+  const nodes = [{ id: 'client', label: 'Shopping client', note: 'Requests share one trusted caller identity in this model.' }, { id: 'gateway', label: 'API gateway', note: 'The limiter evaluates each request atomically before forwarding it.' }, { id: 'service', label: 'Checkout API', note: 'Accepted requests reach the API. The demo labels these 200; a real checkout can still fail.' }]
+  return <div className="architecture-flow"><div className="flow-nodes">{nodes.map((item, i) => <div key={item.id}>{i > 0 && <span aria-hidden="true">→</span>}<button aria-pressed={node === item.id} onClick={() => setNode(item.id)}>{item.label}</button></div>)}</div><p>{nodes.find(item => item.id === node)?.note}</p><svg key={run} className="traffic-diagram" viewBox="0 0 800 210" role="img" aria-label="Requests travel from customer to gateway. Accepted requests continue to checkout; rejected requests take the 429 branch."><path d="M70 65H730M400 65V175" fill="none" stroke="#456a54" strokeWidth="3"/><g fill="#163b29" stroke="#d6b568"><rect x="5" y="30" width="150" height="70" rx="12"/><rect x="325" y="30" width="150" height="70" rx="12"/><rect x="645" y="30" width="150" height="70" rx="12"/></g><g fill="#f5f1e7" textAnchor="middle" fontSize="17"><text x="80" y="72">Customer</text><text x="400" y="72">Rate limiter</text><text x="720" y="72">Checkout</text><text x="470" y="183" fill="#ffb1ad">429 · Retry later</text></g>{Array.from({length:accepted+rejected},(_,i)=><circle key={i} r="8" fill={i<accepted?'#8fe0b4':'#ff9d99'} className="traffic-packet"><animateMotion path={i<accepted?'M155 65H645':'M155 65H400V175'} dur="1.6s" begin={String(i*.18)+'s'} fill="freeze"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.05;.9;1" dur="1.6s" begin={String(i*.18)+'s'} fill="freeze"/></circle>)}</svg><div className="request-stream" aria-label={`${accepted} accepted requests, ${rejected} rejected requests`}>{Array.from({ length: accepted + rejected }, (_, i) => <span key={`${accepted}-${rejected}-${i}`} className={i < accepted ? 'request accepted' : 'request rejected'} style={{ animationDelay: `${i * 60}ms` }}>{i < accepted ? '200' : '429'}</span>)}</div></div>
+}
+export function InterviewQuiz() {
+  const [answer, setAnswer] = useState<number | null>(null)
+  return <fieldset className="lesson-panel"><legend>Quick check: can a fixed window allow ten requests in a short burst?</legend>{['No, five per window always means five in any ten seconds.', 'Yes: five just before a boundary and five just after it.'].map((text, i) => <label className="quiz-choice" key={text}><input type="radio" name="rate-quiz" checked={answer === i} onChange={() => setAnswer(i)}/>{text}</label>)}<p role="status">{answer === null ? 'Choose an answer to see the explanation.' : answer === 1 ? 'Correct. Aligned windows reset independently. Five at t=9.9 and five at t=10.0 can pass; that is not a rolling ten-second limit.' : 'Try again. Each aligned window has its own allowance, so the boundary matters.'}</p></fieldset>
+}
+export function LiveSimulator() {
+  const [algorithm, setAlgorithm] = useState<'fixed' | 'bucket'>('fixed')
+  const [state, setState] = useState(initialLimiter)
+  const [count, setCount] = useState(8)
+  const [last, setLast] = useState({ accepted: 0, rejected: 0, retryAfter: 0 })
+  const [run, setRun] = useState(0)
+  const [history, setHistory] = useState<string[]>([])
+  const reset = () => { setState(initialLimiter()); setLast({ accepted: 0, rejected: 0, retryAfter: 0 }); setHistory([]) }
+  function send() {
+    setRun(value => value + 1)
+    const result = burst(state, count, algorithm)
+    setState(result.state); setLast(result)
+    setHistory(items => [`t=${state.time.toFixed(1)}s: ${result.accepted} accepted, ${result.rejected} rejected${result.rejected ? `; Retry-After: ${result.retryAfter}s` : ''}`, ...items].slice(0, 8))
+  }
+  return <section id="interactive-lab" className="lesson-panel" aria-labelledby="lab-title"><div className="eyebrow">Interactive lab · one caller · virtual time</div><h2 id="lab-title">Be the customer. Send requests.</h2><p>Limit: 5 per aligned 10-second window, or a bucket holding 5 tokens and refilling 0.5 tokens per second. Time advances only when you move it.</p>
+    <div className="lab-controls"><div className="filter-bar" role="group" aria-label="Limiter algorithm">{(['fixed','bucket'] as const).map(value=><button key={value} type="button" className="filter-chip" aria-pressed={algorithm===value} onClick={()=>{setAlgorithm(value);reset()}}>{value==='fixed'?'Fixed window':'Token bucket'}</button>)}</div><label>Requests in burst: {count}<input type="range" min="1" max="20" value={count} onChange={e => setCount(Number(e.target.value))}/></label></div>
+    <div className="hero-actions"><button className="button button-gold" onClick={send}>Send {count} requests</button><button className="button button-outline" onClick={() => setState(advance(state, 5))}>Advance 5 seconds</button><button className="button button-outline" onClick={() => setState(advance(state, 0.1))}>Advance 0.1 seconds</button><button className="button button-outline" onClick={reset}>Reset</button></div>
+    <dl className="lab-metrics"><div><dt>Virtual time</dt><dd>{state.time.toFixed(1)}s</dd></div><div><dt>{algorithm === 'fixed' ? `Window [${state.windowStart}, ${state.windowStart + 10})` : 'Tokens available'}</dt><dd>{algorithm === 'fixed' ? `${5 - state.used} remaining` : state.tokens.toFixed(2)}</dd></div><div><dt>Accepted / rejected total</dt><dd>{state.accepted} / {state.rejected}</dd></div></dl>
+    <ArchitectureFlow accepted={last.accepted} rejected={last.rejected} run={run}/><p role="status">{last.accepted + last.rejected ? `Last burst: ${last.accepted} accepted; ${last.rejected} rejected.${last.rejected ? ` Retry-After: ${last.retryAfter} seconds at the time of rejection.` : ''}` : 'Send a burst to begin.'}</p><p className="article-caption">Retry-After is rounded up from this deterministic model: next window boundary or next whole token. Concurrent callers, clock differences, and network delay are outside this simulation.</p><details><summary>Recent requests</summary><ol>{history.map((item, i) => <li key={`${i}-${item}`}>{item}</li>)}</ol></details><InterviewQuiz/></section>
+}
+export function StepTimeline() {
+  const [step, setStep] = useState(0)
+  const steps = ['At t=0, eight requests arrive. Five pass and three receive 429 in both models.', 'At t=5, the fixed window still has no allowance. A token bucket has regained 2.5 tokens and can admit two requests.', 'At t=10, a new fixed window starts. The token bucket refills continuously rather than resetting on a boundary.']
+  return <section className="lesson-panel"><h3>Walk through the timeline</h3><label>Step {step + 1} of 3<input aria-label="Timeline step" type="range" min="0" max="2" value={step} onChange={e => setStep(Number(e.target.value))}/></label><p role="status">{steps[step]}</p></section>
+}
