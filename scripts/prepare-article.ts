@@ -13,6 +13,6 @@ fs.writeFileSync(path.join(out,'video-props.json'),JSON.stringify({title:post.ti
 media.scenes.forEach((_: unknown,i:number)=>fs.writeFileSync(path.join(out,`slide-${i+1}.json`),JSON.stringify({title:post.title,scenes:media.scenes,slide:i},null,2)))
 fs.writeFileSync(path.join(out,'linkedin.txt'),`${media.socialHooks.join('\n\n')}\n\nExplore the interactive lesson: ${absoluteUrl('/blog/'+slug)}\n\nEducational example; no personal or employer performance claims.\n`)
 fs.writeFileSync(path.join(out,'devto.md'),`---\ntitle: ${JSON.stringify(post.title)}\npublished: false\ncanonical_url: ${absoluteUrl('/blog/'+slug)}\n---\n\nTry the interactive version: ${absoluteUrl('/blog/'+slug)}#interactive-lab\n\n${post.body}`)
-fs.writeFileSync(path.join(out,'storyboard.md'),media.scenes.map((s: {title:string;caption:string},i:number)=>`## ${i*9}–${(i+1)*9}s: ${s.title}\n\n${s.caption}`).join('\n\n'))
+fs.writeFileSync(path.join(out,'storyboard.md'),media.scenes.map((s: {title:string;caption:string},i:number)=>`## ${i*45/media.scenes.length}–${(i+1)*45/media.scenes.length}s: ${s.title}\n\n${s.caption}`).join('\n\n'))
 fs.mkdirSync('out/publishing',{recursive:true});fs.writeFileSync('out/publishing/inventory.json',JSON.stringify(getArticles(true).map(article=>{const {body,...meta}=article;void body;return meta}),null,2))
 console.log(`Prepared local publishing files in ${out}. Nothing was published.`)

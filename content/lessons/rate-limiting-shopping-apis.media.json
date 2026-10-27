@@ -1,11 +1,46 @@
 {
   "durationSeconds": 45,
   "scenes": [
-    {"title":"Eight requests. Five places.","caption":"One shopping client sends eight requests. The gateway admits five and rejects three.","accepted":5,"rejected":3},
-    {"title":"A window has a boundary.","caption":"A fixed window allows five requests in [0,10). At t=5, that allowance is still exhausted.","accepted":0,"rejected":8},
-    {"title":"Tokens refill gradually.","caption":"Capacity 5. Refill 0.5 tokens per second. At t=5, an empty bucket has 2.5 tokens: two requests pass.","accepted":2,"rejected":6},
-    {"title":"429 means slow down.","caption":"Retry-After explains when to try again. It does not reserve capacity or guarantee checkout success.","accepted":5,"rejected":3},
-    {"title":"Choose the failure policy.","caption":"Use trusted caller identity, atomic shared decisions, and an explicit plan for limiter-store outages.","accepted":5,"rejected":3}
+    {
+      "title": "Bots flood checkout.",
+      "caption": "Excess traffic can exhaust shared capacity. Real shoppers face slow checkout or timeouts. Reject excess work before processing.",
+      "accepted": 0,
+      "rejected": 0
+    },
+    {
+      "title": "Limit the noisy caller.",
+      "caption": "Illustrative rule: one caller sends eight requests. Five proceed and three receive 429 before checkout.",
+      "accepted": 5,
+      "rejected": 3
+    },
+    {
+      "title": "A window has a boundary.",
+      "caption": "A fixed window allows five requests in [0,10). At t=5, that allowance is still exhausted.",
+      "accepted": 0,
+      "rejected": 8
+    },
+    {
+      "title": "Tokens refill gradually.",
+      "caption": "Capacity 5. Refill 0.5 tokens per second. At t=5, an empty bucket has 2.5 tokens: two requests pass.",
+      "accepted": 2,
+      "rejected": 6
+    },
+    {
+      "title": "429 means slow down.",
+      "caption": "Retry-After explains when to try again. It does not reserve capacity or guarantee checkout success.",
+      "accepted": 5,
+      "rejected": 3
+    },
+    {
+      "title": "Choose the failure policy.",
+      "caption": "Use trusted caller identity, atomic shared decisions, and an explicit plan for limiter-store outages.",
+      "accepted": 5,
+      "rejected": 3
+    }
   ],
-  "socialHooks":["Five requests per window is not five requests in every rolling ten seconds.","Why does a token bucket admit two requests after five seconds? Try the model.","Rate limiting protects capacity. It does not make payments idempotent."]
+  "socialHooks": [
+    "When bots flood checkout, real customers pay the price in delays and errors. How can rate limiting help?",
+    "Why does a token bucket admit two requests after five seconds? Try the model.",
+    "Rate limiting protects capacity. It does not make payments idempotent."
+  ]
 }

@@ -16,7 +16,7 @@ The Blog link exists in the shared desktop/mobile navigation. `/learn/rate-limit
 
 ## Your daily workflow
 
-Share the ChatGPT Markdown/text, images, video, and any reference links in this chat. I can turn that material into a draft, check technical claims, integrate any relevant simulator, and show a local preview. Publishing is a separate explicit step: this implementation has not been pushed or deployed.
+Share the ChatGPT Markdown/text, images, video, and any reference links in this chat. I can turn that material into a draft, check technical claims, integrate any relevant simulator, and show a local preview. Publishing is a separate explicit step: new articles are reviewed before publication.
 
 1. Create `content/lessons/my-article.md`. The filename must match the slug.
 2. Put images/video under `public/blog/my-article/`; use paths starting `/blog/` in frontmatter.
@@ -54,7 +54,18 @@ Drafts return 404 in production, are excluded from production lists and related 
 
 ## Article structure
 
-Start with a concrete business problem. Explain the concept and assumptions. Add examples, trade-offs, failure cases, and authoritative references. End with takeaways. Label illustrative figures, proposed architecture, pseudocode, and unverified claims accurately. Do not turn generated prose into supposed employer experience or performance results.
+Every article must explain the real-world problem before introducing a technology, code example, video, or simulator. Use this order:
+
+1. **Situation:** a concrete scenario readers recognize.
+2. **User impact:** who is affected and what they experience (slow checkout, missing notifications, confusing errors).
+3. **Cause:** explain the technical mechanism in plain language.
+4. **Solution:** show where the change fits and how it addresses that cause.
+5. **Walkthrough:** use a small example, diagram, code, or interactive model, and explain what each result means.
+6. **Limits and trade-offs:** explain what remains unsolved and when the approach is unsuitable.
+7. **Validation:** explain what to measure or test to know whether the user problem improved.
+8. **Takeaways and references:** connect the technical lesson back to the user outcome.
+
+Carry the same problem → impact → solution story into the article preview, video storyboard, and social post. If interactive media appears above the full text, show a short problem-and-solution introduction before it. Do not start with unexplained algorithms or tools. Apply this checklist to existing drafts before publishing them. Label illustrative figures, proposed architecture, pseudocode, and unverified claims accurately. Do not turn generated prose into supposed employer experience or performance results.
 
 For interactive lessons, use a tested model in `src/lib/`, connect it to the lesson component, and add the allowed simulation key to the content loader. Ordinary articles need no simulation. The first lesson has a visible video section, animated request flow, adjustable bursts, two algorithms, virtual time controls, a timeline and a quiz.
 

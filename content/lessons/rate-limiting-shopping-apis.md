@@ -1,9 +1,9 @@
 ---
 title: "Rate Limiting in Shopping APIs"
-description: "Compare fixed windows and token buckets with an interactive checkout burst, Java examples, and practical distributed-system trade-offs."
+description: "When bots flood checkout APIs, real shoppers can face slow pages and failed orders. Learn how rate limiting reduces overload, then try the rules yourself."
 slug: "rate-limiting-shopping-apis"
 date: "2026-10-26"
-updated: "2026-10-26"
+updated: "2026-10-27"
 tags: ["Java", "Microservices", "System design", "E-commerce"]
 cover: "/blog/rate-limiting/cover.svg"
 coverAlt: "Eight shopping requests reach a gateway: five are accepted and three are rate limited."
@@ -18,15 +18,33 @@ videoCaption: "14-second supplied animation · Silent (no audio track)"
 
 > **Sample technical article.** This is an educational scenario, not an employer incident, personal project result, or performance benchmark. Read the core idea in a few minutes, then explore the lab and implementation notes.
 
-## Eight shoppers, five places
+## The real-world problem: bot traffic disrupts checkout
 
-Eight checkout requests arrive together. How can an API protect its limited capacity without making every caller wait for an overloaded service?
+Imagine an online store during a sale. A bot repeatedly calls the checkout API while genuine customers try to place orders. An overly aggressive client retry loop can create similar traffic without malicious intent.
 
-A rate limiter is like a doorman with an admission rule. It decides whether a request may proceed **now**. It does not make checkout idempotent, reserve stock, or guarantee payment success.
+Every request may consume application threads, database connections, or downstream calls. If incoming work exceeds available capacity, requests queue up and time out; severe resource exhaustion can make the service unavailable. Customers see a spinning checkout, errors, or an uncertain order status. Some retry, adding even more work.
 
-In this example, one caller sends eight requests. The allowance is five. Five proceed and three receive **429 Too Many Requests**. We use 200 to visualize accepted requests; real accepted requests may return other success or error responses from the application.
+**The problem is shared capacity:** one noisy caller can consume resources that other customers also need. Adding servers alone does not establish fair access or remove downstream bottlenecks.
 
-[Jump to the interactive lab](#interactive-lab) to compare the same requests under two rules.
+## How we reduce the overload
+
+Place an admission check at the gateway or API boundary, before expensive checkout processing. Set an appropriate allowance per trusted caller and operation. Requests within that allowance proceed; excess requests receive **429 Too Many Requests**, with retry guidance where available.
+
+| Without an admission limit | With an appropriately chosen limit |
+| --- | --- |
+| A noisy caller can repeatedly reach expensive checkout work | Excess requests from that caller are rejected earlier |
+| Genuine customers compete with avoidable work | Less avoidable work reaches shared dependencies |
+| Clients may retry immediately after errors | Cooperative clients can respect Retry-After and back off |
+
+This reduces one source of overload; it does not guarantee that every genuine customer gets through. A limiter counts requests, not intent: a bot can stay under its allowance, while a real user can exceed theirs. Distributed attacks need additional edge protection and bot controls. Service-wide capacity limits, bounded concurrency, timeouts, and monitoring address risks a per-caller limit cannot cover.
+
+## Try a small version of the problem
+
+The lab represents **one caller sending eight requests**, not eight separate shoppers. With an illustrative allowance of five, five requests proceed and three receive 429. Those three do not reach the simulated checkout service. Five per ten seconds is a teaching setting, not a recommended production threshold.
+
+A rate limiter is like a doorman with an admission rule. It decides whether a request may proceed **now**. It does not reserve stock, make payments safe to retry, or guarantee payment success. The lab labels admitted requests 200 for clarity; real admitted requests can still return application errors.
+
+[Try the interactive lab](#interactive-lab): send a burst, send another immediately, then advance time. Compare the fixed window's reset with the token bucket's gradual refill. The lab demonstrates admission rules, not measured server load or bot detection.
 
 ## Fixed windows and token buckets
 
@@ -128,9 +146,15 @@ An IP-only rule can penalize people sharing a NAT and can be evaded by distribut
 
 Track allowed and denied decisions, limiter latency, store failures, and fallback activation. Rate-limit rejection should be distinguishable from a payment decline or service error. Load tests must include concurrent instances and boundary bursts, not only a single sequential loop.
 
+## How to verify the fix helps real customers
+
+Test normal customer traffic alongside an excessive caller in a controlled environment. Compare checkout latency and timeouts, dependency utilization, and rejections by policy. Check that one caller exhausting an allowance does not consume another caller's separate allowance. Also test multiple application instances, bursts at window boundaries, and limiter-store failures.
+
+Choose limits from representative traffic and capacity measurements. Watch for false positives, such as legitimate customers behind a shared IP, and adjust the policy. The intended outcome is less avoidable load and a more dependable customer journey; this article does not claim measured improvements.
+
 ## Three takeaways
 
-1. A rate limiter controls admission; it does not make checkout successful or safe to retry.
+1. Excessive traffic can exhaust shared resources and disrupt genuine customers. Reject avoidable work before expensive processing.
 2. Fixed windows reset at boundaries. Token buckets refill continuously and retain only a bounded burst allowance.
 3. Shared state, atomic decisions, trusted identity, and an outage policy matter more than the counter alone.
 
@@ -140,3 +164,5 @@ Track allowed and denied decisions, limiter latency, store failures, and fallbac
 - [RFC 9110, section 10.2.3: Retry-After](https://www.rfc-editor.org/rfc/rfc9110.html#section-10.2.3)
 - [Redis: atomic execution of Lua scripts](https://redis.io/docs/latest/develop/programmability/eval-intro/)
 - [Spring Cloud Gateway: RequestRateLimiter filter](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-webflux/gatewayfilter-factories/requestratelimiter-factory.html)
+
+- [OWASP API Security: unrestricted resource consumption](https://api-security.owasp.org/editions/2023/en/0xa4-unrestricted-resource-consumption/)
