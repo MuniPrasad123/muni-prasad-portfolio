@@ -13,7 +13,6 @@ export function Hero() {
         <p className="studio-intro">{profile.summary}</p>
         <div className="studio-actions">
           <a href="#projects" className="studio-primary">Explore selected work ↗</a>
-          <a href={profile.resume} download>Download resume ↓</a>
           <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
         </div>
       </div>

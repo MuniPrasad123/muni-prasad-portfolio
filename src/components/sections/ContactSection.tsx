@@ -148,21 +148,6 @@ export function ContactSection() {
               <ArrowUpRight />
             </div>
           </a>
-
-          {/* Action 4 */}
-          <a
-            href={profile.resume}
-            download
-            className="glass-panel border border-white/5 bg-white/[0.01] hover:bg-[#1da1f2]/5 hover:border-[#1da1f2]/30 p-6 rounded-2xl flex items-center justify-between group transition-all duration-300 cursor-pointer"
-          >
-            <div>
-              <h3 className="text-white font-bold text-base mb-1">Resume Download</h3>
-              <p className="text-xs text-slate-400 font-normal">Download updated PDF resume</p>
-            </div>
-            <div className="text-slate-400 group-hover:text-white transition-colors">
-              <ArrowUpRight />
-            </div>
-          </a>
         </motion.div>
 
       </div>

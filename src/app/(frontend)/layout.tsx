@@ -1,4 +1,5 @@
 import './globals.css'
+import { Analytics } from '@vercel/analytics/next'
 import './portfolio.css'
 import './hero-refinement.css'
 import './blog.css'
@@ -31,7 +32,7 @@ export default function FrontendLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={plusJakartaSans.className}><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person).replace(/</g, '\\u003c') }} /><SiteShell articles={articleSummaries()}>{children}</SiteShell><StudioControls /></body>
+      <body className={plusJakartaSans.className}><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person).replace(/</g, '\\u003c') }} /><SiteShell articles={articleSummaries()}>{children}</SiteShell><StudioControls />{process.env.VERCEL_ENV === 'production' && <Analytics />}</body>
     </html>
   )
 }
