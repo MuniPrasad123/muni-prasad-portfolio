@@ -1,0 +1,86 @@
+WEBVTT
+
+1
+00:00:00.220 --> 00:00:03.570
+Checkout succeeded. The order is in Postgres. But
+
+2
+00:00:03.570 --> 00:00:07.339
+Kafka never received its event. How can that happen?
+
+3
+00:00:08.259 --> 00:00:11.385
+Saving an order and publishing to Kafka are
+
+4
+00:00:11.385 --> 00:00:15.292
+separate operations. A crash between them can lose the notification.
+
+5
+00:00:16.212 --> 00:00:19.452
+Use the transactional outbox. Insert the order and
+
+6
+00:00:19.452 --> 00:00:22.693
+its event in one database transaction. Both commit.
+
+7
+00:00:22.693 --> 00:00:24.313
+or both roll back.
+
+8
+00:00:25.233 --> 00:00:28.146
+Debezium reads the committed outbox insert from the
+
+9
+00:00:28.146 --> 00:00:31.059
+database change log and publishes it to Kafka.
+
+10
+00:00:31.059 --> 00:00:32.516
+keyed by order ID.
+
+11
+00:00:33.436 --> 00:00:37.712
+Three independent consumer groups react: order management. customer
+
+12
+00:00:37.712 --> 00:00:42.523
+notifications. and business analytics. A broker outage delays delivery.
+
+13
+00:00:43.443 --> 00:00:46.812
+Retries may deliver the event again. Consumers deduplicate
+
+14
+00:00:46.812 --> 00:00:50.182
+using the event ID. and commit business updates
+
+15
+00:00:50.182 --> 00:00:51.867
+with the deduplication record.
+
+16
+00:00:52.787 --> 00:00:56.869
+External email is another boundary. Use provider idempotency
+
+17
+00:00:56.869 --> 00:01:00.952
+when available. plus retries and reconciliation. Never promise
+
+18
+00:01:00.952 --> 00:01:02.483
+universal exactly once.
+
+19
+00:01:03.403 --> 00:01:07.158
+Monitor connector lag. protect customer data. test outages.
+
+20
+00:01:07.158 --> 00:01:10.912
+and alert on failures. Reliable commerce is designed
+
+21
+00:01:10.912 --> 00:01:13.259
+for crashes. not perfect networks.
+

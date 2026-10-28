@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:blog": "node --test tests/blog.test.ts",
+    "test:blog": "node --test tests/blog.test.ts tests/outbox.test.ts",
     "typecheck": "tsc --noEmit",
     "blog:prepare": "node scripts/prepare-article.ts",
     "video:studio": "remotion studio video/index.tsx",

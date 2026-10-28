@@ -8,7 +8,7 @@ import hljs from 'highlight.js/lib/common'
 export type ArticleMeta = {
   title: string; description: string; slug: string; date: string; updated?: string
   tags: string[]; cover: string; coverAlt: string; draft: boolean; sample: boolean
-  level: string; readingMinutes: number; simulation?: 'rate-limiting'; video?: string; videoPoster?: string; videoCaption?: string
+  level: string; readingMinutes: number; simulation?: 'rate-limiting' | 'outbox'; videoCaptions?: string; video?: string; videoPoster?: string; videoCaption?: string
 }
 export type Article = ArticleMeta & { body: string }
 export const siteOrigin = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.muniprasad.in').replace(/\/$/, '')
@@ -33,20 +33,21 @@ export function parseArticle(source: string, filename: string): Article {
   if (!/^\/blog\/[a-zA-Z0-9/_.-]+\.(svg|png|jpg|jpeg|webp)$/.test(cover) || cover.includes('..')) fail('local cover path')
   if (data.video && (!/^\/blog\/[a-zA-Z0-9/_.-]+\.mp4$/.test(data.video) || data.video.includes('..'))) fail('video path')
   if (data.videoPoster && (!/^\/blog\/[a-zA-Z0-9/_.-]+\.(svg|png|jpg|jpeg|webp)$/.test(data.videoPoster) || data.videoPoster.includes('..'))) fail('video poster path')
-  if (data.simulation && data.simulation !== 'rate-limiting') fail('simulation')
+  if (data.videoCaptions && (!/^\/blog\/[a-zA-Z0-9/_.-]+\.vtt$/.test(data.videoCaptions) || data.videoCaptions.includes('..'))) fail('captions path')
+  if (data.simulation && !['rate-limiting', 'outbox'].includes(data.simulation)) fail('simulation')
   const published = date('date'), updated = data.updated ? date('updated') : undefined
   if (updated && updated < published) fail('updated date before publication')
   return { title: text('title'), description: text('description'), slug, date: published, updated,
     tags: [...new Set<string>(data.tags.map((tag: string) => tag.trim()))], cover, coverAlt: text('coverAlt'),
     draft: data.draft, sample: data.sample === true, level: data.level || 'Practical guide',
     readingMinutes: Math.max(1, Math.ceil(content.split(/\s+/).length / 200)),
-    simulation: data.simulation, video: data.video, videoPoster: data.videoPoster, videoCaption: data.videoCaption, body: content }
+    simulation: data.simulation, videoCaptions: data.videoCaptions, video: data.video, videoPoster: data.videoPoster, videoCaption: data.videoCaption, body: content }
 }
 
 export function getArticles(includeDrafts = process.env.NODE_ENV === 'development'): Article[] {
   const articles = fs.readdirSync(contentDir).filter(file => file.endsWith('.md')).map(file => {
     const article = parseArticle(fs.readFileSync(path.join(contentDir, file), 'utf8'), file)
-    for (const asset of [article.cover, article.video, article.videoPoster].filter(Boolean) as string[]) {
+    for (const asset of [article.cover, article.video, article.videoPoster, article.videoCaptions].filter(Boolean) as string[]) {
       if (!fs.existsSync(path.join(process.cwd(), 'public', asset))) throw new Error(`${file}: missing asset ${asset}`)
     }
     return article
