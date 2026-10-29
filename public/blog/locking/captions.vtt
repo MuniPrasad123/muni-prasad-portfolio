@@ -1,0 +1,134 @@
+WEBVTT
+
+00:00:00.420 --> 00:00:02.039
+A flash sale has one iPhone
+
+00:00:02.039 --> 00:00:04.174
+left. Two shoppers tap Place Order
+
+00:00:04.174 --> 00:00:06.161
+on different checkout servers.
+
+00:00:06.161 --> 00:00:07.854
+Both see stock equal to one.
+
+00:00:07.854 --> 00:00:08.959
+Who gets the item?
+
+00:00:09.189 --> 00:00:10.924
+Without concurrency control,
+
+00:00:10.924 --> 00:00:12.927
+both requests pass the stock check.
+
+00:00:12.927 --> 00:00:14.462
+The database may show zero,
+
+00:00:14.462 --> 00:00:16.664
+but two reservations have already been
+
+00:00:16.664 --> 00:00:18.400
+promised. That is an oversell.
+
+00:00:18.630 --> 00:00:20.196
+With pessimistic locking,
+
+00:00:20.196 --> 00:00:22.512
+transaction A selects the inventory row
+
+00:00:22.512 --> 00:00:24.555
+for update. Transaction B waits for
+
+00:00:24.555 --> 00:00:26.530
+the lock. No external payment call
+
+00:00:26.530 --> 00:00:28.505
+belongs inside this transaction.
+
+00:00:28.735 --> 00:00:30.774
+A reserves the item and commits.
+
+00:00:30.774 --> 00:00:32.586
+B then reads the updated row,
+
+00:00:32.586 --> 00:00:34.021
+finds zero available,
+
+00:00:34.021 --> 00:00:35.380
+and returns sold out.
+
+00:00:35.380 --> 00:00:37.570
+The critical section stays short.
+
+00:00:37.800 --> 00:00:39.392
+With optimistic locking,
+
+00:00:39.392 --> 00:00:41.709
+both transactions read version five.
+
+00:00:41.709 --> 00:00:44.098
+A updates successfully to version six.
+
+00:00:44.098 --> 00:00:46.124
+B attempts to write version five,
+
+00:00:46.124 --> 00:00:47.789
+and its update is rejected.
+
+00:00:48.019 --> 00:00:50.771
+The losing optimistic transaction rolls back.
+
+00:00:50.771 --> 00:00:52.698
+A new transaction reloads stock.
+
+00:00:52.698 --> 00:00:53.936
+With zero remaining,
+
+00:00:53.936 --> 00:00:56.069
+the correct business outcome is sold
+
+00:00:56.069 --> 00:00:57.652
+out, not repeated retries.
+
+00:00:57.882 --> 00:00:59.488
+For a single stock counter,
+
+00:00:59.488 --> 00:01:01.095
+use one guarded SQL update:
+
+00:01:01.095 --> 00:01:03.260
+decrement only where available is at
+
+00:01:03.260 --> 00:01:05.076
+least the requested quantity.
+
+00:01:05.076 --> 00:01:08.149
+PostgreSQL rechecks the condition after competing
+
+00:01:08.149 --> 00:01:08.638
+writes.
+
+00:01:08.868 --> 00:01:10.521
+Choose based on contention.
+
+00:01:10.521 --> 00:01:12.862
+Keep idempotency, reservation expiry,
+
+00:01:12.862 --> 00:01:14.790
+consistent database ownership,
+
+00:01:14.790 --> 00:01:16.374
+and order reconciliation.
+
+00:01:16.374 --> 00:01:18.234
+Test concurrent transactions,
+
+00:01:18.234 --> 00:01:19.404
+monitor lock waits,
+
+00:01:19.404 --> 00:01:21.952
+and never confuse cached availability with
+
+00:01:21.952 --> 00:01:22.847
+a reservation.
+
