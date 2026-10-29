@@ -94,3 +94,9 @@ Video: 1080×1920, 30 fps, 45 seconds. Carousel: 1080×1350; render each `slide-
 ## Release checks
 
 A local production build and route checks are required before merging. Run `npm audit` too: the existing dependency tree currently reports advisories in Next.js/Payload and in development tooling. These are documented in `BLOG_REVIEW.md`; a successful build does not resolve those security advisories. Do not treat this content change as a dependency-security sign-off.
+
+Unfinished topic notes belong in `content/ideas/`, not `content/lessons/`. Only complete articles or reviewable episode drafts should enter the blog inventory.
+
+## Title convention for every new article
+
+Lead with the technical concept readers will learn, then its practical context or problem. Use clear titles such as "Rate Limiting in Shopping APIs", "Transactional Outbox in Spring Boot and Kafka: Reliable Order Events", and "Payment Idempotency in Spring Boot: Handling Timeouts and Retries". Keep cover headings aligned with that concept. Use incident-style questions as opening hooks inside the article, not as the only title. Apply this convention to all future episodes and imported publishing packages.

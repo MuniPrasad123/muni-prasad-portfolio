@@ -1,5 +1,5 @@
 ---
-title: "The Order Was Saved. Why Did Kafka Never Hear About It?"
+title: "Transactional Outbox in Spring Boot and Kafka: Reliable Order Events"
 description: "Checkout succeeds, but fulfilment and confirmation never start. Explore the dual-write gap, then recover delivery with a transactional outbox and idempotent consumers."
 slug: "transactional-outbox-kafka-spring-boot"
 date: "2026-10-27"

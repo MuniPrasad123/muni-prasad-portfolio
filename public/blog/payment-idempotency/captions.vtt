@@ -1,0 +1,65 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:03.254
+A checkout spinner freezes. The shopper taps Pay again.
+
+2
+00:00:03.254 --> 00:00:06.507
+But did the first payment actually fail?
+
+3
+00:00:07.357 --> 00:00:10.687
+The payment gateway authorized the first request. Then the
+
+4
+00:00:10.687 --> 00:00:14.016
+response vanished between the gateway and checkout.
+
+5
+00:00:14.866 --> 00:00:18.110
+An HTTP timeout tells us the answer was lost.
+
+6
+00:00:18.110 --> 00:00:21.353
+It does not tell us whether the authorization happened.
+
+7
+00:00:22.203 --> 00:00:25.430
+If your backend creates a new gateway operation for
+
+8
+00:00:25.430 --> 00:00:28.658
+every retry, one order can receive two authorizations.
+
+9
+00:00:29.508 --> 00:00:32.673
+Generate one idempotency key for a logical payment attempt,
+
+10
+00:00:32.673 --> 00:00:35.838
+and reuse that exact key on retries.
+
+11
+00:00:36.688 --> 00:00:40.720
+A PostgreSQL unique constraint coordinates all Spring Boot replicas.
+
+12
+00:00:40.720 --> 00:00:44.751
+Duplicates return the stored result, or pending.
+
+13
+00:00:45.601 --> 00:00:49.172
+Keep a stable provider key. When the response is
+
+14
+00:00:49.172 --> 00:00:52.744
+ambiguous, query the gateway and reconcile before replaying.
+
+15
+00:00:53.594 --> 00:00:58.647
+Use four safeguards: stable request identity, database uniqueness, provider
+
+16
+00:00:58.647 --> 00:01:03.700
+idempotency, and durable reconciliation. Never blindly charge again.
