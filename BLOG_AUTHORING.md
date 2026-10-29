@@ -100,3 +100,7 @@ Unfinished topic notes belong in `content/ideas/`, not `content/lessons/`. Only 
 ## Title convention for every new article
 
 Lead with the technical concept readers will learn, then its practical context or problem. Use clear titles such as "Rate Limiting in Shopping APIs", "Transactional Outbox in Spring Boot and Kafka: Reliable Order Events", and "Payment Idempotency in Spring Boot: Handling Timeouts and Retries". Keep cover headings aligned with that concept. Use incident-style questions as opening hooks inside the article, not as the only title. Apply this convention to all future episodes and imported publishing packages.
+
+## Publishing preference
+
+When a requested blog is complete and its relevant checks pass, publish it: set `draft: false`, commit, and push to the existing deployment branch. The owner has authorized this workflow. An explicit request to keep work local, uncommitted, or in draft overrides this default.

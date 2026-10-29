@@ -7,7 +7,7 @@ description: "The gateway authorizes a payment but checkout never receives the r
 tags: ["Java 21", "Spring Boot", "PostgreSQL", "Payments", "Distributed systems", "E-commerce"]
 cover: "/blog/payment-idempotency/cover.svg"
 coverAlt: "One stable payment key connects a PostgreSQL claim to gateway authorization and reconciliation."
-draft: true
+draft: false
 sample: false
 level: "Architecture in Motion · Episode 003"
 simulation: "payment-idempotency"
