@@ -1,0 +1,122 @@
+WEBVTT
+
+00:00:00.350 --> 00:00:02.072
+Imagine checkout is healthy,
+
+00:00:02.072 --> 00:00:04.841
+but the shipping carrier suddenly takes eight
+
+00:00:04.841 --> 00:00:07.548
+seconds to respond. Customers keep arriving.
+
+00:00:07.548 --> 00:00:10.009
+Threads pile up. Soon the whole checkout
+
+00:00:10.009 --> 00:00:10.809
+feels broken.
+
+00:00:11.009 --> 00:00:13.253
+At eighty shipping requests per second,
+
+00:00:13.253 --> 00:00:14.980
+with eight seconds of waiting,
+
+00:00:14.980 --> 00:00:17.340
+roughly six hundred forty requests can be
+
+00:00:17.340 --> 00:00:19.930
+outstanding. That is a capacity illustration,
+
+00:00:19.930 --> 00:00:21.369
+not a measured benchmark.
+
+00:00:21.569 --> 00:00:23.374
+First, bound network waiting.
+
+00:00:23.374 --> 00:00:25.989
+Set explicit connection and read timeouts,
+
+00:00:25.989 --> 00:00:28.541
+and enforce an overall checkout deadline.
+
+00:00:28.541 --> 00:00:30.595
+A timeout does not limit how many
+
+00:00:30.595 --> 00:00:31.840
+calls start at once.
+
+00:00:32.040 --> 00:00:34.425
+Next, isolate the shipping dependency.
+
+00:00:34.425 --> 00:00:37.061
+A semaphore bulkhead admits at most twenty
+
+00:00:37.061 --> 00:00:39.697
+concurrent calls per application instance.
+
+00:00:39.697 --> 00:00:41.329
+Excess requests fail fast,
+
+00:00:41.329 --> 00:00:43.338
+protecting the rest of checkout.
+
+00:00:43.538 --> 00:00:45.647
+A circuit breaker measures failures.
+
+00:00:45.647 --> 00:00:48.049
+When its configured threshold is reached,
+
+00:00:48.049 --> 00:00:50.510
+it opens and stops repeated carrier calls.
+
+00:00:50.510 --> 00:00:52.971
+Remember: a breaker alone does not enforce
+
+00:00:52.971 --> 00:00:54.787
+a timeout or concurrency limit.
+
+00:00:54.987 --> 00:00:57.103
+After a wait, the breaker allows a
+
+00:00:57.103 --> 00:00:59.468
+few probe requests in half open state.
+
+00:00:59.468 --> 00:01:00.961
+If the carrier recovers,
+
+00:01:00.961 --> 00:01:03.388
+normal traffic resumes. If probes fail,
+
+00:01:03.388 --> 00:01:04.881
+the breaker opens again.
+
+00:01:05.081 --> 00:01:07.111
+For checkout, the fallback is not a
+
+00:01:07.111 --> 00:01:08.329
+made up shipping fee.
+
+00:01:08.329 --> 00:01:11.402
+Keep the cart, show shipping temporarily unavailable,
+
+00:01:11.402 --> 00:01:13.490
+and do not collect payment until the
+
+00:01:13.490 --> 00:01:14.882
+final total is verified.
+
+00:01:15.082 --> 00:01:18.204
+Timeouts bound waiting. Bulkheads bound concurrency.
+
+00:01:18.204 --> 00:01:20.607
+Circuit breakers bound repeated failure.
+
+00:01:20.607 --> 00:01:23.369
+Together they stop one unhealthy provider from
+
+00:01:23.369 --> 00:01:25.771
+taking down a healthy commerce platform.
+
+00:01:25.771 --> 00:01:27.813
+Test the behavior under real load.
+

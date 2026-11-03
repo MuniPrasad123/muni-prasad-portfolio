@@ -226,39 +226,3 @@ The simulation uses an illustrative gateway that honors idempotency keys and kee
 
 *Editorial note: Architecture, incident, amounts, timings, and simulator counters are illustrative, not measured production metrics.*
 
-## Video transcript
-
-
-
-A checkout spinner freezes. The shopper taps Pay again.
-
-But did the first payment actually fail?
-
-The payment gateway authorized the first request. Then the
-
-response vanished between the gateway and checkout.
-
-An HTTP timeout tells us the answer was lost.
-
-It does not tell us whether the authorization happened.
-
-If your backend creates a new gateway operation for
-
-every retry, one order can receive two authorizations.
-
-Generate one idempotency key for a logical payment attempt,
-
-and reuse that exact key on retries.
-
-A PostgreSQL unique constraint coordinates all Spring Boot replicas.
-
-Duplicates return the stored result, or pending.
-
-Keep a stable provider key. When the response is
-
-ambiguous, query the gateway and reconcile before replaying.
-
-Use four safeguards: stable request identity, database uniqueness, provider
-
-idempotency, and durable reconciliation. Never blindly charge again.
-

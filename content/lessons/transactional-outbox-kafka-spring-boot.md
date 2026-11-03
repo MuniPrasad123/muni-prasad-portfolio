@@ -223,11 +223,6 @@ In the interactive lab above, run the five scenarios: **Naive dual-write crash**
 
 *The scenario, order IDs, event IDs, and simulation outcomes are illustrative. No production incident or benchmark is claimed.*
 
-## Video transcript
-
-
-**Voice:** English, synthetic narration (eSpeak). **Duration:** 74.0 seconds.
-
 ## 1. THE MISSING EVENT (0.0s)
 
 Checkout succeeded. The order is in Postgres. But Kafka never received its event. How can that happen?

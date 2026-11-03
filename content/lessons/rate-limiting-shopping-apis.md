@@ -9,7 +9,7 @@ cover: "/blog/rate-limiting/cover.svg"
 coverAlt: "Eight shopping requests reach a gateway: five are accepted and three are rate limited."
 draft: false
 sample: true
-level: "Foundations to production trade-offs"
+level: "Architecture in Motion · Episode 001"
 simulation: "rate-limiting"
 video: "/blog/rate-limiting/reference-animation.mp4"
 videoPoster: "/blog/rate-limiting/video-poster.jpg"

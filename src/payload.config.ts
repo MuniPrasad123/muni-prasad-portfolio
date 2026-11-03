@@ -1,3 +1,4 @@
+import { BlogFeedback } from './collections/BlogFeedback'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
@@ -21,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Projects, Experiences, Certifications],
+  collections: [Users, Media, Projects, Experiences, Certifications, BlogFeedback],
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || 'a_default_secret_key_for_dev_mode_12345',
   db: postgresAdapter({

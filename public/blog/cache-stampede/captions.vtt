@@ -1,0 +1,109 @@
+WEBVTT
+
+1
+00:00:00.160 --> 00:00:03.302
+One thousand shoppers open the same product page.
+
+2
+00:00:03.302 --> 00:00:06.838
+Redis is fast, until its hottest cache key expires.
+
+3
+00:00:06.838 --> 00:00:09.194
+Suddenly, every request wants the database.
+
+4
+00:00:09.714 --> 00:00:14.197
+At noon, the product cache misses across multiple
+Spring Boot replicas.
+
+5
+00:00:14.197 --> 00:00:17.864
+Without coordination, each request starts the same
+PostgreSQL query.
+
+6
+00:00:17.864 --> 00:00:19.902
+This is a cache stampede.
+
+7
+00:00:20.422 --> 00:00:27.822
+At one thousand requests per second and three hundred
+milliseconds per query, roughly three hundred
+overlapping reads can build up.
+
+8
+00:00:27.822 --> 00:00:30.412
+That's a conceptual estimate, not a benchmark.
+
+9
+00:00:30.932 --> 00:00:33.970
+First, merge duplicate loads inside each application
+instance.
+
+10
+00:00:33.970 --> 00:00:40.047
+This reduces pressure, but twelve replicas can still
+start twelve database reads for the same key.
+
+11
+00:00:40.567 --> 00:00:42.208
+Next, coordinate across replicas.
+
+12
+00:00:42.208 --> 00:00:45.080
+A short Redis lease chooses one leader.
+
+13
+00:00:45.080 --> 00:00:49.593
+That leader double-checks the cache, queries
+PostgreSQL, and publishes the result.
+
+14
+00:00:49.593 --> 00:00:51.645
+Followers re-read with a deadline.
+
+15
+00:00:52.165 --> 00:00:53.826
+Never blindly delete a lock.
+
+16
+00:00:53.826 --> 00:00:56.817
+If a lease expires, another leader may own it.
+
+17
+00:00:56.817 --> 00:01:00.140
+Release only when the stored random token matches your
+token.
+
+18
+00:01:00.140 --> 00:01:02.134
+A lease is not exactly-once execution.
+
+19
+00:01:02.654 --> 00:01:05.303
+For descriptions, stale-while-revalidate may be
+acceptable.
+
+20
+00:01:05.303 --> 00:01:08.834
+Add TTL jitter to spread expiration across keys.
+
+21
+00:01:08.834 --> 00:01:13.690
+But payment totals and inventory must be validated
+against authoritative data.
+
+22
+00:01:14.210 --> 00:01:17.148
+The lesson: don't just add a cache.
+
+23
+00:01:17.148 --> 00:01:19.666
+Design what happens when it misses.
+
+24
+00:01:19.666 --> 00:01:24.702
+Coordinate expensive refreshes, bound waiting, monitor
+contention, and keep checkout correctness separate.
+

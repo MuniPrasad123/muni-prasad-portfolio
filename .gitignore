@@ -43,3 +43,6 @@ next-env.d.ts
 # payload
 payload.db
 /media
+
+# Local visitor feedback; never publish visitor data
+.local-data/

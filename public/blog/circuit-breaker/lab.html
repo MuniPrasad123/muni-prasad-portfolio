@@ -1,0 +1,133 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Episode 005 interactive lab</title><style>
+:root{color-scheme:dark;--bg:#081321;--panel:#10243a;--border:#28445f;--ink:#edf6ff;--muted:#a2b7cb;--cyan:#58d9ff;--mint:#69f4bd;--amber:#ffc978;--red:#ff8196}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#123653 0,transparent 43%),var(--bg);color:var(--ink);font:16px/1.7 Inter,system-ui,-apple-system,Segoe UI,sans-serif}a{color:var(--cyan)}.wrap{max-width:1100px;margin:auto;padding:0 20px}.topbar{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--border);gap:16px}.brand{font-size:14px;font-weight:800;letter-spacing:.1em;color:var(--mint)}.tag{font-size:12px;color:var(--muted)}.hero{padding:42px 0 22px}.eyebrow{color:var(--mint);font-size:13px;font-weight:800;letter-spacing:.15em}.hero h1{font-size:clamp(2rem,5vw,3.65rem);line-height:1.13;letter-spacing:-.04em;max-width:850px;margin:15px 0}.lead{color:var(--muted);font-size:19px;max-width:800px}.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,360px);gap:26px;align-items:start;margin:24px 0}.video-panel,.panel,.article,.lab{background:linear-gradient(150deg,#122a42,#0d1d30);border:1px solid var(--border);border-radius:22px;box-shadow:0 20px 65px #0004}.video-panel{padding:18px;max-width:370px;margin:auto}.video-panel video{width:100%;max-height:560px;aspect-ratio:9/16;object-fit:contain;background:#030b14;border-radius:15px;display:block}.video-panel p{margin:10px 0 0;color:var(--muted);font-size:12px}.summary{padding:26px}.summary h2{font-size:23px;margin:0 0 12px}.summary p{color:var(--muted)}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid #3d6178;border-radius:999px;padding:4px 10px;font-size:12px;color:#c5d7e8}.architecture{width:100%;height:auto;background:#0b2034;border:1px solid var(--border);border-radius:20px;margin:22px 0}.svgt{font-size:19px;font-weight:750;fill:#f1f7ff}.svgs{font-size:15px;fill:#b3c7d9}.lab{padding:26px;margin:30px 0}.lab h2{margin:0}.muted{color:var(--muted)}.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0}.control{background:#0a1b2d;border:1px solid var(--border);padding:14px;border-radius:13px}.control label{display:block;color:var(--muted);font-size:13px;margin-bottom:8px}select,input[type=range]{width:100%}select{border:1px solid #42617a;border-radius:9px;padding:9px;color:var(--ink);background:#162f47}input[type=range]{accent-color:var(--mint)}.buttons{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}button{cursor:pointer;background:var(--mint);color:#061826;font-weight:800;border:0;padding:11px 17px;border-radius:11px}button.secondary{background:#1c3951;color:var(--ink);border:1px solid #3b637b}button:focus-visible,select:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.metric{border:1px solid var(--border);background:#0b1b2b;padding:14px;border-radius:12px}.metric span{font-size:12px;color:var(--muted);display:block}.metric strong{font-size:24px;display:block}.red{color:var(--red)}.mint{color:var(--mint)}.amber{color:var(--amber)}.chart{width:100%;height:210px;background:#091a2b;border:1px solid var(--border);border-radius:14px;margin-top:18px}.legend{font-size:12px;color:var(--muted)}.log{font:12px/1.8 ui-monospace,monospace;color:#b6d2e6;background:#081625;border-radius:12px;padding:14px;min-height:110px;white-space:pre-wrap}.article{padding:clamp(20px,4vw,48px);margin:34px 0 70px}.article h1{display:none}.article h2{font-size:clamp(23px,3vw,30px);margin:45px 0 12px}.article h3{font-size:20px;margin:30px 0 12px}.article p,.article li{color:#d3e1ed}.article blockquote{border-left:4px solid var(--mint);padding:4px 20px;margin-left:0;background:#132c3d}.article pre{overflow:auto;background:#061523;padding:20px;border-radius:12px;border:1px solid #28445f;font-size:13px;line-height:1.55}.article code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.article p code,.article li code{background:#193249;padding:2px 5px;border-radius:4px}.article table{display:block;overflow-x:auto;border-collapse:collapse;width:100%;font-size:14px}.article td,.article th{border:1px solid #31516a;padding:12px;min-width:130px}.article th{background:#16364c}.article hr{border:0;border-top:1px solid var(--border)}.article a{overflow-wrap:anywhere}.foot{border-top:1px solid var(--border);padding:20px 0 35px;color:var(--muted);font-size:12px}.status{font-weight:800;color:var(--mint)}@media(max-width:760px){.hero-grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.topbar{align-items:start;flex-direction:column}.summary{padding:20px}.lab{padding:16px}.video-panel{width:100%}}
+
+:root{--bg:#08251a;--panel:#102f20;--panel2:#173e2b;--ink:#f5f1e7;--muted:#bacdbf;--cyan:#e7c779;--amber:#e7c779;--line:#45664f}body{background:#08251a;margin:0;padding:12px}.lab{margin:0}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #e7c779;outline-offset:3px}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}</style></head><body><section class="lab" id="simulation"><div class="eyebrow">INTERACTIVE CONCEPTUAL LAB</div><h2>Make the carrier fail. Protect checkout.</h2><p class="muted">Each step simulates one second. The model deliberately simplifies network, scheduler and breaker behavior; results are <b>not a real benchmark</b>.</p>
+<div class="controls"><div class="control"><label for="mode">Protection strategy</label><select id="mode"><option value="naive">No protection</option><option value="timeout">HTTP timeout only</option><option value="bulkhead">Timeout + bulkhead</option><option value="full" selected>Timeout + bulkhead + circuit breaker</option></select></div><div class="control"><label for="rate">Incoming rate: <strong id="rateValue">20 req/s</strong></label><input id="rate" type="range" min="5" max="60" step="5" value="20"/></div><div class="control"><label for="healthy">Provider health</label><label style="font-size:16px;color:#e6f3ff"><input id="healthy" type="checkbox"/> Carrier has recovered</label><div class="tag" id="carrier">DEGRADED · 8s</div></div></div>
+<div class="buttons"><button id="advance">Advance +1s</button><button id="burst" class="secondary">Run 8s outage</button><button id="play" class="secondary">▶ Auto-play</button><button id="reset" class="secondary">Reset</button></div>
+<div class="metrics"><div class="metric"><span>Virtual time</span><strong id="t">0s</strong></div><div class="metric"><span>Active provider calls</span><strong id="active">0</strong></div><div class="metric"><span>Calls started</span><strong id="started">0</strong></div><div class="metric"><span>Fast rejections</span><strong class="amber" id="blocked">0</strong></div><div class="metric"><span>Completed timeouts</span><strong class="red" id="timeouts">0</strong></div><div class="metric"><span>Breaker state</span><strong id="breaker" class="status mint" style="font-size:17px">CLOSED</strong></div><div class="metric" style="grid-column:span 2"><span>Rejection breakdown</span><strong id="rejections" style="font-size:15px">Bulkhead 0 · Circuit 0 · Worker 0</strong></div></div>
+<svg id="chart" class="chart" viewBox="0 0 760 190" role="img" aria-label="Active provider calls by virtual time"></svg><div class="legend">Mint line = active provider calls. Unprotected worker capacity = 60; bulkhead cap = 12. Circuit threshold = 10 observations, 50% failure; open wait = 5 seconds (simulation values differ from example production configuration).</div><h3>Event log</h3><div id="log" class="log" aria-live="polite"></div></section><script>/* Deterministic conceptual concurrency model. Not a benchmark or real Resilience4j implementation. */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ArchitectureLab = api;
+})(typeof window !== 'undefined' ? window : globalThis, function () {
+  const MODES = ['naive', 'timeout', 'bulkhead', 'full'];
+  function makeState(mode = 'full', rate = 20, healthy = false) {
+    if (!MODES.includes(mode)) throw new Error('invalid mode');
+    return {
+      mode, rate: Number(rate), healthy: !!healthy, t: 0,
+      active: [], breaker: 'CLOSED', openUntil: 0, halfStarted: 0,
+      window: [], log: [], history: [],
+      stats: {arrived: 0, started: 0, success: 0, timedOut: 0,
+        bulkheadRejected: 0, breakerRejected: 0, workerRejected: 0}
+    };
+  }
+  function record(s, msg) {
+    s.log.unshift('t=' + s.t + 's · ' + msg);
+    if (s.log.length > 8) s.log.pop();
+  }
+  function breakerRecord(s, failed) {
+    if (s.mode !== 'full') return;
+    if (s.breaker === 'HALF_OPEN') {
+      if (failed) {
+        s.breaker = 'OPEN'; s.openUntil = s.t + 5;
+        record(s, 'Probe failed; circuit reopened');
+      } else if (s.halfStarted >= 2 && !s.active.some(c => c.probe)) {
+        s.breaker = 'CLOSED'; s.window = [];
+        record(s, 'Probes succeeded; circuit closed');
+      }
+      return;
+    }
+    if (s.breaker !== 'CLOSED') return;
+    s.window.push(failed);
+    if (s.window.length > 20) s.window.shift();
+    if (s.window.length >= 10 && s.window.filter(Boolean).length / s.window.length >= 0.5) {
+      s.breaker = 'OPEN'; s.openUntil = s.t + 5;
+      record(s, 'Failure threshold reached; circuit opened');
+    }
+  }
+  function step(s) {
+    s.t += 1;
+    const done = s.active.filter(c => c.end <= s.t);
+    s.active = s.active.filter(c => c.end > s.t);
+    for (const c of done) {
+      if (c.failure) s.stats.timedOut += 1;
+      else s.stats.success += 1;
+      breakerRecord(s, c.failure);
+    }
+    if (s.mode === 'full' && s.breaker === 'OPEN' && s.t >= s.openUntil) {
+      s.breaker = 'HALF_OPEN'; s.halfStarted = 0;
+      record(s, 'Half-open: allowing two recovery probes');
+    }
+    let admitted = 0, rejected = 0;
+    for (let i = 0; i < s.rate; i++) {
+      s.stats.arrived += 1;
+      if (s.mode === 'full' && (s.breaker === 'OPEN' || (s.breaker === 'HALF_OPEN' && s.halfStarted >= 2))) {
+        s.stats.breakerRejected += 1; rejected++; continue;
+      }
+      if ((s.mode === 'bulkhead' || s.mode === 'full') && s.active.length >= 12) {
+        s.stats.bulkheadRejected += 1; rejected++; continue;
+      }
+      if (s.active.length >= 60) {
+        s.stats.workerRejected += 1; rejected++; continue;
+      }
+      const probe = s.mode === 'full' && s.breaker === 'HALF_OPEN';
+      if (probe) s.halfStarted++;
+      const duration = s.healthy ? 1 : (s.mode === 'naive' ? 8 : 1);
+      s.active.push({end: s.t + duration, failure: !s.healthy, probe});
+      s.stats.started++; admitted++;
+    }
+    s.history.push({t:s.t, active:s.active.length, admitted, rejected,
+      breaker:s.breaker, healthy:s.healthy});
+    if (s.history.length > 30) s.history.shift();
+    if (admitted || rejected) record(s, admitted + ' started; ' + rejected + ' rejected');
+    return s;
+  }
+  function setHealthy(s, healthy) {
+    s.healthy = !!healthy;
+    record(s, s.healthy ? 'Carrier recovered (120 ms conceptual)' : 'Carrier degraded (8 s conceptual)');
+    return s;
+  }
+  return {MODES, makeState, step, setHealthy};
+});
+</script>
+<script>
+(function(){
+ const {makeState,step,setHealthy}=window.ArchitectureLab;
+ const $=id=>document.getElementById(id);
+ let state=makeState('full',20,false),playing=null;
+ const names={naive:'No protection',timeout:'HTTP timeout only',bulkhead:'Timeout + bulkhead',full:'Timeout + bulkhead + breaker'};
+ function render(){
+  $('t').textContent=state.t+'s';$('breaker').textContent=state.mode==='full'?state.breaker:'NOT ENABLED';
+  $('breaker').className='status '+(state.breaker==='OPEN'?'red':state.breaker==='HALF_OPEN'?'amber':'mint');
+  $('active').textContent=state.active.length;$('started').textContent=state.stats.started;
+  $('blocked').textContent=state.stats.breakerRejected+state.stats.bulkheadRejected+state.stats.workerRejected;
+  $('timeouts').textContent=state.stats.timedOut;
+  $('rejections').textContent=`Bulkhead ${state.stats.bulkheadRejected} · Circuit ${state.stats.breakerRejected} · Worker ${state.stats.workerRejected}`;
+  $('carrier').textContent=state.healthy?'RECOVERED · 120ms':'DEGRADED · 8s';
+  $('log').textContent=state.log.join('\n')||'Press Advance +1s to send the first burst.';
+  const data=state.history,svg=$('chart');
+  const W=760,H=190,pad=28,max=Math.max(12,...data.map(d=>d.active),state.mode==='naive'?60:12);
+  let out=`<rect x="0" y="0" width="760" height="190" fill="#091a2b"/>`;
+  for(let k=0;k<=4;k++){let y=H-pad-(H-2*pad)*k/4;out+=`<line x1="${pad}" y1="${y}" x2="${W-pad}" y2="${y}" stroke="#294357" stroke-width="1"/><text x="4" y="${y+4}" font-size="12" fill="#9bb0c5">${Math.round(max*k/4)}</text>`}
+  if(data.length){
+   const points=data.map((d,i)=>`${pad+(W-2*pad)*i/Math.max(1,data.length-1)},${H-pad-(H-2*pad)*d.active/max}`).join(' ');
+   out+=`<polyline points="${points}" fill="none" stroke="#69f4bd" stroke-width="4" stroke-linejoin="round"/>`;
+   data.forEach((d,i)=>{let x=pad+(W-2*pad)*i/Math.max(1,data.length-1),y=H-pad-(H-2*pad)*d.active/max;out+=`<circle cx="${x}" cy="${y}" r="3" fill="#eafaff"/>`});
+  }
+  svg.innerHTML=out;
+ }
+ function reset(){state=makeState($('mode').value,Number($('rate').value),$('healthy').checked);render()}
+ $('mode').addEventListener('change',reset);
+ $('rate').addEventListener('input',()=>{$('rateValue').textContent=$('rate').value+' req/s';reset()});
+ $('healthy').addEventListener('change',()=>{setHealthy(state,$('healthy').checked);render()});
+ $('advance').addEventListener('click',()=>{step(state);render()});
+ $('burst').addEventListener('click',()=>{for(let i=0;i<8;i++)step(state);render()});
+ $('reset').addEventListener('click',reset);
+ $('play').addEventListener('click',()=>{
+  if(playing){clearInterval(playing);playing=null;$('play').textContent='▶ Auto-play';return}
+  $('play').textContent='Ⅱ Pause';playing=setInterval(()=>{step(state);render();if(state.t>=30){clearInterval(playing);playing=null;$('play').textContent='▶ Auto-play'}},600)
+ });
+ render();
+})();
+</script></body></html>

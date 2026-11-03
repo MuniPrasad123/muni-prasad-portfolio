@@ -104,3 +104,9 @@ Lead with the technical concept readers will learn, then its practical context o
 ## Publishing preference
 
 When a requested blog is complete and its relevant checks pass, publish it: set `draft: false`, commit, and push to the existing deployment branch. The owner has authorized this workflow. An explicit request to keep work local, uncommitted, or in draft overrides this default.
+
+## Likes and moderated comments
+
+Each article has a feedback section backed by the existing Payload PostgreSQL service. Configure DATABASE_URL and PAYLOAD_SECRET before testing persistence. Review new comments under /admin → Blog Feedback and set approved to true to publish them. Public API responses expose only approved names/messages, dates and aggregate likes. Browser identifiers are HMAC-hashed before storage. Before production, create/review/apply a Payload database migration for the blog-feedback collection; no production migration is applied by these local edits. Likes are one per browser cookie, not verified unique people.
+
+For local development without DATABASE_URL, feedback uses `.local-data/blog-feedback.json` (ignored by Git). Set a local comment’s `approved` field to true to review its public appearance. Writes are serialized and replaced atomically in one dev-server process. Production never uses JSON fallback. Local feedback is not uploaded or merged into production.
