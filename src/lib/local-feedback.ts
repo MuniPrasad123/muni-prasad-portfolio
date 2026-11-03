@@ -4,7 +4,7 @@ import { createHash,randomUUID } from 'node:crypto'
 type Entry={id:string;slug:string;visitor:string;kind:'like'|'comment';name?:string;message?:string;approved:boolean;date:string}
 const directory=path.join(process.cwd(),'.local-data'),file=path.join(directory,'blog-feedback.json')
 let queue:Promise<unknown>=Promise.resolve()
-export const isLocalFeedbackEnabled=()=>process.env.NODE_ENV==='development'&&!process.env.VERCEL&&!process.env.DATABASE_URL
+export const isLocalFeedbackEnabled=()=>process.env.NODE_ENV==='development'&&!process.env.VERCEL&&!process.env.NEON_DATABASE_URL
 export function localFeedback(slug:string,id:string,action?:string,name?:string,message?:string){
  const run=queue.then(async()=>{
   await fs.mkdir(directory,{recursive:true});let rows:Entry[]=[]
