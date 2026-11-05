@@ -1,6 +1,6 @@
 import React from 'react'
 import { AbsoluteFill, Composition, Still, interpolate, registerRoot, useCurrentFrame, useVideoConfig } from 'remotion'
-import sample from '../content/lessons/rate-limiting-shopping-apis.media.json'
+import sample from '../content/lessons/episode-001/rate-limiting-shopping-apis.media.json'
 type Scene = { title: string; caption: string; accepted: number; rejected: number }
 type Props = { title: string; scenes: Scene[]; slide: number }
 const defaults: Props = { title: 'Rate Limiting in Shopping APIs', scenes: sample.scenes, slide: 0 }

@@ -1,0 +1,30 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:10.176
+Your shopper logs in. Their JWT is valid. But what if they change the order ID in the URL? One missing authorization check can expose another customer’s order.
+
+2
+00:00:10.676 --> 00:00:22.268
+Spring Security verifies the signature. issuer. expiration. and audience. Authentication succeeds. But authentication only tells us who is calling. It doesn’t prove they own this order.
+
+3
+00:00:22.768 --> 00:00:32.316
+The token includes orders read scope. That allows a category of operation. not access to every order in the database. A scope check alone cannot prevent BOLA.
+
+4
+00:00:32.816 --> 00:00:44.290
+Here’s the vulnerable query: select an order by its ID alone. Alice supplies Bob’s ID. and the database returns Bob’s private data. The API returns two hundred. That’s the bug.
+
+5
+00:00:44.790 --> 00:00:54.621
+Fix the query by combining the requested order ID with the authenticated token subject and trusted tenant. If the order doesn’t belong to the caller. no row matches.
+
+6
+00:00:55.121 --> 00:01:06.336
+Invalid or expired token? Return four oh one. Valid token without the required scope? Four oh three. Missing or unowned order? This API consistently returns four oh four.
+
+7
+00:01:06.836 --> 00:01:19.713
+For staff access. use explicit audited delegation. Never trust customer IDs from the browser. Test cross tenant requests. leaked UUIDs. and cache boundaries. Valid JWT does not mean authorized order.
+

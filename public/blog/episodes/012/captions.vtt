@@ -1,0 +1,28 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:07.787
+FLASH SALE: 1 sneaker left. Two shoppers click BUY.
+
+00:00:07.787 --> 00:00:15.574
+THE NAIVE LOCK: Pod A takes 10s lease. Redis SET NX PX.
+
+00:00:15.574 --> 00:00:23.362
+THE PAUSE: Pod A pauses 12s. Lease expires at 10s.
+
+00:00:23.362 --> 00:00:31.149
+RACE CONDITION: Pod B acquires lease. A resumes: stale owner.
+
+00:00:31.149 --> 00:00:38.936
+SAFE UNLOCK: Compare token + delete. Never unconditional DEL.
+
+00:00:38.936 --> 00:00:46.724
+SOURCE OF TRUTH: Atomic SQL stock update. available > 0.
+
+00:00:46.724 --> 00:00:54.511
+TRANSACTION: Reservation + outbox. Commit together.
+
+00:00:54.511 --> 00:01:02.298
+RETRY SAFELY: Idempotency key. No double reservation.
+
+00:01:02.298 --> 00:01:10.086
+ARCHITECT TAKEAWAY: Redis coordinates. Database enforces correctness.

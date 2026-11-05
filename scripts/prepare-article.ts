@@ -5,7 +5,8 @@ const slug=process.argv[2]
 if(!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug))throw Error('Usage: npm run blog:prepare -- article-slug')
 const post=getArticles(true).find(p=>p.slug===slug)
 if(!post)throw Error('Article not found')
-const mediaPath=path.join('content','lessons',slug+'.media.json')
+const sourceFile=fs.readdirSync(path.join('content','lessons'),{recursive:true}).map(String).find(file=>path.basename(file)===slug+'.md')
+const mediaPath=path.join('content','lessons',path.dirname(sourceFile || ''),slug+'.media.json')
 const media=fs.existsSync(mediaPath)?JSON.parse(fs.readFileSync(mediaPath,'utf8')):{scenes:[{title:post.title,caption:post.description,accepted:0,rejected:0}],socialHooks:[post.description]}
 if(!Array.isArray(media.scenes)||!media.scenes.length||media.scenes.some((s: Record<string,unknown>)=>typeof s.title!=='string'||typeof s.caption!=='string'||!Number.isInteger(s.accepted)||!Number.isInteger(s.rejected)||Number(s.accepted)<0||Number(s.rejected)<0||Number(s.accepted)+Number(s.rejected)>50))throw Error('Invalid media scenes')
 const out=path.join('out','publishing',slug);fs.mkdirSync(out,{recursive:true})

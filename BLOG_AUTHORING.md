@@ -112,3 +112,7 @@ Portfolio feedback uses only NEON_DATABASE_URL and PAYLOAD_SECRET. It never fall
 Moderate comments in Neon: SELECT id, slug, name, message FROM public.blog_feedback WHERE kind='comment' AND approved=false ORDER BY created_at; then approve a reviewed ID with UPDATE public.blog_feedback SET approved=true WHERE id=<reviewed_id> AND kind='comment';. The existing Payload admin does not moderate this separate store. Public API responses include only approved comments and aggregate likes. Browser identifiers are HMAC-hashed before storage.
 
 Local development without NEON_DATABASE_URL uses .local-data/blog-feedback.json (ignored by Git). Set a local comment’s approved field to true to preview it. Local writes are serialized within one dev-server process. Production never uses JSON fallback, and local visitor data is never uploaded. Likes are per browser cookie, not verified unique people.
+
+## Organized episode library
+
+Start at [blogs/README.md](blogs/README.md). Article Markdown is under content/lessons/episode-NNN/. New public media is under public/blog/episodes/NNN/. Source notes and social drafts belong in blogs/episodes/NNN/. Existing article URLs remain unchanged. The content loader discovers numbered episode folders recursively.

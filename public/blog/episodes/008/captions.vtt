@@ -1,0 +1,29 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:09.049
+A shopper pays three hundred ninety-nine dollars. The payment provider authorizes the charge, but inventory rejects the last item. What now?
+
+00:00:09.229 --> 00:00:19.007
+A Spring transaction cannot roll back an external payment. Each microservice commits independently. We need a business recovery workflow, called a Saga.
+
+00:00:19.187 --> 00:00:28.084
+A durable orchestrator tracks the order. Commands travel through an outbox and Kafka. Every step records a result before moving forward.
+
+00:00:28.264 --> 00:00:37.402
+The preferred path reserves stock, authorizes payment, then captures. Confirm the order only when inventory and payment outcomes are verified.
+
+00:00:37.582 --> 00:00:46.294
+But if authorization happened first and inventory fails, issue a void. Wait for provider confirmation before marking the order cancelled.
+
+00:00:46.474 --> 00:00:55.595
+If the money was already captured, voiding is wrong. Request a refund, track refund pending, and reconcile until the provider confirms it.
+
+00:00:55.775 --> 00:01:05.022
+A payment timeout means unknown, not failed. Reuse the same operation key, check provider status, and never blindly create another charge.
+
+00:01:05.202 --> 00:01:15.348
+Kafka may redeliver messages. Deduplicate with a database constraint, use stable payment idempotency keys, and persist every compensation through an outbox.
+
+00:01:15.528 --> 00:01:25.194
+The rule is simple: a successful payment call is not a successful order. Design checkout for partial failures, recovery, and truthful customer status.
+
