@@ -1,6 +1,7 @@
 ---
 title: "JWT and Object-Level Authorization in Spring Boot: Protecting Customer Orders"
 slug: "jwt-object-authorization-spring-boot"
+folder: "API security"
 date: "2026-11-05"
 description: "A valid token can still request another shopper’s order. Learn ownership and tenant checks, scoped database queries, and safe API responses."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "API security"]

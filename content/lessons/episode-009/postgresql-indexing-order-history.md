@@ -1,6 +1,7 @@
 ---
 title: "PostgreSQL Indexing and Keyset Pagination: Fixing Slow Order History"
 slug: "postgresql-indexing-order-history"
+folder: "Caching & database performance"
 date: "2026-11-05"
 description: "Shoppers wait for order history as orders grow. Learn how query shape, composite indexes, EXPLAIN, and keyset pagination reduce unnecessary database work."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "PostgreSQL"]

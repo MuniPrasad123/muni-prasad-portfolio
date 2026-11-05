@@ -2,6 +2,7 @@
 title: "Rate Limiting in Shopping APIs"
 description: "When bots flood checkout APIs, real shoppers can face slow pages and failed orders. Learn how rate limiting reduces overload, then try the rules yourself."
 slug: "rate-limiting-shopping-apis"
+folder: "Resilience & API protection"
 date: "2026-10-26"
 updated: "2026-10-27"
 tags: ["Java", "Microservices", "System design", "E-commerce"]

@@ -1,6 +1,7 @@
 ---
 title: "Saga Pattern in Spring Boot: Recovering Failed Checkout Steps"
 slug: "saga-pattern-checkout-compensation"
+folder: "Kafka & distributed workflows"
 date: "2026-11-05"
 description: "A payment authorization succeeds but inventory reservation fails. Learn durable Saga steps, compensation, idempotency, and recovery that gives the shopper a clear order status."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "Microservices"]

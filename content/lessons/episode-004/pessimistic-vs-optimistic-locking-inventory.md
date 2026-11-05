@@ -1,6 +1,7 @@
 ---
 title: "Pessimistic vs Optimistic Locking in Spring Boot: Preventing Inventory Overselling"
 slug: "pessimistic-vs-optimistic-locking-inventory"
+folder: "Payments & inventory correctness"
 date: "2026-10-30"
 description: "Two shoppers try to reserve the last item. Compare row locks, version checks, and atomic SQL updates with a four-mode interactive race simulator."
 tags: ["Java 21", "Spring Boot", "PostgreSQL", "JPA", "Concurrency", "Oracle ATG", "E-commerce"]

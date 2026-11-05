@@ -37,3 +37,7 @@ Episodes 001–007 retain their existing public media paths to preserve working 
 4. Add video/poster paths and captions when supplied. Do not add a written video transcript.
 5. Keep publishing prompts and social copy in blogs/episodes/013/, outside the article.
 6. Check the new lesson and run the production build. Completed episodes are published by default unless the owner requests a local draft. The index, RSS and sitemap discover nested article files automatically.
+
+## Visible topic folders
+
+Each article frontmatter has a `folder` value. The /blog page opens with topic folders; opening one shows its episodes in ascending sequence. Use an existing folder label for the next related episode, or introduce a clear new label. Search spans all episodes from the folder overview; View all episodes opens the full series.

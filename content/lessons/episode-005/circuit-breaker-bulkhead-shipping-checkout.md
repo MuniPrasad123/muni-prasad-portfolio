@@ -1,6 +1,7 @@
 ---
 title: "Circuit Breakers and Bulkheads in Spring Boot: Protecting Checkout from Slow Services"
 slug: "circuit-breaker-bulkhead-shipping-checkout"
+folder: "Resilience & API protection"
 date: "2026-11-03"
 description: "Shoppers cannot finish checkout because a slow shipping provider ties up application workers."
 tags: ["Java", "Spring Boot", "Microservices", "System design", "E-commerce"]

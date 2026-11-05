@@ -8,7 +8,7 @@ import hljs from 'highlight.js/lib/common'
 export type ArticleMeta = {
   title: string; description: string; slug: string; date: string; updated?: string
   tags: string[]; cover: string; coverAlt: string; draft: boolean; sample: boolean
-  level: string; readingMinutes: number; lab?: string; simulation?: 'rate-limiting' | 'outbox' | 'payment-idempotency' | 'locking' | 'kafka-retries' | 'circuit-breaker' | 'cache-stampede'; videoCaptions?: string; video?: string; videoPoster?: string; videoCaption?: string
+  folder?: string; level: string; readingMinutes: number; lab?: string; simulation?: 'rate-limiting' | 'outbox' | 'payment-idempotency' | 'locking' | 'kafka-retries' | 'circuit-breaker' | 'cache-stampede'; videoCaptions?: string; video?: string; videoPoster?: string; videoCaption?: string
 }
 export type Article = ArticleMeta & { body: string }
 export const siteOrigin = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.muniprasad.in').replace(/\/$/, '')
@@ -40,7 +40,7 @@ export function parseArticle(source: string, filename: string): Article {
   if (updated && updated < published) fail('updated date before publication')
   return { title: text('title'), description: text('description'), slug, date: published, updated,
     tags: [...new Set<string>(data.tags.map((tag: string) => tag.trim()))], cover, coverAlt: text('coverAlt'),
-    draft: data.draft, sample: data.sample === true, level: data.level || 'Practical guide',
+    folder: typeof data.folder === 'string' ? data.folder : 'More engineering topics', draft: data.draft, sample: data.sample === true, level: data.level || 'Practical guide',
     readingMinutes: Math.max(1, Math.ceil(content.split(/\s+/).length / 200)),
     lab: data.lab, simulation: data.simulation, videoCaptions: data.videoCaptions, video: data.video, videoPoster: data.videoPoster, videoCaption: data.videoCaption, body: content }
 }

@@ -1,6 +1,7 @@
 ---
 title: "Kafka Retry Topics and Dead-Letter Queues: Handling Poison Messages in Spring Boot"
 slug: "kafka-retry-topics-dlq-poison-messages"
+folder: "Kafka & distributed workflows"
 date: "2026-11-03"
 description: "One poison event can delay healthy orders. Learn bounded retries, dead-letter triage, idempotent processing and the ordering trade-off with an interactive Kafka failure lab."
 tags: ["Java 21", "Spring Boot", "Kafka", "PostgreSQL", "Distributed systems", "E-commerce"]

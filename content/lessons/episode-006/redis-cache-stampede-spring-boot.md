@@ -1,6 +1,7 @@
 ---
 title: "Redis Cache Stampede in Spring Boot: Protecting PostgreSQL When Hot Keys Expire"
 slug: "redis-cache-stampede-spring-boot"
+folder: "Caching & database performance"
 date: "2026-11-03"
 description: "A popular product’s cache expires. Many shoppers load the same product at once, overloading PostgreSQL and slowing the storefront."
 tags: ["Java", "Spring Boot", "Microservices", "System design", "E-commerce"]

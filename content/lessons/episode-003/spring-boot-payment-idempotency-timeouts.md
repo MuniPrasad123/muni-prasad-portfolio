@@ -1,6 +1,7 @@
 ---
 title: "Payment Idempotency in Spring Boot: Handling Timeouts and Retries"
 slug: "spring-boot-payment-idempotency-timeouts"
+folder: "Payments & inventory correctness"
 date: "2026-10-29"
 updated: "2026-10-29"
 description: "The gateway authorizes a payment but checkout never receives the response. Explore how stable keys, database uniqueness and reconciliation make retries safer."

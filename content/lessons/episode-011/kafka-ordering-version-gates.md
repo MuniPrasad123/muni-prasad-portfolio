@@ -1,6 +1,7 @@
 ---
 title: "Kafka Ordering and Version Gates: Keeping Order Status Consistent"
 slug: "kafka-ordering-version-gates"
+folder: "Kafka & distributed workflows"
 date: "2026-11-05"
 description: "A shopper sees shipped before paid. Learn partition ordering, consistent keys, retries, and business state/version checks for consistent order progress."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "Kafka"]

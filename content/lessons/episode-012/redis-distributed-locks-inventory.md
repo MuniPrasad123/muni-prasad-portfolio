@@ -1,6 +1,7 @@
 ---
 title: "Redis Distributed Locks and Fencing: Preventing Stale Inventory Writers"
 slug: "redis-distributed-locks-inventory"
+folder: "Payments & inventory correctness"
 date: "2026-11-05"
 description: "A Redis lease expires while a checkout worker pauses. Learn why stale writers still need database invariants, ownership checks, and fencing enforced by the protected resource."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "Redis"]
