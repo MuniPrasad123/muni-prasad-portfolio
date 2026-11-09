@@ -42,6 +42,7 @@ export const careerHistory = experiences.map(item => ({
 }))
 
 const credentialType: Record<string, string> = {
+  'Oracle Multicloud Certified Foundations Associate': 'Certification',
   'Oracle Cloud Infrastructure Certified Architect Associate': 'Certification',
   'Agentic AI Certified Foundations Associate': 'Certification',
   'Oracle Cloud Infrastructure Certified AI Foundations Associate': 'Certification',
