@@ -252,7 +252,7 @@ Open the [SQL experiments and quiz](/blog/episodes/009/lab.html) for the query c
 
 ## 7. Practice: beginner → architect
 
-Start with the [order history incident simulator](#interactive-lab). Step through the requests or select **Play walkthrough**. Compare the database order with the shopper’s view after each request. Check which method repeats order #104 and how the order ID breaks the timestamp tie.
+Start with the [order history incident simulator](#interactive-lab). Step through the requests or select **Play walkthrough**. When order #106 arrives, compare OFFSET with keyset pagination. Then select **Refresh latest orders** to start a new first-page query. The cursor continues through older orders. Refresh fetches the newest ones and sets a new cursor for the next page.
 
 **Exercise 1 (beginner):** Return orders for customer 42 created on 2026-10-31 UTC, without wrapping `created_at` in a function.
 
