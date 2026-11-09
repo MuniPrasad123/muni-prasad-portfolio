@@ -1,0 +1,42 @@
+.controls, .board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.board { margin-top: 18px; }
+.controls button:disabled { opacity: .55; cursor: default; }
+
+.column {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #d6b56844;
+  border-radius: 10px;
+  background: #081c13;
+}
+
+.column h3 { font-size: 1rem; }
+.column ol { display: grid; gap: 6px; list-style: none; padding: 0; margin: 0; }
+
+.column li, .result {
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: #173a29;
+}
+
+.column li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; }
+.result { margin-top: 6px; animation: arrive .35s ease-out both; }
+.result strong, .result span { display: block; }
+.duplicate { background: #4a2b25; color: #ffddd3; }
+.newRow { animation: arrive .35s ease-out both; color: #f2d58d; }
+.note { padding: 8px 12px; border-left: 3px solid #d6b568; }
+
+@keyframes arrive {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result, .newRow { animation: none; }
+}

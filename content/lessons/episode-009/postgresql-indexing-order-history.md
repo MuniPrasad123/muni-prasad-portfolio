@@ -240,6 +240,8 @@ SQL Server does not support PostgreSQL's row-constructor comparison syntax for t
 
 ## 6. Interactive lab: three experiments
 
+Open the [SQL experiments and quiz](/blog/episodes/009/lab.html) for the query controls below.
+
 **Experiment A — SARGability:** Toggle `DATE(created_at)` versus a half-open timestamp range. Observe the *illustrative* number of rows the simulator considers eligible for index-range filtering.
 
 **Experiment B — Pagination:** Increase the page number with `OFFSET` and compare it with a keyset cursor. Watch how skipped rows grow even though the result page stays at 20.
@@ -250,7 +252,7 @@ SQL Server does not support PostgreSQL's row-constructor comparison syntax for t
 
 ## 7. Practice: beginner → architect
 
-Start with the [order history lab](#interactive-lab). Save the first page, insert a newer order, and fetch page two with OFFSET. Then fetch it again using the saved keyset cursor. Check which method repeats order #104 and how the order ID breaks the timestamp tie.
+Start with the [order history incident simulator](#interactive-lab). Step through the requests or select **Play walkthrough**. Compare the database order with the shopper’s view after each request. Check which method repeats order #104 and how the order ID breaks the timestamp tie.
 
 **Exercise 1 (beginner):** Return orders for customer 42 created on 2026-10-31 UTC, without wrapping `created_at` in a function.
 
