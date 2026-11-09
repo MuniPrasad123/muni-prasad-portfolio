@@ -116,11 +116,11 @@ Hot orders can overload one partition; use many partitions and stable order keys
 
 **Q: Does exactly-once solve it?** Kafka transactions can coordinate Kafka read-process-write flows under specific conditions, but they do not make external databases or business transitions magically exactly-once.
 
-## Exercises
+## Interactive practice
 
-1. Change the simulation to send v3 before v2 and explain the state machine result.
-2. Implement a PostgreSQL `UPDATE ... WHERE version=? AND status=?` and test duplicate replay.
-3. Design a partition-count migration strategy with no cross-partition ordering ambiguity for in-flight orders.
+1. [Open the Kafka practice lab](#interactive-lab). With **Apply every event on arrival**, deliver SHIPPED v3, then PAID v2. Watch the customer-facing status rewind.
+2. Switch to **Check version and transition** and repeat the same deliveries. Look for v3 in the waiting queue and watch it apply after v2.
+3. Replay PAID v2, then deliver invalid PAID v4. Use the trace to explain why one is ignored and the other is rejected.
 
 ## Conclusion
 

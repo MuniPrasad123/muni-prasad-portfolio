@@ -1,1 +1,146 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Episode 011 | Kafka Ordering Lab</title><style>body{font:16px system-ui;background:#0c1527;color:#eaf3ff;max-width:850px;margin:30px auto;padding:16px}button{background:#39b9d8;border:0;border-radius:9px;padding:12px;color:#061422;font-weight:700;margin:4px;cursor:pointer}button:focus-visible{outline:3px solid orange}.panel{background:#172640;border:1px solid #34506e;border-radius:12px;padding:18px;margin:12px 0}#log{white-space:pre-wrap;font:14px ui-monospace,monospace;min-height:120px}.tag{display:inline-block;padding:8px;background:#254365;margin:6px;border-radius:6px}small{color:#a9c3dc}h1{font-size:1.9rem}</style><style>:root{--bg:#08251a;--panel:#102f20;--ink:#f5f1e7;--cyan:#e7c779;--muted:#c4d4c5}body{background:#08251a;color:#f5f1e7}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #e7c779;outline-offset:3px}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}</style></head><body><h1>Kafka Ordering Lab — Episode 011</h1><p>Conceptual simulation only. No Kafka broker, network, or performance measurements.</p><div class="panel"><h2>Customer-facing status</h2><div id="state" aria-live="polite">CREATED (version 1)</div><p><span class="tag">Order ID: ORD-101</span><span class="tag" id="mode">Key: orderId</span></p><button onclick="send(2,'PAID')">Send PAID v2</button><button onclick="send(3,'SHIPPED')">Send SHIPPED v3</button><button onclick="send(2,'PAID')">Replay PAID v2</button><button onclick="reset()">Reset</button></div><div class="panel"><h2>Version gate</h2><div id="log" aria-live="polite">Ready. Try SHIPPED v3 before PAID v2.</div></div><div class="panel"><h2>Mini quiz</h2><p>Does Kafka guarantee ordering across partitions?</p><button onclick="answer(false)">Yes, globally</button><button onclick="answer(true)">No, within each partition</button><p id="quiz" aria-live="polite"></p></div><script>let version=1,status='CREATED',pending={};function line(t){document.getElementById('log').textContent+='\n'+t}function update(){document.getElementById('state').textContent=status+' (version '+version+')'}function send(v,t){line('Received '+t+' v'+v);if(v<=version){line('Duplicate/old event → no-op');return}if(v>version+1){pending[v]=t;line('Gap detected → hold event and reconcile');return}let valid=(t==='PAID'&&status==='CREATED')||(t==='SHIPPED'&&status==='PAID');if(!valid){line('INVALID transition → reject + alert');return}version=v;status=t;line('Applied '+t+' v'+v);update();let next=version+1;if(pending[next]){let nt=pending[next];delete pending[next];send(next,nt)}}function reset(){version=1;status='CREATED';pending={};document.getElementById('log').textContent='Reset. Try SHIPPED v3 before PAID v2.';update()}function answer(ok){document.getElementById('quiz').textContent=ok?'Correct: order is per partition, not global.':'Not quite. Kafka orders records within a partition only.'}</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Episode 011 | Kafka Ordering Practice</title>
+  <link rel="stylesheet" href="../practice.css">
+</head>
+<body>
+  <h1>Can a late event rewind an order?</h1>
+  <p>Deliver events to the order projection yourself. Try shipping first, then paying, then replaying payment. Run the same sequence with both consumer policies.</p>
+
+  <div class="panel">
+    <label for="policy">Consumer policy</label>
+    <select id="policy">
+      <option value="arrival">Apply every event on arrival</option>
+      <option value="gate">Check version and transition</option>
+    </select>
+    <p id="policy-help" class="hint"></p>
+    <div class="controls">
+      <button type="button" data-version="2" data-status="PAID">Deliver PAID v2</button>
+      <button type="button" data-version="3" data-status="SHIPPED">Deliver SHIPPED v3</button>
+      <button type="button" data-version="4" data-status="PAID">Deliver invalid PAID v4</button>
+      <button type="button" id="reset" class="secondary">Reset</button>
+    </div>
+    <p class="hint">Click a delivery twice to replay that event. Changing the policy resets the run.</p>
+  </div>
+
+  <dl class="metrics" aria-live="polite" aria-atomic="true">
+    <div><dt>Customer sees</dt><dd id="projection"></dd></div>
+    <div><dt>Waiting for a missing version</dt><dd id="pending"></dd></div>
+  </dl>
+
+  <section class="panel">
+    <h2>Delivery trace (newest first)</h2>
+    <ol id="trace" class="trace" aria-live="polite" tabindex="0" aria-label="Delivery trace"></ol>
+  </section>
+
+  <section class="panel">
+    <h2>Check your understanding</h2>
+    <p>Why can SHIPPED v3 arrive first even when both events use the same order key?</p>
+    <div class="controls">
+      <button type="button" class="secondary" id="offset">Kafka ignores partition offsets</button>
+      <button type="button" class="secondary" id="producer">Producers appended v3 first</button>
+    </div>
+    <output id="feedback"></output>
+  </section>
+  <small>Conceptual projection for one order. The pending events model a reconciliation queue. A real consumer needs durable handling for gaps and rejected transitions.</small>
+
+  <script>
+    const policy = document.getElementById('policy');
+    const trace = document.getElementById('trace');
+    const feedback = document.getElementById('feedback');
+    const pending = new Map();
+    let version;
+    let status;
+
+    function log(message) {
+      const entry = document.createElement('li');
+      entry.textContent = message;
+      trace.prepend(entry);
+      if (trace.childElementCount > 12) trace.lastElementChild.remove();
+      trace.scrollTop = 0;
+    }
+
+    function render() {
+      document.getElementById('projection').textContent = status + ' · v' + version;
+      document.getElementById('pending').textContent = [...pending.keys()]
+        .sort((a, b) => a - b).map(value => 'v' + value).join(', ') || 'None';
+    }
+
+    function reset() {
+      version = 1;
+      status = 'CREATED';
+      pending.clear();
+      trace.replaceChildren();
+      feedback.textContent = '';
+      document.getElementById('policy-help').textContent = policy.value === 'gate'
+        ? 'Apply the next version only if its business transition is valid.'
+        : 'Overwrite the projection whenever an event arrives, even during replay.';
+      log('Order created at v1.');
+      render();
+    }
+
+    function apply(nextVersion, nextStatus) {
+      version = nextVersion;
+      status = nextStatus;
+    }
+
+    function deliver(nextVersion, nextStatus) {
+      const event = nextStatus + ' v' + nextVersion;
+      if (policy.value === 'arrival') {
+        const previousVersion = version;
+        apply(nextVersion, nextStatus);
+        log(event + (nextVersion < previousVersion
+          ? ' overwrote a newer state. The customer saw the order rewind.'
+          : ' overwrote the customer-facing projection.'));
+        return;
+      }
+
+      if (nextVersion <= version) {
+        log(event + ' ignored. The projection already reached v' + version + '.');
+        return;
+      }
+      if (nextVersion > version + 1) {
+        log(pending.has(nextVersion)
+          ? event + ' is already waiting. Replay leaves the queue unchanged.'
+          : event + ' held. Version v' + (version + 1) + ' must come first.');
+        pending.set(nextVersion, nextStatus);
+        return;
+      }
+
+      const allowed = { CREATED: 'PAID', PAID: 'SHIPPED' };
+      if (allowed[status] !== nextStatus) {
+        log(event + ' rejected. ' + status + ' cannot transition to ' + nextStatus + '.');
+        return;
+      }
+
+      apply(nextVersion, nextStatus);
+      log(event + ' applied.');
+      const waitingVersion = version + 1;
+      if (pending.has(waitingVersion)) {
+        const waitingStatus = pending.get(waitingVersion);
+        pending.delete(waitingVersion);
+        deliver(waitingVersion, waitingStatus);
+      }
+    }
+
+    document.querySelectorAll('[data-version]').forEach(button => {
+      button.addEventListener('click', () => {
+        deliver(Number(button.dataset.version), button.dataset.status);
+        render();
+      });
+    });
+    policy.addEventListener('change', reset);
+    document.getElementById('reset').addEventListener('click', reset);
+    document.getElementById('offset').addEventListener('click', () => {
+      feedback.textContent = 'Try again. Kafka reads records in offset order within a partition.';
+    });
+    document.getElementById('producer').addEventListener('click', () => {
+      feedback.textContent = 'Correct. Kafka preserves append order within the partition. Aggregate versions capture business order.';
+    });
+    reset();
+  </script>
+</body>
+</html>

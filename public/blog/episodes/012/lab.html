@@ -1,1 +1,142 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Episode 012 | Redis Lease Lab</title><style>body{background:#081426;color:#e8f3ff;font:16px system-ui;margin:0;padding:22px;max-width:880px;margin:auto}h1{color:#8ee3ff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.card{background:#13263c;border:1px solid #355a76;padding:18px;border-radius:12px}button{padding:12px;border:0;border-radius:8px;background:#70d6ef;color:#06202a;font-weight:700;cursor:pointer;margin:5px}button:focus{outline:3px solid #fff}#log{white-space:pre-wrap;background:#07101c;padding:16px;border-radius:12px;min-height:110px}.ok{color:#a5f3ba}.bad{color:#ffb4b4}video{max-width:320px;width:100%;border-radius:12px}</style><h1>Redis Lock vs Inventory Correctness</h1><p>Conceptual interactive simulation, not a real Redis/PostgreSQL benchmark. Two pods compete for the last sneaker.</p><div class="grid"><div class="card"><h2>Redis lease</h2><p id="lease">Owner: none</p></div><div class="card"><h2>Stock</h2><p id="stock">Available: 1</p></div><div class="card"><h2>Outcome</h2><p id="result">No attempts yet</p></div></div><p><button onclick="race(false)">Simulate unsafe flow</button><button onclick="race(true)">Simulate safe DB update</button><button onclick="reset()">Reset</button></p><h2>Event trace</h2><div id="log" aria-live="polite"></div><h2>Check your understanding</h2><p>Does token-safe unlock alone prevent a paused old worker from writing stale data?</p><button onclick="answer(false)">No</button><button onclick="answer(true)">Yes</button><p id="feedback"></p><h2>Episode video</h2><video playsinline controls playsinline src="lesson.mp4"><track kind="captions" src="captions.vtt" srclang="en" label="English" default></video><script>function reset(){document.getElementById('lease').textContent='Owner: none';document.getElementById('stock').textContent='Available: 1';document.getElementById('result').textContent='No attempts yet';document.getElementById('log').textContent='';}function race(safe){document.getElementById('lease').textContent='A expires → B owns lock';document.getElementById('stock').textContent=safe?'Available: 0':'Available: -1 (unsafe illustrative model)';document.getElementById('result').textContent=safe?'1 success, 1 sold out':'2 confirmed — oversold!';document.getElementById('log').textContent='00s A acquires lease (TTL 10s)\n01s A pauses 12s\n10s lease expires\n11s B acquires lease\n12s B reserves final sneaker\n13s A resumes\n'+(safe?'13s A conditional SQL UPDATE affects 0 rows → sold out':'13s A blindly writes stock → duplicate reservation');}function answer(v){document.getElementById('feedback').textContent=v?'Incorrect. Token-safe unlock only protects the lock key; stale writers need downstream checks.':'Correct. The database conditional update or fencing rejects stale writes.';}</script></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Episode 012 | Redis Lease Practice</title>
+  <link rel="stylesheet" href="../practice.css">
+</head>
+<body>
+  <h1>Who gets the last pair?</h1>
+  <p>Advance a race between two checkout workers. Both use token-safe unlock. Compare what happens when the database also checks available stock.</p>
+
+  <div class="panel">
+    <label for="policy">Inventory write policy</label>
+    <select id="policy">
+      <option value="blind">Decrement after an earlier stock check</option>
+      <option value="conditional">Atomically decrement only if stock is positive</option>
+    </select>
+    <p class="hint">Before advancing, predict whether both customers can receive a confirmation. Changing the policy resets the run.</p>
+    <div class="controls">
+      <button type="button" id="advance">Advance one event</button>
+      <button type="button" id="reset" class="secondary">Reset</button>
+    </div>
+  </div>
+
+  <dl class="metrics" aria-live="polite" aria-atomic="true">
+    <div><dt>Simulated time</dt><dd id="time"></dd></div>
+    <div><dt>Redis lease holder</dt><dd id="lease"></dd></div>
+    <div><dt>Database stock</dt><dd id="stock"></dd></div>
+    <div><dt>Reservations confirmed</dt><dd id="confirmed"></dd></div>
+  </dl>
+
+  <section class="panel">
+    <h2>Race trace (newest first)</h2>
+    <p id="outcome" aria-live="polite"></p>
+    <ol id="trace" class="trace" aria-live="polite" tabindex="0" aria-label="Race trace"></ol>
+  </section>
+
+  <section class="panel">
+    <h2>Check your understanding</h2>
+    <p>When A resumes, what does comparing tokens during unlock protect?</p>
+    <div class="controls">
+      <button type="button" class="secondary" id="inventory">The inventory row</button>
+      <button type="button" class="secondary" id="lock">Worker B’s Redis lease</button>
+    </div>
+    <output id="feedback"></output>
+  </section>
+
+  <details>
+    <summary>Watch the episode</summary>
+    <video controls playsinline preload="none" poster="poster.png" src="lesson.mp4">
+      <track kind="captions" src="captions.vtt" srclang="en" label="English">
+    </video>
+  </details>
+  <p><small>Conceptual model of one inventory row. The atomic check protects the stock count. Request idempotency and downstream fencing address separate failures.</small></p>
+
+  <script>
+    const policy = document.getElementById('policy');
+    const advance = document.getElementById('advance');
+    const trace = document.getElementById('trace');
+    const outcome = document.getElementById('outcome');
+    const feedback = document.getElementById('feedback');
+    let step;
+    let owner;
+    let stock;
+    let confirmed;
+
+    const events = [
+      { time: 0, run() {
+        owner = 'A';
+        return 'Worker A acquires a 10-second lease and reads one pair in stock.';
+      } },
+      { time: 1, run() {
+        return 'Worker A pauses before it writes to the database.';
+      } },
+      { time: 10, run() {
+        owner = null;
+        return 'A’s lease expires while A is paused.';
+      } },
+      { time: 11, run() {
+        owner = 'B';
+        return 'Worker B acquires a new lease with a different token.';
+      } },
+      { time: 12, run() {
+        stock--;
+        confirmed++;
+        return 'Worker B reserves the final pair. Stock reaches zero.';
+      } },
+      { time: 13, run() {
+        if (policy.value === 'conditional' && stock <= 0) {
+          outcome.textContent = 'One reservation confirmed. Worker A returns sold out.';
+          return 'A resumes. UPDATE with WHERE stock > 0 affects zero rows, so A cannot confirm a reservation.';
+        }
+        stock--;
+        confirmed++;
+        outcome.textContent = 'Oversold. Two customers received confirmations for one pair.';
+        return 'A resumes and decrements stock using its earlier availability check. Stock falls below zero in this model.';
+      } },
+      { time: 14, run() {
+        return 'A attempts to release its old lease. Its token differs from B’s, so Redis keeps B’s lease.';
+      } }
+    ];
+
+    function render(time) {
+      document.getElementById('time').textContent = time + 's';
+      document.getElementById('lease').textContent = owner ? 'Worker ' + owner : 'None';
+      document.getElementById('stock').textContent = stock;
+      document.getElementById('confirmed').textContent = confirmed;
+      advance.disabled = step === events.length;
+    }
+
+    function reset() {
+      step = 0;
+      owner = null;
+      stock = 1;
+      confirmed = 0;
+      trace.replaceChildren();
+      outcome.textContent = 'Ready. One pair is available.';
+      feedback.textContent = '';
+      render(0);
+    }
+
+    advance.addEventListener('click', () => {
+      const event = events[step++];
+      const entry = document.createElement('li');
+      entry.textContent = event.time + 's · ' + event.run();
+      trace.prepend(entry);
+      trace.scrollTop = 0;
+      render(event.time);
+    });
+    policy.addEventListener('change', reset);
+    document.getElementById('reset').addEventListener('click', reset);
+    document.getElementById('inventory').addEventListener('click', () => {
+      feedback.textContent = 'Try again. The Redis token check never reaches the inventory database.';
+    });
+    document.getElementById('lock').addEventListener('click', () => {
+      feedback.textContent = 'Correct. The token check keeps A from deleting B’s lease. The atomic inventory write protects stock.';
+    });
+    reset();
+  </script>
+</body>
+</html>

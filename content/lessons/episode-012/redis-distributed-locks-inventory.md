@@ -85,10 +85,10 @@ Generate lock tokens using a cryptographically secure random source. Namespace k
 
 **Q: What happens if the database commit succeeds but HTTP response is lost?** The client retries with the same idempotency key; the API returns the prior reservation outcome rather than decrementing stock again.
 
-## Practice
+## Interactive practice
 
-1. Explain the 12-second pause against a 10-second lease.
-2. Add jitter and a maximum 300ms lock acquisition deadline.
-3. Design a fencing-token check for a third-party fulfillment adapter and identify its storage requirement.
+1. [Open the Redis practice lab](#interactive-lab). Advance one event at a time and track who owns the lease as worker A pauses and worker B takes over.
+2. With **Decrement after an earlier stock check**, watch what happens when A resumes after B reserves the final pair.
+3. Switch to **Atomically decrement only if stock is positive** and replay the race. Compare the stock and confirmations. Use the last trace entry to explain what the token check protects in both runs.
 
 **Next:** Episode 013 — API Gateway, Load Balancing and Service Discovery.
