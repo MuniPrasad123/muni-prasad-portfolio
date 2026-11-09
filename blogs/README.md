@@ -32,7 +32,7 @@ Episodes 001–007 retain their existing public media paths to preserve working 
 ## Add the next episode
 
 1. Create content/lessons/episode-013/<slug>.md and public/blog/episodes/013/.
-2. Copy the frontmatter from a recent episode. Name the concept in the title; explain the shopper problem, business impact, root cause, solution and trade-offs. Use the actual publication date.
+2. Copy the frontmatter from a recent episode and use the actual publication date. Open with what the customer sees and why it matters. Show the cause, walk through the fix in order, and give readers a concrete way to verify the result. Use the same scenario and terminology in the article, simulation, and video where those formats are available.
 3. Add lab: "/blog/episodes/013/lab.html" for a self-contained interactive lesson. Keep scripts local, preserve keyboard controls and reduced-motion support. Do not publish personal claims or simulated numbers as measured outcomes.
 4. Add video/poster paths and captions when supplied. Do not add a written video transcript.
 5. Keep publishing prompts and social copy in blogs/episodes/013/, outside the article.

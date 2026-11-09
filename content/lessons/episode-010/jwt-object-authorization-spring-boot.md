@@ -3,7 +3,7 @@ title: "JWT and Object-Level Authorization in Spring Boot: Protecting Customer O
 slug: "jwt-object-authorization-spring-boot"
 folder: "API security"
 date: "2026-11-05"
-description: "A valid token can still request another shopper’s order. Learn ownership and tenant checks, scoped database queries, and safe API responses."
+description: "Alice signs in and opens Bob’s order by changing the order ID. Follow the leak, fix the lookup, and verify that each shopper can still see their own orders."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "API security"]
 cover: "/blog/episodes/010/cover.svg"
 coverAlt: "JWT and Object-Level Authorization in Spring Boot: Protecting Customer Orders"
@@ -14,22 +14,20 @@ lab: "/blog/episodes/010/lab.html"
 video: "/blog/episodes/010/lesson.mp4"
 videoPoster: "/blog/episodes/010/poster.png"
 videoCaptions: "/blog/episodes/010/captions.vtt"
-videoCaption: "Supplied narrated architecture lesson · illustrative scenario"
+videoCaption: "Narrated walkthrough · Alice’s request, the leak, and the fix"
 ---
 
-## What will you learn?
+## The customer problem
 
-A valid token can still request another shopper’s order. Learn ownership and tenant checks, scoped database queries, and safe API responses.
+Alice opens her own order, **A-101**. Then she changes the order ID in the URL to **B-102**, which belongs to Bob. The API accepts Alice’s valid sign-in token and looks up B-102 by ID alone. It returns Bob’s order details to Alice. Bob’s purchase history and any address fields in the response are now exposed.
 
+This is **Broken Object Level Authorization (BOLA)**. The API checked who Alice was and whether she could read orders, then skipped the check that ties this specific order to Alice.
 
+## The fix and how to verify it
 
-**Architecture in Motion · Episode 010 · Java 21 · Spring Boot · OAuth 2.0 · PostgreSQL**
-
-> A token can be authentic, unexpired, and correctly scoped—and still be used to request an order belonging to another shopper. The missing check is not authentication. It is **object-level authorization**.
-
-Imagine an e-commerce site where Alice signs in and opens `/api/orders/7f3...`. Her browser includes a legitimate bearer access token. The backend validates the token and returns the order. So far, so good. Now Alice changes the order ID to one belonging to Bob. If the service only checks `authenticated()` or the `orders:read` scope, it might return Bob's address, products, and order details. This is **Broken Object Level Authorization (BOLA)**, listed by OWASP as API1:2023.
-
-The production fix is to apply **both** token validation and record-level ownership checks, ideally inside the database query. For multi-tenant applications, tenant identity is another mandatory boundary.
+1. **Verify the token and scope.** The API checks that the token is valid for this service and carries `orders:read`.
+2. **Look up the order within the shopper’s account.** Use the requested order ID plus the owner and tenant from verified identity. The tenant is the store or organization the caller belongs to.
+3. **Retry both requests.** Alice gets **404** and no order details for B-102 under this API’s concealment policy. Her own order A-101 still returns **200**. [Try the walkthrough](#interactive-lab).
 
 ## 1. Authentication, scopes, and object authorization are different decisions
 
@@ -46,13 +44,11 @@ A JWT is typically a signed set of claims. It is **not encrypted by default**; n
 
 ## 2. The failure path
 
-![Simplified topic overview](/blog/episodes/010/cover.svg)
-
-The security filter is doing its job. The service is not. A role such as `CUSTOMER` or a scope such as `orders:read` authorizes a **type of operation**. It does not establish ownership of **this particular order**.
+The vulnerable path is `valid token → orders:read → lookup by order ID → return the matching row`. The lookup gives the API no reason to reject B-102.
 
 ## 3. Correct architecture: make ownership part of the lookup
 
-![Simplified topic overview](/blog/episodes/010/cover.svg)
+The corrected path is `valid token → orders:read → lookup by order ID, owner, and tenant`. For B-102, the owner check eliminates the row before any order details are returned.
 
 **Important:** The gateway is useful for edge policy and rate limiting, but the order service still enforces ownership. Do not trust a client-supplied `customerId`, `tenantId`, or a plain unsigned header as an identity source. For delegated staff access, create a separate explicit authorization policy, with purpose-limited roles, audited access, and tenant restrictions.
 
@@ -194,7 +190,7 @@ The DTO returns only the fields the caller needs. Do not expose the JPA entity w
 
 ## 7. Interactive experiment
 
-In the [authorization lab](#interactive-lab), choose **Reproduce an ID-only leak** to see a valid Alice token return Bob’s order. Switch to the secure lookup and compare the HTTP response and repository predicate. Then try **Wrong audience** and **Missing scope**. Follow the trace to see which requests stop before reaching the repository.
+In the [walkthrough](#interactive-lab), open Alice’s order, reproduce the leak with Bob’s order ID, and apply the ownership fix. Retry both orders to verify that the API protects Bob’s details and still serves Alice’s order. In the [advanced lab](/blog/episodes/010/lab.html), try **Wrong audience**, **Missing scope**, and **Wrong tenant** to see where each request stops.
 
 ## 8. Three practice exercises
 

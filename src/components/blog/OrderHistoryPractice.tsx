@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import styles from './OrderHistoryPractice.module.css'
+import styles from './IncidentPractice.module.css'
 
 const orders = [
   { id: 105, time: '12:04' }, { id: 104, time: '12:03' },
