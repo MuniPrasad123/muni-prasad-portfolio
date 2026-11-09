@@ -250,6 +250,8 @@ SQL Server does not support PostgreSQL's row-constructor comparison syntax for t
 
 ## 7. Practice: beginner → architect
 
+Start with the [order history lab](#interactive-lab). Save the first page, insert a newer order, and fetch page two with OFFSET. Then fetch it again using the saved keyset cursor. Check which method repeats order #104 and how the order ID breaks the timestamp tie.
+
 **Exercise 1 (beginner):** Return orders for customer 42 created on 2026-10-31 UTC, without wrapping `created_at` in a function.
 
 <details><summary>Solution</summary>

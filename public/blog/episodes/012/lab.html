@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Episode 012 | Redis Lease Practice</title>
   <link rel="stylesheet" href="../practice.css">
-</head>
+<script src="../practice-frame.js" defer></script></head>
 <body>
   <h1>Who gets the last pair?</h1>
   <p>Advance a race between two checkout workers. Both use token-safe unlock. Compare what happens when the database also checks available stock.</p>
@@ -16,7 +16,12 @@
       <option value="blind">Decrement after an earlier stock check</option>
       <option value="conditional">Atomically decrement only if stock is positive</option>
     </select>
-    <p class="hint">Before advancing, predict whether both customers can receive a confirmation. Changing the policy resets the run.</p>
+    <label for="starting-stock">Starting inventory</label>
+    <select id="starting-stock">
+      <option value="1">1 pair · last item</option>
+      <option value="2">2 pairs · control case</option>
+    </select>
+    <p class="hint">Before advancing, predict whether both customers can receive a confirmation. Changing a setting resets the run.</p>
     <div class="controls">
       <button type="button" id="advance">Advance one event</button>
       <button type="button" id="reset" class="secondary">Reset</button>
@@ -46,17 +51,12 @@
     <output id="feedback"></output>
   </section>
 
-  <details>
-    <summary>Watch the episode</summary>
-    <video controls playsinline preload="none" poster="poster.png" src="lesson.mp4">
-      <track kind="captions" src="captions.vtt" srclang="en" label="English">
-    </video>
-  </details>
   <p><small>Conceptual model of one inventory row. The atomic check protects the stock count. Request idempotency and downstream fencing address separate failures.</small></p>
 
   <script>
     const policy = document.getElementById('policy');
     const advance = document.getElementById('advance');
+    const startingStock = document.getElementById('starting-stock');
     const trace = document.getElementById('trace');
     const outcome = document.getElementById('outcome');
     const feedback = document.getElementById('feedback');
@@ -68,7 +68,7 @@
     const events = [
       { time: 0, run() {
         owner = 'A';
-        return 'Worker A acquires a 10-second lease and reads one pair in stock.';
+        return 'Worker A acquires a 10-second lease and reads ' + stock + ' in stock.';
       } },
       { time: 1, run() {
         return 'Worker A pauses before it writes to the database.';
@@ -84,7 +84,7 @@
       { time: 12, run() {
         stock--;
         confirmed++;
-        return 'Worker B reserves the final pair. Stock reaches zero.';
+        return 'Worker B reserves one pair. Remaining stock: ' + stock + '.';
       } },
       { time: 13, run() {
         if (policy.value === 'conditional' && stock <= 0) {
@@ -93,8 +93,12 @@
         }
         stock--;
         confirmed++;
-        outcome.textContent = 'Oversold. Two customers received confirmations for one pair.';
-        return 'A resumes and decrements stock using its earlier availability check. Stock falls below zero in this model.';
+        outcome.textContent = stock < 0
+          ? 'Oversold. Two customers received confirmations for one pair.'
+          : 'Both reservations confirmed. There was enough stock for both.';
+        return policy.value === 'conditional'
+          ? 'A resumes. The atomic UPDATE finds available stock and reserves a pair.'
+          : 'A resumes and decrements stock using its earlier availability check.';
       } },
       { time: 14, run() {
         return 'A attempts to release its old lease. Its token differs from B’s, so Redis keeps B’s lease.';
@@ -112,10 +116,10 @@
     function reset() {
       step = 0;
       owner = null;
-      stock = 1;
+      stock = Number(startingStock.value);
       confirmed = 0;
       trace.replaceChildren();
-      outcome.textContent = 'Ready. One pair is available.';
+      outcome.textContent = 'Ready. Available stock: ' + stock + '.';
       feedback.textContent = '';
       render(0);
     }
@@ -129,6 +133,7 @@
       render(event.time);
     });
     policy.addEventListener('change', reset);
+    startingStock.addEventListener('change', reset);
     document.getElementById('reset').addEventListener('click', reset);
     document.getElementById('inventory').addEventListener('click', () => {
       feedback.textContent = 'Try again. The Redis token check never reaches the inventory database.';

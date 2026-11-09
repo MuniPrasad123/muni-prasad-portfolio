@@ -90,5 +90,6 @@ Generate lock tokens using a cryptographically secure random source. Namespace k
 1. [Open the Redis practice lab](#interactive-lab). Advance one event at a time and track who owns the lease as worker A pauses and worker B takes over.
 2. With **Decrement after an earlier stock check**, watch what happens when A resumes after B reserves the final pair.
 3. Switch to **Atomically decrement only if stock is positive** and replay the race. Compare the stock and confirmations. Use the last trace entry to explain what the token check protects in both runs.
+4. Set starting inventory to **2 pairs** and replay with the atomic update. Check why both reservations can now succeed even though A’s lease still expires.
 
 **Next:** Episode 013 — API Gateway, Load Balancing and Service Discovery.

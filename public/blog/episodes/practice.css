@@ -42,5 +42,3 @@ ol { margin: .5rem 0 0; padding-left: 1.5rem; }
 li + li { margin-top: .35rem; }
 .trace { max-height: 15rem; overflow: auto; }
 output { display: block; margin-top: .6rem; }
-video { display: block; width: min(100%, 320px); margin-top: .75rem; }
-summary { cursor: pointer; }

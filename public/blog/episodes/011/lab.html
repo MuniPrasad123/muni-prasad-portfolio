@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Episode 011 | Kafka Ordering Practice</title>
   <link rel="stylesheet" href="../practice.css">
-</head>
+<script src="../practice-frame.js" defer></script></head>
 <body>
   <h1>Can a late event rewind an order?</h1>
   <p>Deliver events to the order projection yourself. Try shipping first, then paying, then replaying payment. Run the same sequence with both consumer policies.</p>
@@ -21,9 +21,10 @@
       <button type="button" data-version="2" data-status="PAID">Deliver PAID v2</button>
       <button type="button" data-version="3" data-status="SHIPPED">Deliver SHIPPED v3</button>
       <button type="button" data-version="4" data-status="PAID">Deliver invalid PAID v4</button>
+      <button type="button" id="replay" class="secondary">Replay last offset</button>
       <button type="button" id="reset" class="secondary">Reset</button>
     </div>
-    <p class="hint">Click a delivery twice to replay that event. Changing the policy resets the run.</p>
+    <p class="hint">Each delivery appends a record to the same partition. Replay redelivers the last record at its existing offset. Changing the policy resets the run.</p>
   </div>
 
   <dl class="metrics" aria-live="polite" aria-atomic="true">
@@ -52,6 +53,9 @@
     const trace = document.getElementById('trace');
     const feedback = document.getElementById('feedback');
     const pending = new Map();
+    const replay = document.getElementById('replay');
+    let offset;
+    let lastRecord;
     let version;
     let status;
 
@@ -73,6 +77,9 @@
       version = 1;
       status = 'CREATED';
       pending.clear();
+      offset = 0;
+      lastRecord = null;
+      replay.disabled = true;
       trace.replaceChildren();
       feedback.textContent = '';
       document.getElementById('policy-help').textContent = policy.value === 'gate'
@@ -128,9 +135,18 @@
 
     document.querySelectorAll('[data-version]').forEach(button => {
       button.addEventListener('click', () => {
-        deliver(Number(button.dataset.version), button.dataset.status);
+        lastRecord = { version: Number(button.dataset.version), status: button.dataset.status, offset };
+        offset++;
+        replay.disabled = false;
+        log('Partition 2 · offset ' + lastRecord.offset + ' · received ' + lastRecord.status + ' v' + lastRecord.version + '.');
+        deliver(lastRecord.version, lastRecord.status);
         render();
       });
+    });
+    replay.addEventListener('click', () => {
+      log('Partition 2 · retry at offset ' + lastRecord.offset + '.');
+      deliver(lastRecord.version, lastRecord.status);
+      render();
     });
     policy.addEventListener('change', reset);
     document.getElementById('reset').addEventListener('click', reset);

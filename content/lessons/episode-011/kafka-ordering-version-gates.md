@@ -120,7 +120,7 @@ Hot orders can overload one partition; use many partitions and stable order keys
 
 1. [Open the Kafka practice lab](#interactive-lab). With **Apply every event on arrival**, deliver SHIPPED v3, then PAID v2. Watch the customer-facing status rewind.
 2. Switch to **Check version and transition** and repeat the same deliveries. Look for v3 in the waiting queue and watch it apply after v2.
-3. Replay PAID v2, then deliver invalid PAID v4. Use the trace to explain why one is ignored and the other is rejected.
+3. Use **Replay last offset** after delivering PAID v2, then deliver invalid PAID v4. Use the trace to explain why the repeated offset is ignored and the new record is rejected even though its business version comes next.
 
 ## Conclusion
 

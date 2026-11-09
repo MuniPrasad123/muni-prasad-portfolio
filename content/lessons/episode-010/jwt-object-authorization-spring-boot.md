@@ -194,7 +194,7 @@ The DTO returns only the fields the caller needs. Do not expose the JPA entity w
 
 ## 7. Interactive experiment
 
-Open the companion **Interactive Security Decision Lab**. Select Alice or Bob, switch the requested order, toggle token integrity/audience/scope, and compare **unsafe ID-only lookup** versus **owner-and-tenant scoped lookup**. The lab visualizes decision stages and HTTP outcomes. It is a **conceptual simulation**; it does not issue or cryptographically validate JWTs and is not a penetration-testing tool.
+In the [authorization lab](#interactive-lab), choose **Reproduce an ID-only leak** to see a valid Alice token return Bob’s order. Switch to the secure lookup and compare the HTTP response and repository predicate. Then try **Wrong audience** and **Missing scope**. Follow the trace to see which requests stop before reaching the repository.
 
 ## 8. Three practice exercises
 
