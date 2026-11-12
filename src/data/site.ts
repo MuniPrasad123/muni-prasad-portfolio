@@ -25,7 +25,6 @@ const projectProfiles: Record<string, { slug: string; category: string; diagram:
   DharmaAI: { slug: 'dharmaai', category: 'Applied AI', diagram: 'voice', approach: 'Built a voice-based book assistant using OpenAI file retrieval and speech-to-text / text-to-speech. A custom RAG pipeline and agent-based features are roadmap items.' },
   HelpCorner: { slug: 'helpcorner', category: 'Full-stack & AWS', diagram: 'helpcorner', approach: 'Combined donation coordination with MongoDB records, SQS location messages, containerization, and practical AWS setup.' },
   'Himaja Communication ERP': { slug: 'himaja-communication-erp', category: 'Business workflows', diagram: 'workflow', approach: 'Mapped customer and service-tracking needs into connected operational workflows.' },
-  'Cloud & DevOps Portfolio': { slug: 'cloud-devops-portfolio', category: 'Cloud & DevOps', diagram: 'cicd', approach: 'Hands-on Spring Boot examples around containerization, CI/CD, Kubernetes, and cloud deployment; these are technical demonstrations rather than client systems.' },
 }
 export const portfolioProjects = projects.map(project => ({
   ...project,
@@ -42,8 +41,8 @@ export const careerHistory = experiences.map(item => ({
 }))
 
 const credentialType: Record<string, string> = {
-  'Oracle Multicloud Certified Foundations Associate': 'Certification',
   'Oracle Cloud Infrastructure Certified Architect Associate': 'Certification',
+  'Oracle Multicloud Certified Foundations Associate': 'Certification',
   'Agentic AI Certified Foundations Associate': 'Certification',
   'Oracle Cloud Infrastructure Certified AI Foundations Associate': 'Certification',
   'Confluent Apache Kafka Fundamentals Accreditation': 'Accreditation',

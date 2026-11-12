@@ -9,7 +9,6 @@ const categories = [
   { value: 'All', label: 'All' },
   { value: 'Professional contribution', label: 'Professional work' },
   { value: 'Independent application', label: 'Independent apps' },
-  { value: 'Technical blueprint', label: 'Technical blueprints' },
 ]
 
 export function ProjectGallery() {

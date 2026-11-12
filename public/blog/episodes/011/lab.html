@@ -30,62 +30,154 @@ progress{width:100%;height:14px;accent-color:#e7c779}
 .controls{margin-top:12px}.quiz button{flex:1 1 14rem}#quiz-feedback{min-height:2em}
 @media(max-width:560px){.comparison{grid-template-columns:1fr}.journey{gap:3px}.node{font-size:.73rem;padding:10px 2px}.journey>span{font-size:.7rem}.controls button{flex:1 1 8rem}.step-head{align-items:start}}
 @media(prefers-reduced-motion:reduce){.route.run .packet{animation:none;opacity:1;left:50%}}
+
+/* Keep the incident and its consequences together without reducing readable text. */
+body{max-width:74rem;padding:clamp(12px,2vw,20px)}
+header h1{font-size:clamp(1.25rem,2.5vw,1.65rem)}
+header .eyebrow{margin:0 0 6px}header .hint{font-size:.92rem}
+.workspace{padding:16px}
+.toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+.toolbar label{margin:0;flex:1 1 230px;font-size:.85rem}.toolbar select{display:block;width:100%;margin-top:4px}
+.toolbar .controls{margin:0;flex:2 1 330px}
+.toolbar button{padding:8px 10px;font-size:.88rem}
+#mission{font-size:.9rem;margin:12px 0}
+.lab-columns{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+.journey{margin:0 0 10px;gap:4px}.node{padding:12px 3px;font-size:.79rem}.node small{font-size:.68rem}
+.step-head{font-size:.8rem}.step-head label{margin:0}
+.current-step{margin:14px 0;border-left:3px solid #e7c779;border-radius:8px;background:#0a2419;padding:14px}
+#step-title{margin:0;font-size:1.05rem}#explanation{border:0;padding:0;font-size:.93rem}
+#takeaway{font-size:.85rem}
+.results>h2{font-size:.95rem;margin-bottom:8px}
+.consumer{padding:10px}.consumer h3{font-size:.8rem;margin:0;color:#c4d4c5}
+.consumer .status{font-size:1.03rem;margin:8px 0}.consumer p{font-size:.8rem}
+.consumer .decision{min-height:0;margin:8px 0;padding-top:8px}.consumer .state{font-size:.73rem}
+.consumer .writes,.consumer .queue{margin:6px 0}
+.trace-heading{margin-top:14px!important}.trace{height:360px;max-height:360px;padding:10px 10px 10px 28px;border:1px solid #577361;border-radius:10px;background:#0a2419;font-size:.82rem}
+.trace li{padding:5px 0}.trace p{font-size:.79rem}
+.reading-notes{border-top:1px solid #577361;padding-top:10px;margin-top:14px;font-size:.86rem}
+.reading-notes summary{cursor:pointer;color:#e7c779;min-height:32px;padding:4px 0}
+@media(max-width:780px){.lab-columns{grid-template-columns:1fr}.toolbar .controls{flex-basis:100%}.comparison{grid-template-columns:1fr 1fr}.results .trace{height:280px;max-height:280px}.controls button{flex:1 1 auto}}
+@media(max-width:390px){.comparison{grid-template-columns:1fr}.journey{flex-wrap:wrap}.node{flex-basis:40%}.journey>span{display:none}}
+.journey .node{background:#123426;color:#f5f1e7;min-height:100px;cursor:pointer;border:1px solid #577361;transition:border-color .2s,background .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.node .component-icon{font-size:1.65rem;line-height:1.2}.node strong{font-size:.75rem}.node small{font-weight:400}
+.journey .node:hover,.journey .node[aria-pressed="true"]{border-color:#e7c779;background:#294432}
+.journey .node.active{box-shadow:inset 0 0 0 1px #e7c779;border-color:#e7c779}
+.component-help{font-size:.8rem;color:#c4d4c5;margin:8px 0;min-height:3.1em}
+.route{height:44px;border:1px dashed #577361;border-radius:10px;background:#163c2b}
+.route-label{position:absolute;left:12px;top:12px;font-size:.72rem;color:#c4d4c5;letter-spacing:.04em}
+.packet{top:14px;left:35%;width:14px;height:14px;z-index:1}
+@keyframes travel{0%{left:35%;opacity:1}90%{opacity:1}100%{left:65%;opacity:0}}
+.consumer.changed{border-color:#e7c779}.consumer h3{display:flex;gap:5px;align-items:center}
+.event-label{display:block;font-size:.78rem;color:#e7c779;margin:0 0 8px}
+@media(prefers-reduced-motion:reduce){.journey .node{transition:none}}
+.route{height:96px;background:radial-gradient(ellipse at 45% 100%,#27533b 0,transparent 65%),#0b241b;isolation:isolate;overflow:hidden}
+.route-label{top:10px;font-size:.65rem;color:#e7c779;z-index:2}
+.stream-wire{position:absolute;left:16px;right:16px;top:62px;height:1px;background:linear-gradient(90deg,#577361,#e7c779,#577361)}
+.stream-end{position:absolute;right:10px;top:45px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#254534;border:1px solid #a4b8a7;z-index:2}
+.event-chip{position:absolute;top:43px;left:14px;padding:5px 10px;border:1px solid #e7c779;border-radius:7px;background:#223d2d;color:#ffe2a1;font-size:.75rem;white-space:nowrap;box-shadow:0 0 18px #e7c77922;z-index:1}
+.stream-trail{position:absolute;left:14px;top:62px;width:24%;height:2px;background:linear-gradient(90deg,transparent,#e7c779);opacity:0}
+.route.is-moving .event-chip{animation:event-flight 3.8s ease-in-out infinite}
+.route.is-moving .stream-trail{animation:trail-flight 3.8s ease-in-out infinite}
+.route.is-moving .stream-end{animation:receive-glow 3.8s ease-in-out infinite}
+@keyframes event-flight{0%,12%{transform:translateX(0);opacity:0}20%{opacity:1}70%,82%{transform:translateX(var(--flight,180px));opacity:1}95%,100%{transform:translateX(var(--flight,180px));opacity:0}}
+@keyframes trail-flight{0%,18%{transform:translateX(0);opacity:0}30%{opacity:.8}75%{transform:translateX(var(--flight,180px));opacity:0}100%{opacity:0}}
+@keyframes receive-glow{0%,65%,100%{box-shadow:0 0 0 0 #e7c77900}75%{box-shadow:0 0 0 9px #e7c77922}}
+.motion-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.72rem;color:#c4d4c5;margin-top:-5px;margin-bottom:10px}
+.motion-toolbar button{min-height:36px;padding:4px 9px;font-size:.75rem}
+.route.motion-paused *{animation-play-state:paused!important}
+.journey .node.active .component-icon{animation:node-breathe 3.8s ease-in-out infinite}
+@keyframes node-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){.route.is-moving *,.journey .node.active .component-icon{animation:none!important}.event-chip{opacity:1;transform:none}.stream-trail{display:none}}
+
+/* Navy simulation surface, matching the reference lab. */
+.workspace{background:linear-gradient(135deg,#102137,#0b1729);border-color:#2b435e;color:#eef6ff;border-radius:18px}
+.workspace .hint,.component-help,.state,.motion-toolbar,.consumer h3{color:#b8cadb}
+.workspace select{background:#0a1728;color:#eef6ff;border-color:#4b6680}
+.workspace button{background:#087d9a;border-color:#1ca7bd;color:#f3fbff}
+.workspace button.secondary{background:#16344a;border-color:#3a627d;color:#f3fbff}
+.workspace button:hover:not(:disabled){background:#1d4762}
+.workspace button:focus-visible,.workspace select:focus-visible{outline-color:#ffc97d}
+.workspace .journey .node{background:#10243b;border-color:#42627e;color:#eef6ff}
+.workspace .journey .node:hover,.workspace .journey .node[aria-pressed="true"]{background:#17394e;border-color:#52ddf5}
+.workspace .journey .node.active{border-color:#ffc97d;box-shadow:inset 0 0 0 1px #ffc97d}
+.workspace .consumer,.workspace .trace{background:#0a192a;border-color:#2b435e}
+.workspace .consumer.changed{border-color:#ffc97d}
+.workspace .consumer .decision,.workspace .trace li,.workspace .reading-notes{border-color:#2b435e}
+.workspace #safe .status{color:#54e7ae}
+.workspace #unsafe .status{color:#ffb1ad}
+.workspace .current-step{background:#0a192a;border-color:#ffc97d}
+.workspace .route{background:radial-gradient(ellipse at 45% 100%,#1e4358 0,transparent 65%),#0b1e30;border-color:#42627e}
+.workspace .route-label{color:#a4b7cc}
+.workspace .stream-wire{background:linear-gradient(90deg,#42627e,#52ddf5,#42627e)}
+.workspace .stream-end{background:#16344a;border-color:#52ddf5}
+.workspace .event-chip{background:#16344a;border-color:#52ddf5;color:#d6faff}
+.workspace progress{accent-color:#52ddf5}
+.workspace .reading-notes summary{color:#8ceadb}
 </style>
 </head>
 <body>
-<p class="eyebrow">Architecture in Motion · Episode 011 · Kafka ordering</p>
-<h1>The parcel is shipped. Why did My Orders go backwards?</h1>
-<p>A delayed payment event overwrites a newer shipping update. Help the shopper get a trustworthy status: compare <strong>blind updates</strong> with <strong>version + transition checks</strong> on the same deliveries.</p>
-<p class="hint">Illustrative order #1042. The payment and shipment already happened in the authoritative system. We simulate only its customer-facing status view—not charges or warehouse actions.</p>
-<section class="panel">
-<h2>1. Choose an incident</h2>
-<div class="controls scenarios" role="group" aria-label="Choose an incident">
-<button type="button" data-scenario="delay" aria-pressed="true">Delayed payment</button>
-<button type="button" data-scenario="duplicate" class="secondary" aria-pressed="false">Duplicate delivery</button>
-<button type="button" data-scenario="invalid" class="secondary" aria-pressed="false">Invalid transition</button>
-<button type="button" data-scenario="healthy" class="secondary" aria-pressed="false">Healthy order</button>
-</div>
-<p id="mission"></p>
-</section>
-<section class="panel">
-<h2>2. Deliver an event. Follow the decision.</h2>
-<div class="journey" aria-label="Simplified event processing path">
-<div class="node">Order owner<small>Issues versions</small></div><span aria-hidden="true">→</span>
-<div class="node">Kafka + retry<small>Delivers records</small></div><span aria-hidden="true">→</span>
-<div class="node">Consumer<small>Checks or overwrites</small></div><span aria-hidden="true">→</span>
-<div class="node">My Orders<small>Customer view</small></div>
-</div>
-<div id="route" class="route" aria-hidden="true"><span class="packet"></span></div>
-<div class="step-head"><label for="progress">Incident progress</label><span id="step-count">0 / 4 steps</span></div>
-<progress id="progress" value="0" max="4"></progress>
+<header>
+<p class="eyebrow">Episode 011 · Kafka ordering lab</p>
+<h1>Why did tracking move from Shipped back to Paid?</h1>
+<p class="hint"><strong>Payment succeeded. Checkout confirmed the order.</strong> A delayed payment event changes only the separate tracking view—not the payment itself.</p>
+</header>
+<section class="panel workspace">
+<div class="toolbar">
+<label for="scenario">Failure scenario
+<select id="scenario">
+<option value="delay">Delayed payment event</option>
+<option value="duplicate">Duplicate delivery</option>
+<option value="invalid">Invalid transition</option>
+<option value="healthy">Healthy order</option>
+</select>
+</label>
 <div class="controls">
 <button type="button" id="next">Next event →</button>
 <button type="button" id="play" class="secondary" aria-pressed="false">Auto-play</button>
 <button type="button" id="previous" class="secondary">Previous</button>
 <button type="button" id="reset" class="secondary">Reset</button>
 </div>
-<div role="status" aria-live="polite" aria-atomic="true"><h3 id="step-title"></h3><p id="explanation"></p></div>
-<div class="comparison">
-<section id="unsafe" class="consumer"><h2>Without protection · overwrite on arrival</h2><p class="status"></p><span class="state"></span><p class="decision"></p><p class="writes"></p></section>
-<section id="safe" class="consumer"><h2>With protection · version + state guard</h2><p class="status"></p><span class="state"></span><p class="decision"></p><p class="queue"></p><p class="writes"></p></section>
+</div>
+<p id="mission" class="hint"></p>
+<div class="lab-columns">
+<div class="simulation-main">
+<div class="journey" aria-label="Simplified event processing path">
+<button type="button" class="node" data-component="owner" aria-pressed="false"><span class="component-icon" aria-hidden="true">📦</span><strong>Order service</strong><small>Assigns versions</small></button><span aria-hidden="true">→</span>
+<button type="button" class="node" data-component="kafka" aria-pressed="false"><span class="component-icon" aria-hidden="true">📨</span><strong>Kafka + retry</strong><small>Delivers events</small></button><span aria-hidden="true">→</span>
+<button type="button" class="node" data-component="consumer" aria-pressed="false"><span class="component-icon" aria-hidden="true">⚙️</span><strong>Consumer</strong><small>Checks status</small></button><span aria-hidden="true">→</span>
+<button type="button" class="node" data-component="shopper" aria-pressed="false"><span class="component-icon" aria-hidden="true">🛍️</span><strong>My Orders</strong><small>Tracking view</small></button>
+</div>
+<p id="component-help" class="component-help" aria-live="polite">Select an icon to explore its responsibility. Then deliver the next event.</p>
+<div id="route" class="route is-moving" aria-hidden="true"><span class="route-label">KAFKA → CONSUMER · EVENT DELIVERY</span><span class="stream-wire"></span><span class="stream-trail"></span><span id="event-chip" class="event-chip">📨 Event notification</span><span id="stream-end" class="stream-end">⚙️</span></div>
+<div class="motion-toolbar"><span id="motion-caption">Motion preview · no events processed yet</span><button id="motion-toggle" class="secondary" type="button" aria-pressed="false">Pause motion</button></div>
+<div class="step-head"><label for="progress">Incident progress</label><span id="step-count">0 / 4 steps</span></div>
+<progress id="progress" value="0" max="4"></progress>
+<div class="current-step" role="status" aria-live="polite" aria-atomic="true">
+<span id="event-label" class="event-label"></span><h2 id="step-title"></h2><p id="explanation"></p>
 </div>
 <p id="takeaway" class="hint"></p>
-</section>
-<section class="panel">
-<h2>3. Read the event trace</h2>
-<p class="hint">Chronological order. A Kafka offset locates a record in one topic partition; a business version sequences this order. Recovery is a separate step, not a new Kafka record.</p>
+<details class="reading-notes"><summary>How to read this simulation</summary>
+<p>Both consumers receive identical notifications. A Kafka offset identifies a record in one topic partition; an order version identifies its business sequence. Recovery is a separate worker step, not a new Kafka record.</p>
+<p>The tracking view begins at CREATED v1, behind the order service. A held event means tracking is checking updates; it does not mean checkout or the actual payment failed.</p>
+<p>This is an in-memory browser model. Production needs durable waiting events, atomic database checks, and reconciliation with the order service.</p>
+</details>
+</div>
+<aside class="results" aria-label="Consumer comparison and event trace">
+<h2>What the shopper sees</h2>
+<div class="comparison">
+<section id="unsafe" class="consumer"><h3><span aria-hidden="true">⚠️</span> Without protection</h3><p class="status"></p><span class="state"></span><p class="decision"></p><p class="writes"></p></section>
+<section id="safe" class="consumer"><h3><span aria-hidden="true">🛡️</span> With version + state checks</h3><p class="status"></p><span class="state"></span><p class="decision"></p><p class="queue"></p><p class="writes"></p></section>
+</div>
+<h2 class="trace-heading">Event trace · first to last</h2>
 <ol id="trace" class="trace" tabindex="0" aria-label="Chronological event trace"></ol>
-</section>
-<section class="panel quiz">
-<h2>Predict the fix</h2>
-<p>Both events use orderId as their key. Can a retry still deliver PAID v2 after SHIPPED v3 was processed?</p>
-<div class="controls"><button type="button" id="answer-yes" class="secondary">Yes: main and retry processing can overtake</button><button type="button" id="answer-no" class="secondary">No: the key sorts business versions</button></div>
+</aside>
+</div>
+<details class="quiz reading-notes">
+<summary>Check your understanding</summary>
+<p>Can PAID v2 be processed after SHIPPED v3 even when both events use orderId as their key?</p>
+<div class="controls"><button type="button" id="answer-yes" class="secondary">Yes: retry processing can fall behind</button><button type="button" id="answer-no" class="secondary">No: the key sorts business versions</button></div>
 <output id="quiz-feedback" aria-live="polite"></output>
-</section>
-<section class="panel">
-<h2>From this lab to a real consumer</h2>
-<p><strong>Partition by orderId, preserve processing order, and check business state atomically.</strong> Persist held events before acknowledging Kafka. Alert on aging gaps; recover from the order authority instead of inventing missing events.</p>
-<p class="hint">This browser model resets when reloaded. It has no real Kafka, durable queue, database transactions, or external side effects. Real transitions also cover cancellations, refunds, and partial shipments.</p>
+</details>
 </section>
 <script>
 const $ = id => document.getElementById(id);
@@ -95,18 +187,18 @@ const shipped = {status:'SHIPPED',version:3,record:'main · partition 2 · offse
 const recovery = {recover:true};
 const scenarios = {
   delay: {
-    mission:'PAID v2 is delayed in a retry path. Predict what happens when SHIPPED v3 arrives first.',
+    mission:'Payment succeeded and the parcel was dispatched. Processing its PAID v2 notification is delayed. What should tracking show?',
     steps:[
-      {event:shipped,title:'Shipment arrives before the delayed payment',why:'The parcel is already shipped upstream, but this view still has CREATED v1. Blind updates show Shipped immediately. The guard holds v3 until v2 is validated.'},
-      {event:delayedPaid,title:'The delayed payment finally arrives',why:'The unsafe screen rewinds to Paid. The guard can now apply v2. It still holds v3 until the recovery worker rechecks it.'},
+      {event:shipped,title:'The shipment event arrives before the payment event',why:'Checkout already confirmed payment and the parcel was dispatched. Tracking still has CREATED v1. The unsafe consumer shows Shipped; the protected consumer holds v3 until the PAID v2 event is recorded. Checkout confirmation remains valid.'},
+      {event:delayedPaid,title:'The delayed payment event finally arrives',why:'No new payment happens: this event describes the original successful payment. The unsafe screen goes backwards to Paid. The protected consumer applies v2 and waits for recovery to recheck v3.'},
       {event:recovery,title:'Recover the waiting shipment update',why:'The recovery worker applies waiting v3 only after seeing PAID v2. The protected screen catches up to Shipped without guessing a missing state.'},
       {event:delayedPaid,title:'Replay the old payment record',why:'An at-least-once delivery can repeat an old record. Blind updates still show Paid; the guard ignores v2 because it already applied v3.'}
     ],takeaway:'Fix: retain missing-version events durably, apply the valid predecessor, then recheck the waiting event. Replays must not rewind the projection.'
   },
   duplicate: {
-    mission:'A consumer retries after processing payment. Should another delivery create another projection write?',
+    mission:'Payment has already succeeded. Its notification is delivered twice. Should tracking update twice?',
     steps:[
-      {event:paid,title:'Payment v2 is processed',why:'Both consumers move from Created to Paid. The guarded update atomically checks CREATED v1 before writing PAID v2.'},
+      {event:paid,title:'The successful-payment event is processed',why:'Both consumers move from Created to Paid. The guarded update atomically checks CREATED v1 before writing PAID v2.'},
       {event:paid,title:'The exact same payment record is replayed',why:'The unsafe handler writes again. The guard recognizes that v2 is already applied and leaves the state unchanged. Emails or charges need separate idempotency protection.'},
       {event:shipped,title:'Shipment v3 arrives',why:'Both screens reach Shipped. Compare the write counters: repeating a delivery did not require a second guarded transition.'}
     ],takeaway:'Fix: treat an already-applied event as a no-op. Delivery count is not a count of business transitions.'
@@ -114,20 +206,44 @@ const scenarios = {
   invalid: {
     mission:'Versions increase from 2 to 3 to 4. Is an increasing number enough to trust every status?',
     steps:[
-      {event:paid,title:'Payment v2 is validated',why:'CREATED → PAID is allowed, so both consumers show Paid.'},
-      {event:shipped,title:'Shipment v3 is validated',why:'PAID → SHIPPED is allowed, so both consumers show Shipped.'},
+      {event:paid,title:'The PAID v2 event passes validation',why:'CREATED → PAID is allowed, so both consumers show Paid.'},
+      {event:shipped,title:'The SHIPPED v3 event passes validation',why:'PAID → SHIPPED is allowed, so both consumers show Shipped.'},
       {event:{status:'PAID',version:4,record:'main · partition 2 · offset 43'},title:'An impossible PAID v4 arrives after shipping',why:'v4 is consecutive, but SHIPPED → PAID is invalid in this model. The guard rejects the event for investigation; it does not silently consume that business version.'}
     ],takeaway:'Fix: validate the transition as well as the version. Quarantine contradictions and reconcile with the order authority.'
   },
   healthy: {
-    mission:'Start with the happy path: deliver payment and shipment in business order.',
+    mission:'Normal processing: checkout has succeeded. Deliver the payment event, then the later shipment event.',
     steps:[
-      {event:paid,title:'Payment v2 arrives first',why:'Both consumers show Paid. The guard verifies that the order was Created at v1.'},
-      {event:shipped,title:'Shipment v3 follows payment',why:'Both show Shipped. The guarded consumer confirms the previous state was Paid at v2.'}
+      {event:paid,title:'The PAID v2 event arrives first',why:'Both consumers show Paid. The guard verifies that the order was Created at v1.'},
+      {event:shipped,title:'The SHIPPED v3 event follows PAID v2',why:'Both show Shipped. The guarded consumer confirms the previous state was Paid at v2.'}
     ],takeaway:'The happy path looks the same. The protection matters when delivery is delayed, duplicated, or inconsistent.'
   }
 };
 let scenario='delay', cursor=0, timer=null;
+const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
+let motionPaused=motionPreference.matches;
+function syncMotion(){
+  $('route').classList.toggle('motion-paused',motionPaused);
+  $('motion-toggle').textContent=motionPaused?'Resume motion':'Pause motion';
+  $('motion-toggle').setAttribute('aria-pressed',String(motionPaused));
+  document.querySelectorAll('.component-icon').forEach(icon=>icon.style.animationPlayState=motionPaused?'paused':'running');
+}
+$('motion-toggle').onclick=()=>{motionPaused=!motionPaused;syncMotion();};
+motionPreference.addEventListener('change',event=>{motionPaused=event.matches;syncMotion();});
+const routeSizer=new ResizeObserver(()=>{
+  $('route').style.setProperty('--flight',Math.max(0,$('route').clientWidth-$('event-chip').offsetWidth-65)+'px');
+});
+routeSizer.observe($('route'));
+const components={
+  owner:'📦 Order service: records the real order state and assigns its business version. Checkout confirmation comes from this service, not from the tracking consumer.',
+  kafka:'📨 Kafka + retry: carries notifications of completed actions. A failed event can wait in a retry topic while later events are processed.',
+  consumer:'⚙️ Consumer: updates the tracking database. The protected version checks the expected version and allowed status change before writing.',
+  shopper:'🛍️ My Orders: shows the tracking database to the shopper. A late update must not overwrite a newer validated status.'
+};
+document.querySelectorAll('[data-component]').forEach(button=>button.onclick=()=>{
+  document.querySelectorAll('[data-component]').forEach(node=>node.setAttribute('aria-pressed',String(node===button)));
+  $('component-help').textContent=components[button.dataset.component];
+});
 function fresh(){return {status:'CREATED',version:1,writes:0,pending:new Map(),decision:'No event delivered yet.'};}
 function accept(state,event){state.status=event.status;state.version=event.version;state.writes++;}
 function process(state,event,guard){
@@ -153,7 +269,7 @@ function drawPanel(id,state,guard){
   panel.querySelector('.status').textContent=names[state.status];
   panel.querySelector('.state').textContent='Persisted '+state.status+' · version '+state.version;
   panel.querySelector('.decision').textContent=state.decision;
-  panel.querySelector('.writes').textContent=state.writes+' projection write'+(state.writes===1?'':'s')+' this run';
+  panel.querySelector('.writes').textContent=state.writes+' tracking update'+(state.writes===1?'':'s')+' this run';
   if(guard)panel.querySelector('.queue').textContent=state.pending.size?'Waiting: '+[...state.pending.values()].map(e=>e.status+' v'+e.version).join(', ')+' · checking updates':'Waiting queue: empty';
 }
 function render(animate=false){
@@ -174,12 +290,27 @@ function render(animate=false){
   $('step-count').textContent=cursor+' / '+config.steps.length+' steps';
   $('previous').disabled=cursor===0;$('next').disabled=cursor===config.steps.length;
   const step=config.steps[cursor-1];
+  const event=step?.event;
+  $('event-label').textContent=event?(event.recover?'↻ Recovery worker · recheck the waiting event':'📨 '+event.status+' v'+event.version+' · '+event.record):'Order #1042 · checkout confirmed';
+  document.querySelectorAll('[data-component]').forEach(node=>{
+    node.classList.toggle('active',!!event&&(node.dataset.component==='consumer'||(!event.recover&&node.dataset.component==='kafka')));
+    node.setAttribute('aria-pressed','false');
+  });
+  $('component-help').textContent=event?(event.recover?'The recovery worker reuses the same consumer checks. No new Kafka record is delivered.':'The highlighted components are delivering and processing this event. Select any icon for an explanation.'):'Select an icon to explore its responsibility. Then deliver the next event.';
+  $('unsafe').classList.toggle('changed',!!event&&!event.recover);
+  $('safe').classList.toggle('changed',!!event&&safe.decision.includes('Applied valid'));
   $('step-title').textContent=step?'Step '+cursor+': '+step.title:'Ready: predict the shopper’s next status';
-  $('explanation').textContent=step?step.why:'Both screens begin at Order received (CREATED v1). Read the incident, then advance one event at a time.';
+  $('explanation').textContent=step?step.why:'Checkout is already confirmed. Both tracking views are still at Order received (CREATED v1). Advance one event to see how they catch up.';
   $('takeaway').textContent=cursor===config.steps.length?'Experiment complete. '+config.takeaway:'Watch the state, the decision, and the waiting queue—not only the progress bar.';
-  document.querySelectorAll('[data-scenario]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.scenario===scenario)));
-  const route=$('route');route.classList.remove('run');
-  if(animate){void route.offsetWidth;route.classList.add('run');}
+  $('scenario').value=scenario;
+  const route=$('route');route.classList.remove('is-moving');
+  route.querySelector('.route-label').textContent=event?.recover?'WAITING QUEUE → CONSUMER · RECOVERY CHECK':'KAFKA → CONSUMER · EVENT DELIVERY';
+  $('event-chip').textContent=event?(event.recover?'↻ Recheck waiting SHIPPED v3':'📨 '+event.status+' v'+event.version):'📨 Event notification';
+  $('stream-end').textContent=event?.recover?'🛡️':'⚙️';
+  $('motion-caption').textContent=event?'Visual replay of this step · counters do not repeat':'Motion preview · no events processed yet';
+  void route.offsetWidth;route.classList.add('is-moving');
+  route.style.setProperty('--flight',Math.max(0,route.clientWidth-$('event-chip').offsetWidth-65)+'px');
+  syncMotion();
 }
 function stop(){clearInterval(timer);timer=null;$('play').textContent='Auto-play';$('play').setAttribute('aria-pressed','false');}
 function next(){if(cursor<scenarios[scenario].steps.length){cursor++;render(true);}if(cursor===scenarios[scenario].steps.length)stop();}
@@ -191,7 +322,7 @@ $('play').onclick=()=>{
   if(cursor===scenarios[scenario].steps.length){cursor=0;render();}
   timer=setInterval(next,4500);$('play').textContent='Pause auto-play';$('play').setAttribute('aria-pressed','true');next();
 };
-document.querySelectorAll('[data-scenario]').forEach(button=>button.onclick=()=>{stop();scenario=button.dataset.scenario;cursor=0;$('quiz-feedback').textContent='';render();});
+$('scenario').onchange=()=>{stop();scenario=$('scenario').value;cursor=0;$('quiz-feedback').textContent='';render();};
 $('answer-yes').onclick=()=>{$('quiz-feedback').textContent='Correct. A stable key gives partition affinity within a topic. Main and retry paths can still complete out of business order. Guard versions and transitions.';};
 $('answer-no').onclick=()=>{$('quiz-feedback').textContent='Try again. Kafka orders offsets within a partition; it does not sort events by business version or merge a retry topic into that order.';};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});

@@ -25,6 +25,6 @@ export function PracticeFrame({ src, title }: { src: string; title: string }) {
     src={src}
     sandbox="allow-scripts"
     onLoad={() => frame.current?.contentWindow?.postMessage('request-practice-height', '*')}
-    style={{ display: 'block', width: '100%', height, border: 0, marginTop: 16 }}
+    style={{ display: 'block', width: '100%', height, border: 0, borderRadius: 14, marginTop: 16 }}
   />
 }
