@@ -1,162 +1,201 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Episode 011 | Kafka Ordering Practice</title>
-  <link rel="stylesheet" href="../practice.css">
-<script src="../practice-frame.js" defer></script></head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Episode 011 | Stop Kafka Events Rewinding an Order</title>
+<link rel="stylesheet" href="../practice.css">
+<script src="../practice-frame.js" defer></script>
+<style>
+body{max-width:68rem} .eyebrow{color:#e7c779;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+.scenarios button[aria-pressed="true"]{background:#e7c779;color:#142417}
+.journey{display:flex;gap:8px;margin:16px 0;align-items:center}
+.node{flex:1;min-width:0;text-align:center;border:1px solid #577361;padding:12px 6px;border-radius:10px;font-size:.85rem}
+.node small{display:block;font-size:.72rem}
+.route{position:relative;height:18px;background:#183d2c;border-radius:20px;margin:12px 0;overflow:hidden}
+.packet{position:absolute;left:1%;top:2px;width:14px;height:14px;border-radius:50%;background:#e7c779;box-shadow:0 0 12px #e7c779;opacity:0}
+.route.run .packet{animation:travel 1.2s ease-in-out forwards}
+@keyframes travel{0%{left:1%;opacity:1}90%{opacity:1}100%{left:97%;opacity:0}}
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.consumer{border:1px solid #577361;padding:16px;border-radius:12px;background:#0a2419}
+.consumer h2{font-size:1rem}.status{font-size:1.45rem;line-height:1.3;margin:10px 0;font-weight:700}
+#unsafe .status{color:#ffb7ab}#safe .status{color:#a8e3b5}
+.consumer p{font-size:.9rem}.state{display:block;color:#c4d4c5;font-size:.8rem}
+.decision{min-height:4.3em;border-top:1px solid #577361;padding-top:10px}
+.step-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+progress{width:100%;height:14px;accent-color:#e7c779}
+#step-title{margin-top:16px;font-size:1.1rem}#explanation{border-left:3px solid #e7c779;padding-left:12px}
+.trace{max-height:24rem}.trace li{padding:10px 0;border-bottom:1px solid #365943}.trace p{margin:.25rem 0;font-size:.86rem}
+.trace strong{color:#e7c779}.trace small{display:block}
+.controls{margin-top:12px}.quiz button{flex:1 1 14rem}#quiz-feedback{min-height:2em}
+@media(max-width:560px){.comparison{grid-template-columns:1fr}.journey{gap:3px}.node{font-size:.73rem;padding:10px 2px}.journey>span{font-size:.7rem}.controls button{flex:1 1 8rem}.step-head{align-items:start}}
+@media(prefers-reduced-motion:reduce){.route.run .packet{animation:none;opacity:1;left:50%}}
+</style>
+</head>
 <body>
-  <h1>Can a late event rewind an order?</h1>
-  <p>Deliver events to the order projection yourself. Try shipping first, then paying, then replaying payment. Run the same sequence with both consumer policies.</p>
-
-  <div class="panel">
-    <label for="policy">Consumer policy</label>
-    <select id="policy">
-      <option value="arrival">Apply every event on arrival</option>
-      <option value="gate">Check version and transition</option>
-    </select>
-    <p id="policy-help" class="hint"></p>
-    <div class="controls">
-      <button type="button" data-version="2" data-status="PAID">Deliver PAID v2</button>
-      <button type="button" data-version="3" data-status="SHIPPED">Deliver SHIPPED v3</button>
-      <button type="button" data-version="4" data-status="PAID">Deliver invalid PAID v4</button>
-      <button type="button" id="replay" class="secondary">Replay last offset</button>
-      <button type="button" id="reset" class="secondary">Reset</button>
-    </div>
-    <p class="hint">Each delivery appends a record to the same partition. Replay redelivers the last record at its existing offset. Changing the policy resets the run.</p>
-  </div>
-
-  <dl class="metrics" aria-live="polite" aria-atomic="true">
-    <div><dt>Customer sees</dt><dd id="projection"></dd></div>
-    <div><dt>Waiting for a missing version</dt><dd id="pending"></dd></div>
-  </dl>
-
-  <section class="panel">
-    <h2>Delivery trace (newest first)</h2>
-    <ol id="trace" class="trace" aria-live="polite" tabindex="0" aria-label="Delivery trace"></ol>
-  </section>
-
-  <section class="panel">
-    <h2>Check your understanding</h2>
-    <p>Why can SHIPPED v3 arrive first even when both events use the same order key?</p>
-    <div class="controls">
-      <button type="button" class="secondary" id="offset">Kafka ignores partition offsets</button>
-      <button type="button" class="secondary" id="producer">Producers appended v3 first</button>
-    </div>
-    <output id="feedback"></output>
-  </section>
-  <small>Conceptual projection for one order. The pending events model a reconciliation queue. A real consumer needs durable handling for gaps and rejected transitions.</small>
-
-  <script>
-    const policy = document.getElementById('policy');
-    const trace = document.getElementById('trace');
-    const feedback = document.getElementById('feedback');
-    const pending = new Map();
-    const replay = document.getElementById('replay');
-    let offset;
-    let lastRecord;
-    let version;
-    let status;
-
-    function log(message) {
-      const entry = document.createElement('li');
-      entry.textContent = message;
-      trace.prepend(entry);
-      if (trace.childElementCount > 12) trace.lastElementChild.remove();
-      trace.scrollTop = 0;
-    }
-
-    function render() {
-      document.getElementById('projection').textContent = status + ' · v' + version;
-      document.getElementById('pending').textContent = [...pending.keys()]
-        .sort((a, b) => a - b).map(value => 'v' + value).join(', ') || 'None';
-    }
-
-    function reset() {
-      version = 1;
-      status = 'CREATED';
-      pending.clear();
-      offset = 0;
-      lastRecord = null;
-      replay.disabled = true;
-      trace.replaceChildren();
-      feedback.textContent = '';
-      document.getElementById('policy-help').textContent = policy.value === 'gate'
-        ? 'Apply the next version only if its business transition is valid.'
-        : 'Overwrite the projection whenever an event arrives, even during replay.';
-      log('Order created at v1.');
-      render();
-    }
-
-    function apply(nextVersion, nextStatus) {
-      version = nextVersion;
-      status = nextStatus;
-    }
-
-    function deliver(nextVersion, nextStatus) {
-      const event = nextStatus + ' v' + nextVersion;
-      if (policy.value === 'arrival') {
-        const previousVersion = version;
-        apply(nextVersion, nextStatus);
-        log(event + (nextVersion < previousVersion
-          ? ' overwrote a newer state. The customer saw the order rewind.'
-          : ' overwrote the customer-facing projection.'));
-        return;
-      }
-
-      if (nextVersion <= version) {
-        log(event + ' ignored. The projection already reached v' + version + '.');
-        return;
-      }
-      if (nextVersion > version + 1) {
-        log(pending.has(nextVersion)
-          ? event + ' is already waiting. Replay leaves the queue unchanged.'
-          : event + ' held. Version v' + (version + 1) + ' must come first.');
-        pending.set(nextVersion, nextStatus);
-        return;
-      }
-
-      const allowed = { CREATED: 'PAID', PAID: 'SHIPPED' };
-      if (allowed[status] !== nextStatus) {
-        log(event + ' rejected. ' + status + ' cannot transition to ' + nextStatus + '.');
-        return;
-      }
-
-      apply(nextVersion, nextStatus);
-      log(event + ' applied.');
-      const waitingVersion = version + 1;
-      if (pending.has(waitingVersion)) {
-        const waitingStatus = pending.get(waitingVersion);
-        pending.delete(waitingVersion);
-        deliver(waitingVersion, waitingStatus);
-      }
-    }
-
-    document.querySelectorAll('[data-version]').forEach(button => {
-      button.addEventListener('click', () => {
-        lastRecord = { version: Number(button.dataset.version), status: button.dataset.status, offset };
-        offset++;
-        replay.disabled = false;
-        log('Partition 2 · offset ' + lastRecord.offset + ' · received ' + lastRecord.status + ' v' + lastRecord.version + '.');
-        deliver(lastRecord.version, lastRecord.status);
-        render();
-      });
-    });
-    replay.addEventListener('click', () => {
-      log('Partition 2 · retry at offset ' + lastRecord.offset + '.');
-      deliver(lastRecord.version, lastRecord.status);
-      render();
-    });
-    policy.addEventListener('change', reset);
-    document.getElementById('reset').addEventListener('click', reset);
-    document.getElementById('offset').addEventListener('click', () => {
-      feedback.textContent = 'Try again. Kafka reads records in offset order within a partition.';
-    });
-    document.getElementById('producer').addEventListener('click', () => {
-      feedback.textContent = 'Correct. Kafka preserves append order within the partition. Aggregate versions capture business order.';
-    });
-    reset();
-  </script>
+<p class="eyebrow">Architecture in Motion · Episode 011 · Kafka ordering</p>
+<h1>The parcel is shipped. Why did My Orders go backwards?</h1>
+<p>A delayed payment event overwrites a newer shipping update. Help the shopper get a trustworthy status: compare <strong>blind updates</strong> with <strong>version + transition checks</strong> on the same deliveries.</p>
+<p class="hint">Illustrative order #1042. The payment and shipment already happened in the authoritative system. We simulate only its customer-facing status view—not charges or warehouse actions.</p>
+<section class="panel">
+<h2>1. Choose an incident</h2>
+<div class="controls scenarios" role="group" aria-label="Choose an incident">
+<button type="button" data-scenario="delay" aria-pressed="true">Delayed payment</button>
+<button type="button" data-scenario="duplicate" class="secondary" aria-pressed="false">Duplicate delivery</button>
+<button type="button" data-scenario="invalid" class="secondary" aria-pressed="false">Invalid transition</button>
+<button type="button" data-scenario="healthy" class="secondary" aria-pressed="false">Healthy order</button>
+</div>
+<p id="mission"></p>
+</section>
+<section class="panel">
+<h2>2. Deliver an event. Follow the decision.</h2>
+<div class="journey" aria-label="Simplified event processing path">
+<div class="node">Order owner<small>Issues versions</small></div><span aria-hidden="true">→</span>
+<div class="node">Kafka + retry<small>Delivers records</small></div><span aria-hidden="true">→</span>
+<div class="node">Consumer<small>Checks or overwrites</small></div><span aria-hidden="true">→</span>
+<div class="node">My Orders<small>Customer view</small></div>
+</div>
+<div id="route" class="route" aria-hidden="true"><span class="packet"></span></div>
+<div class="step-head"><label for="progress">Incident progress</label><span id="step-count">0 / 4 steps</span></div>
+<progress id="progress" value="0" max="4"></progress>
+<div class="controls">
+<button type="button" id="next">Next event →</button>
+<button type="button" id="play" class="secondary" aria-pressed="false">Auto-play</button>
+<button type="button" id="previous" class="secondary">Previous</button>
+<button type="button" id="reset" class="secondary">Reset</button>
+</div>
+<div role="status" aria-live="polite" aria-atomic="true"><h3 id="step-title"></h3><p id="explanation"></p></div>
+<div class="comparison">
+<section id="unsafe" class="consumer"><h2>Without protection · overwrite on arrival</h2><p class="status"></p><span class="state"></span><p class="decision"></p><p class="writes"></p></section>
+<section id="safe" class="consumer"><h2>With protection · version + state guard</h2><p class="status"></p><span class="state"></span><p class="decision"></p><p class="queue"></p><p class="writes"></p></section>
+</div>
+<p id="takeaway" class="hint"></p>
+</section>
+<section class="panel">
+<h2>3. Read the event trace</h2>
+<p class="hint">Chronological order. A Kafka offset locates a record in one topic partition; a business version sequences this order. Recovery is a separate step, not a new Kafka record.</p>
+<ol id="trace" class="trace" tabindex="0" aria-label="Chronological event trace"></ol>
+</section>
+<section class="panel quiz">
+<h2>Predict the fix</h2>
+<p>Both events use orderId as their key. Can a retry still deliver PAID v2 after SHIPPED v3 was processed?</p>
+<div class="controls"><button type="button" id="answer-yes" class="secondary">Yes: main and retry processing can overtake</button><button type="button" id="answer-no" class="secondary">No: the key sorts business versions</button></div>
+<output id="quiz-feedback" aria-live="polite"></output>
+</section>
+<section class="panel">
+<h2>From this lab to a real consumer</h2>
+<p><strong>Partition by orderId, preserve processing order, and check business state atomically.</strong> Persist held events before acknowledging Kafka. Alert on aging gaps; recover from the order authority instead of inventing missing events.</p>
+<p class="hint">This browser model resets when reloaded. It has no real Kafka, durable queue, database transactions, or external side effects. Real transitions also cover cancellations, refunds, and partial shipments.</p>
+</section>
+<script>
+const $ = id => document.getElementById(id);
+const paid = {status:'PAID',version:2,record:'main · partition 2 · offset 41'};
+const delayedPaid = {...paid,record:'retry · partition 2 · offset 7'};
+const shipped = {status:'SHIPPED',version:3,record:'main · partition 2 · offset 42'};
+const recovery = {recover:true};
+const scenarios = {
+  delay: {
+    mission:'PAID v2 is delayed in a retry path. Predict what happens when SHIPPED v3 arrives first.',
+    steps:[
+      {event:shipped,title:'Shipment arrives before the delayed payment',why:'The parcel is already shipped upstream, but this view still has CREATED v1. Blind updates show Shipped immediately. The guard holds v3 until v2 is validated.'},
+      {event:delayedPaid,title:'The delayed payment finally arrives',why:'The unsafe screen rewinds to Paid. The guard can now apply v2. It still holds v3 until the recovery worker rechecks it.'},
+      {event:recovery,title:'Recover the waiting shipment update',why:'The recovery worker applies waiting v3 only after seeing PAID v2. The protected screen catches up to Shipped without guessing a missing state.'},
+      {event:delayedPaid,title:'Replay the old payment record',why:'An at-least-once delivery can repeat an old record. Blind updates still show Paid; the guard ignores v2 because it already applied v3.'}
+    ],takeaway:'Fix: retain missing-version events durably, apply the valid predecessor, then recheck the waiting event. Replays must not rewind the projection.'
+  },
+  duplicate: {
+    mission:'A consumer retries after processing payment. Should another delivery create another projection write?',
+    steps:[
+      {event:paid,title:'Payment v2 is processed',why:'Both consumers move from Created to Paid. The guarded update atomically checks CREATED v1 before writing PAID v2.'},
+      {event:paid,title:'The exact same payment record is replayed',why:'The unsafe handler writes again. The guard recognizes that v2 is already applied and leaves the state unchanged. Emails or charges need separate idempotency protection.'},
+      {event:shipped,title:'Shipment v3 arrives',why:'Both screens reach Shipped. Compare the write counters: repeating a delivery did not require a second guarded transition.'}
+    ],takeaway:'Fix: treat an already-applied event as a no-op. Delivery count is not a count of business transitions.'
+  },
+  invalid: {
+    mission:'Versions increase from 2 to 3 to 4. Is an increasing number enough to trust every status?',
+    steps:[
+      {event:paid,title:'Payment v2 is validated',why:'CREATED → PAID is allowed, so both consumers show Paid.'},
+      {event:shipped,title:'Shipment v3 is validated',why:'PAID → SHIPPED is allowed, so both consumers show Shipped.'},
+      {event:{status:'PAID',version:4,record:'main · partition 2 · offset 43'},title:'An impossible PAID v4 arrives after shipping',why:'v4 is consecutive, but SHIPPED → PAID is invalid in this model. The guard rejects the event for investigation; it does not silently consume that business version.'}
+    ],takeaway:'Fix: validate the transition as well as the version. Quarantine contradictions and reconcile with the order authority.'
+  },
+  healthy: {
+    mission:'Start with the happy path: deliver payment and shipment in business order.',
+    steps:[
+      {event:paid,title:'Payment v2 arrives first',why:'Both consumers show Paid. The guard verifies that the order was Created at v1.'},
+      {event:shipped,title:'Shipment v3 follows payment',why:'Both show Shipped. The guarded consumer confirms the previous state was Paid at v2.'}
+    ],takeaway:'The happy path looks the same. The protection matters when delivery is delayed, duplicated, or inconsistent.'
+  }
+};
+let scenario='delay', cursor=0, timer=null;
+function fresh(){return {status:'CREATED',version:1,writes:0,pending:new Map(),decision:'No event delivered yet.'};}
+function accept(state,event){state.status=event.status;state.version=event.version;state.writes++;}
+function process(state,event,guard){
+  if(event.recover){
+    if(!guard){state.decision='No waiting queue exists. Recovery has nothing to apply.';return;}
+    const waiting=state.pending.get(state.version+1);
+    if(!waiting){state.decision='No next-version event is waiting.';return;}
+    state.pending.delete(waiting.version);
+    process(state,waiting,true);
+    state.decision='Recovery rechecked the waiting event. '+state.decision;return;
+  }
+  if(!guard){accept(state,event);state.decision='Overwrote the view with '+event.status+' v'+event.version+'.';return;}
+  if(event.version<=state.version){state.decision='Ignored replay/stale v'+event.version+'; already at v'+state.version+'.';return;}
+  if(event.version>state.version+1){state.pending.set(event.version,event);state.decision='Held v'+event.version+': missing v'+(state.version+1)+'.';return;}
+  const allowed={CREATED:'PAID',PAID:'SHIPPED'};
+  if(allowed[state.status]!==event.status){state.decision='Rejected '+state.status+' → '+event.status+'. Investigate; keep the last valid state.';return;}
+  accept(state,event);state.decision='Applied valid '+event.status+' v'+event.version+'.';
+}
+function add(tag,text,parent){const node=document.createElement(tag);node.textContent=text;parent.append(node);return node;}
+function drawPanel(id,state,guard){
+  const panel=$(id);
+  const names={CREATED:'Order received',PAID:'Paid · preparing your order',SHIPPED:'Shipped'};
+  panel.querySelector('.status').textContent=names[state.status];
+  panel.querySelector('.state').textContent='Persisted '+state.status+' · version '+state.version;
+  panel.querySelector('.decision').textContent=state.decision;
+  panel.querySelector('.writes').textContent=state.writes+' projection write'+(state.writes===1?'':'s')+' this run';
+  if(guard)panel.querySelector('.queue').textContent=state.pending.size?'Waiting: '+[...state.pending.values()].map(e=>e.status+' v'+e.version).join(', ')+' · checking updates':'Waiting queue: empty';
+}
+function render(animate=false){
+  const config=scenarios[scenario], unsafe=fresh(),safe=fresh();
+  $('trace').replaceChildren();
+  config.steps.slice(0,cursor).forEach((step,index)=>{
+    process(unsafe,step.event,false);process(safe,step.event,true);
+    const item=add('li','',$('trace'));
+    add('strong',step.title,item);
+    add('small',step.event.recover?'Recovery worker · no new Kafka record':step.event.record+' · '+step.event.status+' v'+step.event.version,item);
+    add('p','Without protection: '+unsafe.decision,item);
+    add('p','With protection: '+safe.decision,item);
+  });
+  if(!cursor)add('li','Order #1042 starts at CREATED v1. Press Next event or Auto-play.',$('trace'));
+  drawPanel('unsafe',unsafe,false);drawPanel('safe',safe,true);
+  $('mission').textContent=config.mission;
+  $('progress').max=config.steps.length;$('progress').value=cursor;
+  $('step-count').textContent=cursor+' / '+config.steps.length+' steps';
+  $('previous').disabled=cursor===0;$('next').disabled=cursor===config.steps.length;
+  const step=config.steps[cursor-1];
+  $('step-title').textContent=step?'Step '+cursor+': '+step.title:'Ready: predict the shopper’s next status';
+  $('explanation').textContent=step?step.why:'Both screens begin at Order received (CREATED v1). Read the incident, then advance one event at a time.';
+  $('takeaway').textContent=cursor===config.steps.length?'Experiment complete. '+config.takeaway:'Watch the state, the decision, and the waiting queue—not only the progress bar.';
+  document.querySelectorAll('[data-scenario]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.scenario===scenario)));
+  const route=$('route');route.classList.remove('run');
+  if(animate){void route.offsetWidth;route.classList.add('run');}
+}
+function stop(){clearInterval(timer);timer=null;$('play').textContent='Auto-play';$('play').setAttribute('aria-pressed','false');}
+function next(){if(cursor<scenarios[scenario].steps.length){cursor++;render(true);}if(cursor===scenarios[scenario].steps.length)stop();}
+$('next').onclick=next;
+$('previous').onclick=()=>{stop();cursor=Math.max(0,cursor-1);render();};
+$('reset').onclick=()=>{stop();cursor=0;$('quiz-feedback').textContent='';render();};
+$('play').onclick=()=>{
+  if(timer){stop();return;}
+  if(cursor===scenarios[scenario].steps.length){cursor=0;render();}
+  timer=setInterval(next,4500);$('play').textContent='Pause auto-play';$('play').setAttribute('aria-pressed','true');next();
+};
+document.querySelectorAll('[data-scenario]').forEach(button=>button.onclick=()=>{stop();scenario=button.dataset.scenario;cursor=0;$('quiz-feedback').textContent='';render();});
+$('answer-yes').onclick=()=>{$('quiz-feedback').textContent='Correct. A stable key gives partition affinity within a topic. Main and retry paths can still complete out of business order. Guard versions and transitions.';};
+$('answer-no').onclick=()=>{$('quiz-feedback').textContent='Try again. Kafka orders offsets within a partition; it does not sort events by business version or merge a retry topic into that order.';};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+render();
+</script>
 </body>
 </html>
