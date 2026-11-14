@@ -26,3 +26,5 @@
 .ordering-overview-grid p{font-size:16px;margin:8px 0;line-height:1.5}
 .ordering-overview-grid small{display:block;color:#c4cdbf;line-height:1.5}
 @media(max-width:600px){.ordering-overview{padding:16px}.ordering-overview-grid{grid-template-columns:1fr}.ordering-overview-grid>div+div{border-left:0;border-top:1px solid #d6b56844;padding:14px 0 0}}
+
+.video-chapters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.video-chapters button{padding:9px 12px;min-height:44px;border:1px solid #45664f;border-radius:8px;background:#0a2318;color:#f5f1e7;font-size:13px;cursor:pointer}.video-chapters button:hover{border-color:var(--gold);background:#173e2b}.video-chapters button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}

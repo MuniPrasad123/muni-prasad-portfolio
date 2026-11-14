@@ -1,147 +1,188 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Episode 012 | Redis Lease Practice</title>
-  <link rel="stylesheet" href="../practice.css">
-<script src="../practice-frame.js" defer></script></head>
-<body>
-  <h1>Who gets the last pair?</h1>
-  <p>Advance a race between two checkout workers. Both use token-safe unlock. Compare what happens when the database also checks available stock.</p>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Redis lease expiry: two shoppers, one pair</title><link rel="stylesheet" href="../practice.css"><script src="../practice-frame.js" defer></script><style>
+body{max-width:68rem} .eyebrow{color:#e7c779;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+.scenarios button[aria-pressed="true"]{background:#e7c779;color:#142417}
+.journey{display:flex;gap:8px;margin:16px 0;align-items:center}
+.node{flex:1;min-width:0;text-align:center;border:1px solid #577361;padding:12px 6px;border-radius:10px;font-size:.85rem}
+.node small{display:block;font-size:.72rem}
+.route{position:relative;height:18px;background:#183d2c;border-radius:20px;margin:12px 0;overflow:hidden}
+.packet{position:absolute;left:1%;top:2px;width:14px;height:14px;border-radius:50%;background:#e7c779;box-shadow:0 0 12px #e7c779;opacity:0}
+.route.run .packet{animation:travel 1.2s ease-in-out forwards}
+@keyframes travel{0%{left:1%;opacity:1}90%{opacity:1}100%{left:97%;opacity:0}}
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.consumer{border:1px solid #577361;padding:16px;border-radius:12px;background:#0a2419}
+.consumer h2{font-size:1rem}.status{font-size:1.45rem;line-height:1.3;margin:10px 0;font-weight:700}
+#unsafe .status{color:#ffb7ab}#safe .status{color:#a8e3b5}
+.consumer p{font-size:.9rem}.state{display:block;color:#c4d4c5;font-size:.8rem}
+.decision{min-height:4.3em;border-top:1px solid #577361;padding-top:10px}
+.step-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+progress{width:100%;height:14px;accent-color:#e7c779}
+#step-title{margin-top:16px;font-size:1.1rem}#explanation{border-left:3px solid #e7c779;padding-left:12px}
+.trace{max-height:24rem}.trace li{padding:10px 0;border-bottom:1px solid #365943}.trace p{margin:.25rem 0;font-size:.86rem}
+.trace strong{color:#e7c779}.trace small{display:block}
+.controls{margin-top:12px}.quiz button{flex:1 1 14rem}#quiz-feedback{min-height:2em}
+@media(max-width:560px){.comparison{grid-template-columns:1fr}.journey{gap:3px}.node{font-size:.73rem;padding:10px 2px}.journey>span{font-size:.7rem}.controls button{flex:1 1 8rem}.step-head{align-items:start}}
+@media(prefers-reduced-motion:reduce){.route.run .packet{animation:none;opacity:1;left:50%}}
 
-  <div class="panel">
-    <label for="policy">Inventory write policy</label>
-    <select id="policy">
-      <option value="blind">Decrement after an earlier stock check</option>
-      <option value="conditional">Atomically decrement only if stock is positive</option>
-    </select>
-    <label for="starting-stock">Starting inventory</label>
-    <select id="starting-stock">
-      <option value="1">1 pair · last item</option>
-      <option value="2">2 pairs · control case</option>
-    </select>
-    <p class="hint">Before advancing, predict whether both customers can receive a confirmation. Changing a setting resets the run.</p>
-    <div class="controls">
-      <button type="button" id="advance">Advance one event</button>
-      <button type="button" id="reset" class="secondary">Reset</button>
-    </div>
-  </div>
+/* Keep the incident and its consequences together without reducing readable text. */
+body{max-width:74rem;padding:clamp(12px,2vw,20px)}
+header h1{font-size:clamp(1.25rem,2.5vw,1.65rem)}
+header .eyebrow{margin:0 0 6px}header .hint{font-size:.92rem}
+.workspace{padding:16px}
+.toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+.toolbar label{margin:0;flex:1 1 230px;font-size:.85rem}.toolbar select{display:block;width:100%;margin-top:4px}
+.toolbar .controls{margin:0;flex:2 1 330px}
+.toolbar button{padding:8px 10px;font-size:.88rem}
+#mission{font-size:.9rem;margin:12px 0}
+.lab-columns{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+.journey{margin:0 0 10px;gap:4px}.node{padding:12px 3px;font-size:.79rem}.node small{font-size:.68rem}
+.step-head{font-size:.8rem}.step-head label{margin:0}
+.current-step{margin:14px 0;border-left:3px solid #e7c779;border-radius:8px;background:#0a2419;padding:14px}
+#step-title{margin:0;font-size:1.05rem}#explanation{border:0;padding:0;font-size:.93rem}
+#takeaway{font-size:.85rem}
+.results>h2{font-size:.95rem;margin-bottom:8px}
+.consumer{padding:10px}.consumer h3{font-size:.8rem;margin:0;color:#c4d4c5}
+.consumer .status{font-size:1.03rem;margin:8px 0}.consumer p{font-size:.8rem}
+.consumer .decision{min-height:0;margin:8px 0;padding-top:8px}.consumer .state{font-size:.73rem}
+.consumer .writes,.consumer .queue{margin:6px 0}
+.trace-heading{margin-top:14px!important}.trace{height:360px;max-height:360px;padding:10px 10px 10px 28px;border:1px solid #577361;border-radius:10px;background:#0a2419;font-size:.82rem}
+.trace li{padding:5px 0}.trace p{font-size:.79rem}
+.reading-notes{border-top:1px solid #577361;padding-top:10px;margin-top:14px;font-size:.86rem}
+.reading-notes summary{cursor:pointer;color:#e7c779;min-height:32px;padding:4px 0}
+@media(max-width:780px){.lab-columns{grid-template-columns:1fr}.toolbar .controls{flex-basis:100%}.comparison{grid-template-columns:1fr 1fr}.results .trace{height:280px;max-height:280px}.controls button{flex:1 1 auto}}
+@media(max-width:390px){.comparison{grid-template-columns:1fr}.journey{flex-wrap:wrap}.node{flex-basis:40%}.journey>span{display:none}}
+.journey .node{background:#123426;color:#f5f1e7;min-height:100px;cursor:pointer;border:1px solid #577361;transition:border-color .2s,background .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.node .component-icon{font-size:1.65rem;line-height:1.2}.node strong{font-size:.75rem}.node small{font-weight:400}
+.journey .node:hover,.journey .node[aria-pressed="true"]{border-color:#e7c779;background:#294432}
+.journey .node.active{box-shadow:inset 0 0 0 1px #e7c779;border-color:#e7c779}
+.component-help{font-size:.8rem;color:#c4d4c5;margin:8px 0;min-height:3.1em}
+.route{height:44px;border:1px dashed #577361;border-radius:10px;background:#163c2b}
+.route-label{position:absolute;left:12px;top:12px;font-size:.72rem;color:#c4d4c5;letter-spacing:.04em}
+.packet{top:14px;left:35%;width:14px;height:14px;z-index:1}
+@keyframes travel{0%{left:35%;opacity:1}90%{opacity:1}100%{left:65%;opacity:0}}
+.consumer.changed{border-color:#e7c779}.consumer h3{display:flex;gap:5px;align-items:center}
+.event-label{display:block;font-size:.78rem;color:#e7c779;margin:0 0 8px}
+@media(prefers-reduced-motion:reduce){.journey .node{transition:none}}
+.route{height:96px;background:radial-gradient(ellipse at 45% 100%,#27533b 0,transparent 65%),#0b241b;isolation:isolate;overflow:hidden}
+.route-label{top:10px;font-size:.65rem;color:#e7c779;z-index:2}
+.stream-wire{position:absolute;left:16px;right:16px;top:62px;height:1px;background:linear-gradient(90deg,#577361,#e7c779,#577361)}
+.stream-end{position:absolute;right:10px;top:45px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#254534;border:1px solid #a4b8a7;z-index:2}
+.event-chip{position:absolute;top:43px;left:14px;padding:5px 10px;border:1px solid #e7c779;border-radius:7px;background:#223d2d;color:#ffe2a1;font-size:.75rem;white-space:nowrap;box-shadow:0 0 18px #e7c77922;z-index:1}
+.stream-trail{position:absolute;left:14px;top:62px;width:24%;height:2px;background:linear-gradient(90deg,transparent,#e7c779);opacity:0}
+.route.is-moving .event-chip{animation:event-flight 3.8s ease-in-out infinite}
+.route.is-moving .stream-trail{animation:trail-flight 3.8s ease-in-out infinite}
+.route.is-moving .stream-end{animation:receive-glow 3.8s ease-in-out infinite}
+@keyframes event-flight{0%,12%{transform:translateX(0);opacity:0}20%{opacity:1}70%,82%{transform:translateX(var(--flight,180px));opacity:1}95%,100%{transform:translateX(var(--flight,180px));opacity:0}}
+@keyframes trail-flight{0%,18%{transform:translateX(0);opacity:0}30%{opacity:.8}75%{transform:translateX(var(--flight,180px));opacity:0}100%{opacity:0}}
+@keyframes receive-glow{0%,65%,100%{box-shadow:0 0 0 0 #e7c77900}75%{box-shadow:0 0 0 9px #e7c77922}}
+.motion-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.72rem;color:#c4d4c5;margin-top:-5px;margin-bottom:10px}
+.motion-toolbar button{min-height:36px;padding:4px 9px;font-size:.75rem}
+.route.motion-paused *{animation-play-state:paused!important}
+.journey .node.active .component-icon{animation:node-breathe 3.8s ease-in-out infinite}
+@keyframes node-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){.route.is-moving *,.journey .node.active .component-icon{animation:none!important}.event-chip{opacity:1;transform:none}.stream-trail{display:none}}
 
-  <dl class="metrics" aria-live="polite" aria-atomic="true">
-    <div><dt>Simulated time</dt><dd id="time"></dd></div>
-    <div><dt>Redis lease holder</dt><dd id="lease"></dd></div>
-    <div><dt>Database stock</dt><dd id="stock"></dd></div>
-    <div><dt>Reservations confirmed</dt><dd id="confirmed"></dd></div>
-  </dl>
+/* Navy simulation surface, matching the reference lab. */
+.workspace{background:linear-gradient(135deg,#102137,#0b1729);border-color:#2b435e;color:#eef6ff;border-radius:18px}
+.workspace .hint,.component-help,.state,.motion-toolbar,.consumer h3{color:#b8cadb}
+.workspace select{background:#0a1728;color:#eef6ff;border-color:#4b6680}
+.workspace button{background:#087d9a;border-color:#1ca7bd;color:#f3fbff}
+.workspace button.secondary{background:#16344a;border-color:#3a627d;color:#f3fbff}
+.workspace button:hover:not(:disabled){background:#1d4762}
+.workspace button:focus-visible,.workspace select:focus-visible{outline-color:#ffc97d}
+.workspace .journey .node{background:#10243b;border-color:#42627e;color:#eef6ff}
+.workspace .journey .node:hover,.workspace .journey .node[aria-pressed="true"]{background:#17394e;border-color:#52ddf5}
+.workspace .journey .node.active{border-color:#ffc97d;box-shadow:inset 0 0 0 1px #ffc97d}
+.workspace .consumer,.workspace .trace{background:#0a192a;border-color:#2b435e}
+.workspace .consumer.changed{border-color:#ffc97d}
+.workspace .consumer .decision,.workspace .trace li,.workspace .reading-notes{border-color:#2b435e}
+.workspace #safe .status{color:#54e7ae}
+.workspace #unsafe .status{color:#ffb1ad}
+.workspace .current-step{background:#0a192a;border-color:#ffc97d}
+.workspace .route{background:radial-gradient(ellipse at 45% 100%,#1e4358 0,transparent 65%),#0b1e30;border-color:#42627e}
+.workspace .route-label{color:#a4b7cc}
+.workspace .stream-wire{background:linear-gradient(90deg,#42627e,#52ddf5,#42627e)}
+.workspace .stream-end{background:#16344a;border-color:#52ddf5}
+.workspace .event-chip{background:#16344a;border-color:#52ddf5;color:#d6faff}
+.workspace progress{accent-color:#52ddf5}
+.workspace .reading-notes summary{color:#8ceadb}
+.lease-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}.lease-metrics>div{background:#0a192a;border:1px solid #2b435e;padding:9px;border-radius:9px}.lease-metrics dt{font-size:.73rem;color:#b8cadb}.lease-metrics dd{font-size:.84rem}.toolbar label{flex:1 1 180px}.toolbar .controls{flex:2 1 340px}.trace{height:360px;max-height:360px}@media(max-width:780px){.results .trace{height:280px;max-height:280px}}.workspace>h2{font-size:.9rem;margin:12px 0 8px}.lease-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}@media(max-width:600px){.lease-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}</style></head><body>
+<header><p class="eyebrow">Episode 012 · Redis lease expiry</p><h1>Two shoppers. One pair. Can both checkouts promise it?</h1><p class="hint">Compare the same worker pause with an unsafe stock write and a database-protected reservation. <strong>Reservations are not payments or final order confirmations.</strong></p></header>
+<section class="panel workspace">
+<div class="toolbar"><label for="policy">Protected write strategy<select id="policy"><option value="conditional">Atomic stock check</option><option value="fenced">Fencing + atomic stock check</option></select></label><label for="starting-stock">Starting inventory<select id="starting-stock"><option value="1">1 pair · last item</option><option value="2">2 pairs · control case</option></select></label><div class="controls"><button id="advance" type="button">Next event →</button><button id="play" type="button" class="secondary" aria-pressed="false">Auto-play</button><button id="previous" type="button" class="secondary">Previous</button><button id="reset" type="button" class="secondary">Reset</button></div></div>
+<p class="hint" id="mission">A gets a 10-second lease, then pauses. B takes over after expiry. Predict whether A can still reserve stock when it wakes up.</p>
+<h2>Shared lease snapshot</h2><dl class="lease-metrics"><div><dt>Simulated clock</dt><dd id="time"></dd></div><div><dt>Current Redis owner</dt><dd id="lease"></dd></div><div><dt>A's process</dt><dd id="worker-a"></dd></div><div><dt>B's lease remaining</dt><dd id="ttl"></dd></div></dl><div class="lab-columns"><div class="simulation-main">
+<div class="journey" aria-label="Checkout components">
+<button type="button" class="node" data-component="a" aria-pressed="false"><span class="component-icon" aria-hidden="true">🛒</span><strong>Worker A</strong><small>Shopper A</small></button><span aria-hidden="true">→</span>
+<button type="button" class="node" data-component="redis" aria-pressed="false"><span class="component-icon" aria-hidden="true">🔒</span><strong>Redis lease</strong><small>Temporary owner</small></button><span aria-hidden="true">→</span>
+<button type="button" class="node" data-component="b" aria-pressed="false"><span class="component-icon" aria-hidden="true">🛍️</span><strong>Worker B</strong><small>Shopper B</small></button><span aria-hidden="true">→</span>
+<button type="button" class="node" data-component="db" aria-pressed="false"><span class="component-icon" aria-hidden="true">🗄️</span><strong>PostgreSQL</strong><small>Final stock check</small></button></div>
+<p class="component-help" id="component-help" aria-live="polite">Select a component to see its responsibility.</p>
+<div class="route is-moving" id="route" aria-hidden="true"><span class="route-label">CHECKOUT WORKER → SHARED RESOURCE</span><span class="stream-wire"></span><span class="stream-trail"></span><span id="event-chip" class="event-chip">Reservation request</span><span id="stream-end" class="stream-end">🔒</span></div>
+<div class="motion-toolbar"><span id="motion-caption">Motion preview · no reservation created</span><button class="secondary" id="motion-toggle" type="button" aria-pressed="false">Pause motion</button></div>
+<div class="step-head"><label for="progress">Incident progress</label><span id="step-count"></span></div><progress id="progress" value="0" max="7"></progress>
+<div class="current-step" role="status" aria-live="polite" aria-atomic="true"><span class="event-label" id="event-label"></span><h2 id="step-title"></h2><p id="explanation"></p></div>
+<p class="hint" id="takeaway"></p>
+<details class="reading-notes"><summary>What the protections actually mean</summary><p>Every worker uses token-safe unlock. That protects B's Redis key, not the stock row. The atomic database update prevents a negative inventory count. Fencing additionally rejects A's old generation after B's newer generation is accepted by the database.</p><p>Generations 41 and 42 are illustrative. The lab has no real token issuer, Redis, database, payment provider, or persistence. Replaying the animation does not change its counters.</p></details>
+</div><aside class="results" aria-label="Reservation outcomes and event trace">
 
-  <section class="panel">
-    <h2>Race trace (newest first)</h2>
-    <p id="outcome" aria-live="polite"></p>
-    <ol id="trace" class="trace" aria-live="polite" tabindex="0" aria-label="Race trace"></ol>
-  </section>
-
-  <section class="panel">
-    <h2>Check your understanding</h2>
-    <p>When A resumes, what does comparing tokens during unlock protect?</p>
-    <div class="controls">
-      <button type="button" class="secondary" id="inventory">The inventory row</button>
-      <button type="button" class="secondary" id="lock">Worker B’s Redis lease</button>
-    </div>
-    <output id="feedback"></output>
-  </section>
-
-  <p><small>Conceptual model of one inventory row. The atomic check protects the stock count. Request idempotency and downstream fencing address separate failures.</small></p>
-
-  <script>
-    const policy = document.getElementById('policy');
-    const advance = document.getElementById('advance');
-    const startingStock = document.getElementById('starting-stock');
-    const trace = document.getElementById('trace');
-    const outcome = document.getElementById('outcome');
-    const feedback = document.getElementById('feedback');
-    let step;
-    let owner;
-    let stock;
-    let confirmed;
-
-    const events = [
-      { time: 0, run() {
-        owner = 'A';
-        return 'Worker A acquires a 10-second lease and reads ' + stock + ' in stock.';
-      } },
-      { time: 1, run() {
-        return 'Worker A pauses before it writes to the database.';
-      } },
-      { time: 10, run() {
-        owner = null;
-        return 'A’s lease expires while A is paused.';
-      } },
-      { time: 11, run() {
-        owner = 'B';
-        return 'Worker B acquires a new lease with a different token.';
-      } },
-      { time: 12, run() {
-        stock--;
-        confirmed++;
-        return 'Worker B reserves one pair. Remaining stock: ' + stock + '.';
-      } },
-      { time: 13, run() {
-        if (policy.value === 'conditional' && stock <= 0) {
-          outcome.textContent = 'One reservation confirmed. Worker A returns sold out.';
-          return 'A resumes. UPDATE with WHERE stock > 0 affects zero rows, so A cannot confirm a reservation.';
-        }
-        stock--;
-        confirmed++;
-        outcome.textContent = stock < 0
-          ? 'Oversold. Two customers received confirmations for one pair.'
-          : 'Both reservations confirmed. There was enough stock for both.';
-        return policy.value === 'conditional'
-          ? 'A resumes. The atomic UPDATE finds available stock and reserves a pair.'
-          : 'A resumes and decrements stock using its earlier availability check.';
-      } },
-      { time: 14, run() {
-        return 'A attempts to release its old lease. Its token differs from B’s, so Redis keeps B’s lease.';
-      } }
-    ];
-
-    function render(time) {
-      document.getElementById('time').textContent = time + 's';
-      document.getElementById('lease').textContent = owner ? 'Worker ' + owner : 'None';
-      document.getElementById('stock').textContent = stock;
-      document.getElementById('confirmed').textContent = confirmed;
-      advance.disabled = step === events.length;
-    }
-
-    function reset() {
-      step = 0;
-      owner = null;
-      stock = Number(startingStock.value);
-      confirmed = 0;
-      trace.replaceChildren();
-      outcome.textContent = 'Ready. Available stock: ' + stock + '.';
-      feedback.textContent = '';
-      render(0);
-    }
-
-    advance.addEventListener('click', () => {
-      const event = events[step++];
-      const entry = document.createElement('li');
-      entry.textContent = event.time + 's · ' + event.run();
-      trace.prepend(entry);
-      trace.scrollTop = 0;
-      render(event.time);
-    });
-    policy.addEventListener('change', reset);
-    startingStock.addEventListener('change', reset);
-    document.getElementById('reset').addEventListener('click', reset);
-    document.getElementById('inventory').addEventListener('click', () => {
-      feedback.textContent = 'Try again. The Redis token check never reaches the inventory database.';
-    });
-    document.getElementById('lock').addEventListener('click', () => {
-      feedback.textContent = 'Correct. The token check keeps A from deleting B’s lease. The atomic inventory write protects stock.';
-    });
-    reset();
-  </script>
-</body>
-</html>
+<div class="comparison">
+<section class="consumer" id="unsafe"><h3>⚠️ Without a stock guard</h3><p class="status"></p><span class="state"></span><p class="decision"></p><p class="writes"></p></section>
+<section class="consumer" id="safe"><h3>🛡️ Protected database write</h3><p class="status"></p><span class="state"></span><p class="decision"></p><p class="writes"></p></section></div>
+<h2 class="trace-heading">Event trace · first to last</h2><ol id="trace" class="trace" tabindex="0" aria-label="Chronological reservation trace"></ol>
+</aside></div>
+<details class="quiz reading-notes"><summary>Check your understanding</summary><p>When A releases its expired lease, what does token comparison protect?</p><div class="controls"><button id="inventory" class="secondary" type="button">The inventory row</button><button id="lock" class="secondary" type="button">B's Redis lease</button></div><output id="feedback" aria-live="polite"></output></details></section><script>
+const $=id=>document.getElementById(id);
+const events=[
+{time:0,title:'A acquires a lease and reads available stock',why:'Worker A receives owner token A and conceptual generation 41. Its Redis lease expires at 10s. Reading stock does not reserve it.',chip:'A → Redis · acquire',nodes:['a','redis']},
+{time:1,title:'A pauses before reserving the item',why:'A has not written a reservation. A long process pause can outlast its lease; the shopper is still waiting for a reservation result.',chip:'Worker A paused',nodes:['a']},
+{time:10,title:'A’s 10-second lease expires',why:'Redis releases the key. It does not terminate A or stop A from later attempting a database write.',chip:'Lease A expired',nodes:['a','redis']},
+{time:11,title:'B acquires a new lease',why:'B gets a different owner token and conceptual generation 42. Its new 10-second lease expires at 21s. A is still paused.',chip:'B → Redis · acquire',nodes:['b','redis']},
+{time:12,title:'B commits a reservation for one pair',why:'Both database policies can reserve a pair for B. In the fenced model, the database also records generation 42. Only the committed reservation may be reported as successful.',chip:'B → database · reserve',nodes:['b','db']},
+{time:13,title:'A wakes up and attempts its stale operation',why:'A still exists even though it no longer owns the lease. Compare the database decisions: the unsafe write trusts an old read; the protected write checks stock and, if selected, the accepted generation.',chip:'A → database · stale write',nodes:['a','db']},
+{time:14,title:'A cannot delete B’s lease',why:'The Redis key contains token B. Atomic compare-and-delete with token A changes nothing. This protects B’s lease but cannot undo a stock write that already happened.',chip:'A → Redis · release denied',nodes:['a','redis']}
+];
+const help={a:'🛒 Worker A serves shopper A. It pauses before writing stock and later resumes with an expired lease.',redis:'🔒 Redis coordinates work using an expiring key. Expiry permits takeover; it does not stop the previous process.',b:'🛍️ Worker B serves a different shopper. It obtains a fresh lease after A’s expires and commits its reservation first.',db:'🗄️ PostgreSQL must check stock and commit the reservation atomically. Fencing, when used, must also be enforced by this resource.'};
+let cursor=0,timer=null,motionPaused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+function stop(){clearInterval(timer);timer=null;$('play').textContent='Auto-play';$('play').setAttribute('aria-pressed','false');}
+function syncMotion(){$('route').classList.toggle('motion-paused',motionPaused);$('motion-toggle').textContent=motionPaused?'Resume motion':'Pause motion';$('motion-toggle').setAttribute('aria-pressed',String(motionPaused));document.querySelectorAll('.component-icon').forEach(n=>n.style.animationPlayState=motionPaused?'paused':'running');}
+function fresh(){return {stock:Number($('starting-stock').value),a:'Waiting',b:'Waiting',confirmed:0,decision:'No reservation has committed.'};}
+function apply(s,index,protectedWrite){
+ if(index===4){s.stock--;s.b='Reserved';s.confirmed++;s.decision='B committed one reservation.';}
+ if(index===5){
+  if(protectedWrite&&$('policy').value==='fenced'){s.a='Stale write rejected';s.decision='Generation 41 rejected: database already accepted 42. Stock is unchanged.';}
+  else if(protectedWrite&&s.stock<=0){s.a='Sold out';s.decision='Atomic UPDATE affected zero rows. A cannot confirm a reservation.';}
+  else{s.stock--;s.a='Reserved';s.confirmed++;s.decision=protectedWrite?'Atomic stock check found another pair. A committed a separate reservation.':'A used its earlier stock check and decremented without an availability condition.';}
+ }
+}
+function panel(id,s){const p=$(id);p.querySelector('.status').textContent=s.stock<0?'Oversold: two promises, one pair':s.confirmed+' reservation'+(s.confirmed===1?'':'s')+' confirmed';p.querySelector('.state').textContent='Database stock: '+s.stock+' pair'+(Math.abs(s.stock)===1?'':'s');p.querySelector('.decision').textContent=s.decision;p.querySelector('.writes').textContent='Shopper A: '+s.a+' · Shopper B: '+s.b;p.classList.toggle('changed',cursor>=5);}
+function add(tag,text,parent){const n=document.createElement(tag);n.textContent=text;parent.append(n);return n;}
+function render(){
+ const unsafe=fresh(),safe=fresh();$('trace').replaceChildren();
+ events.slice(0,cursor).forEach((e,i)=>{apply(unsafe,i,false);apply(safe,i,true);const li=add('li','',$('trace'));add('strong',e.time+'s · '+e.title,li);add('p',i===4||i===5?'Unsafe: '+unsafe.decision+' Protected: '+safe.decision:e.why,li);});
+ if(!cursor)add('li','Ready: neither shopper has a reservation. Choose stock and protection, then advance.',$('trace'));
+ const e=events[cursor-1],time=e?e.time:0;
+ $('time').textContent=time+'s';$('lease').textContent=cursor>=4?'Worker B · token B':cursor>=3?'None':cursor>=1?'Worker A · token A':'None';
+ $('worker-a').textContent=cursor>=6?'Resumed · expired owner':cursor>=2?'Paused':cursor===1?'Running':'Ready';$('ttl').textContent=cursor>=4?(21-time)+'s':'Not acquired';
+ $('step-count').textContent=cursor+' / '+events.length+' steps';$('progress').value=cursor;
+ $('advance').disabled=cursor===events.length;$('previous').disabled=cursor===0;
+ $('step-title').textContent=e?'Step '+cursor+': '+e.title:'Ready: predict who gets the last pair';$('event-label').textContent=e?'Simulated time '+time+'s · no actual payment calls':'One SKU · two independent reservation requests';$('explanation').textContent=e?e.why:'A lease coordinates workers temporarily. The database must still decide whether each stock reservation is valid.';
+ panel('unsafe',unsafe);panel('safe',safe);
+ $('takeaway').textContent=cursor===events.length?'Result: '+safe.decision+' Token-safe unlock protected B’s key in both runs.':'Track lease ownership separately from available stock and customer reservations.';
+ document.querySelectorAll('[data-component]').forEach(n=>{n.classList.toggle('active',!!e&&e.nodes.includes(n.dataset.component));n.setAttribute('aria-pressed','false');});
+ $('component-help').textContent='Select an icon to inspect its responsibility. Highlighted components are involved in the current step.';
+ $('event-chip').textContent=e?e.chip:'Reservation request';$('stream-end').textContent=e&&e.nodes.includes('db')?'🗄️':'🔒';
+ $('route').classList.remove('is-moving');void $('route').offsetWidth;$('route').classList.add('is-moving');$('route').style.setProperty('--flight',Math.max(0,$('route').clientWidth-$('event-chip').offsetWidth-65)+'px');
+ $('motion-caption').textContent=cursor?'Visual replay only · reservations do not repeat':'Motion preview · no reservation created';syncMotion();
+}
+function reset(){stop();cursor=0;$('feedback').textContent='';render();}
+function next(){if(cursor<events.length){cursor++;render();}if(cursor===events.length)stop();}
+$('advance').onclick=next;$('previous').onclick=()=>{stop();cursor=Math.max(0,cursor-1);render();};$('reset').onclick=reset;
+$('play').onclick=()=>{if(timer){stop();return;}if(cursor===events.length){cursor=0;render();}timer=setInterval(next,4500);$('play').textContent='Pause auto-play';$('play').setAttribute('aria-pressed','true');next();};
+$('starting-stock').onchange=reset;$('policy').onchange=reset;
+$('motion-toggle').onclick=()=>{motionPaused=!motionPaused;syncMotion();};motionPreference.addEventListener('change',e=>{motionPaused=e.matches;syncMotion();});
+new ResizeObserver(()=>{$('route').style.setProperty('--flight',Math.max(0,$('route').clientWidth-$('event-chip').offsetWidth-65)+'px');}).observe($('route'));
+for(const b of document.querySelectorAll('[data-component]'))b.onclick=()=>{document.querySelectorAll('[data-component]').forEach(n=>n.setAttribute('aria-pressed',String(n===b)));$('component-help').textContent=help[b.dataset.component];};
+$('inventory').onclick=()=>{$('feedback').textContent='Not the inventory row. Redis never checks the stock database during unlock.';};$('lock').onclick=()=>{$('feedback').textContent='Correct: token comparison preserves B’s Redis lease. Atomic stock checks protect inventory; fencing rejects an older generation after a newer one is accepted.';};
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});render();
+</script></body></html>
