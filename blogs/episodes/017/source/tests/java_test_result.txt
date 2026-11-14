@@ -1,0 +1,4 @@
+Exit code: 0
+stdout: Summary[lineCount=2, units=3]
+
+stderr:

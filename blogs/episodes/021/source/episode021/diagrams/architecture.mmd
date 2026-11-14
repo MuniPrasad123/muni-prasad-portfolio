@@ -1,0 +1,12 @@
+flowchart TD
+ A[Customer Cancel] --> B[Order API: auth + idempotency]
+ B --> C{Expected version and status?}
+ C -->|yes| D[(PostgreSQL: order + outbox in one transaction)]
+ C -->|no| E[Conflict / current state]
+ D --> F[Outbox relay]
+ F --> G[(Kafka keyed by order ID)]
+ G --> H[Fulfillment consumer: inbox + version guard]
+ G --> I[Refund consumer: provider idempotency]
+ H --> J[Customer status projection]
+ I --> K[Webhook / reconciliation]
+ K --> J

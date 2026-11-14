@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:12,000
+A shopper cancels after paying. Why did the warehouse still ship the order?
+
+2
+00:00:12,000 --> 00:00:24,000
+The old consumer reads loosely typed status strings. A new event slips through a permissive default.
+
+3
+00:00:24,000 --> 00:00:36,000
+Java twenty-one records validate event data. Sealed interfaces define exactly which event types exist.
+
+4
+00:00:36,000 --> 00:00:48,000
+An exhaustive switch forces each event variant to be handled when the application is rebuilt.
+
+5
+00:00:48,000 --> 00:00:60,000
+But compile-time safety is not distributed safety. Guard state changes with PostgreSQL versions and a transactional outbox.
+
+6
+00:00:60,000 --> 00:00:72,000
+Kafka consumers deduplicate and reject stale transitions. The customer sees cancellation pending until refund and fulfillment are resolved.

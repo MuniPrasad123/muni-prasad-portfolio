@@ -1,0 +1,12 @@
+
+flowchart TD
+  A[Payment provider] -->|Signed webhook, may retry| B[WAF / Webhook endpoint]
+  B --> C{Raw body signature valid?}
+  C -->|No| X[Reject 4xx]
+  C -->|Yes| D[(PostgreSQL inbox unique event ID)]
+  D -->|Duplicate| E[ACK 2xx, no side effects]
+  D -->|New, same transaction| F[Guarded payment transition]
+  F --> G[(Transactional outbox)]
+  G --> H[Async worker]
+  H --> I[Email / fulfillment with idempotency]
+  F --> J[ACK 2xx after commit]

@@ -1,0 +1,7 @@
+Flash-sale customers tap Pay. The checkout spinner keeps turning, even though the database is healthy.
+Each traditional platform thread waits while the payment API responds. A limited thread pool fills up.
+Virtual threads allow many blocking requests to wait without occupying an operating system thread.
+But virtual threads do not increase database connections, payment capacity, or CPU throughput.
+Use bounded downstream concurrency, timeouts, idempotency keys, and a durable order state machine.
+Load test queue time, p ninety nine latency, connection pool waits, and payment-provider errors.
+Fewer requests stuck waiting for threads, without promising impossible throughput or duplicate-free payments.

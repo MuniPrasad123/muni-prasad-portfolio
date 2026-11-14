@@ -1,0 +1,40 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.423
+A shopper pays once, but gets three order confirmation emails.
+
+00:00:04.423 --> 00:00:08.847
+Why? The payment provider delivered the same webhook three times.
+
+00:00:08.847 --> 00:00:15.482
+A timeout or lost response can trigger retries even after your server saved the payment.
+
+00:00:15.482 --> 00:00:19.464
+Webhooks are usually at least once, not exactly once.
+
+00:00:19.464 --> 00:00:21.675
+Here is the safe design.
+
+00:00:21.675 --> 00:00:25.657
+First, verify the signature using the raw request body.
+
+00:00:25.657 --> 00:00:31.850
+Next, insert the provider event ID into a PostgreSQL inbox with a unique constraint.
+
+00:00:31.850 --> 00:00:40.255
+In that same transaction, update the payment only if its state allows the transition, and write an outbox event.
+
+00:00:40.255 --> 00:00:45.563
+If the event ID already exists, acknowledge it without repeating the work.
+
+00:00:45.563 --> 00:00:52.641
+After commit, an asynchronous worker sends the email or fulfillment command using its own idempotency key.
+
+00:00:52.641 --> 00:00:56.622
+If that worker crashes, the outbox lets it retry.
+
+00:00:56.622 --> 00:01:01.046
+Watch duplicate delivery rate, outbox lag, and payment state mismatches.
+
+00:01:01.046 --> 00:01:08.566
+The lesson: one webhook can arrive many times, but the business action must be safe to repeat.

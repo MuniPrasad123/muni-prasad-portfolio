@@ -1,0 +1,12 @@
+flowchart LR
+ A[Customer Checkout] --> B[API Gateway]
+ B --> C[Spring Boot Checkout]
+ C --> D[Cart Cache]
+ D --> E{Bounded + TTL?}
+ E -- No --> F[Retained Objects Grow]
+ F --> G[GC Pressure / OOM Risk]
+ G --> H[Slow Checkout / Errors]
+ E -- Yes --> I[Eviction + Safe Cache Miss]
+ I --> J[Persistent Order State]
+ C --> K[JFR / Heap Dump / Metrics]
+ K --> L[Root Cause Validation]

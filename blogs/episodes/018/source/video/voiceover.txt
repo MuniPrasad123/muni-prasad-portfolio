@@ -1,0 +1,7 @@
+[00:00–00:10] Your checkout was fast this morning. By noon, customers are staring at spinning buttons. Why?
+[00:10–00:20] Every cart request enters the checkout service, which saves a snapshot in a static map.
+[00:20–00:30] Those sessions expire for customers, but the map keeps strong references. Garbage collection cannot remove them.
+[00:30–00:40] The live heap grows. Collection work may rise, and eventually requests can slow or fail.
+[00:40–00:50] Don't guess. Correlate checkout tail latency with GC logs, Java Flight Recorder, and heap dominator trees.
+[00:50–01:00] Replace indefinite retention with bounded, expiring caches, and keep committed orders in durable storage.
+[01:00–01:10] Validate under the same workload. Measure post-GC live set and customer success rate. Fix the lifecycle, not just the heap size.

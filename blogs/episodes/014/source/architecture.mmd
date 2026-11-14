@@ -1,0 +1,6 @@
+flowchart TD
+  N0["Checkout payment authorization"] --> N1["Order command + PostgreSQL transaction"]
+  N1["Order command + PostgreSQL transaction"] --> N2["Transactional outbox"]
+  N2["Transactional outbox"] --> N3["Kafka order-events topic"]
+  N3["Kafka order-events topic"] --> N4["Idempotent version-aware projection consumer"]
+  N4["Idempotent version-aware projection consumer"] --> N5["My Orders read model + freshness indicator"]

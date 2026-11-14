@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Episode 014 — Paid, But My Orders Still Says Pending</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><main><div class="eyebrow">Architecture in Motion · Episode 014 · Interactive motion lesson</div><h1>Paid, But My Orders Still Says Pending</h1>
+<p>The payment succeeds while the order-history read model is still stale. This is a conceptual learning scenario, not a measured production incident.</p>
+<section class="card"><h2>Animated request/data path</h2><div class="flow" id="flow"><div class="node" id="node0">Payment</div><span class="packet" aria-hidden="true"></span><div class="node" id="node1">outbox</div><span class="packet" aria-hidden="true"></span><div class="node" id="node2">Kafka</div><span class="packet" aria-hidden="true"></span><div class="node" id="node3">order projection</div></div>
+<div class="actions"><button onclick="simulate(false)">Run unsafe flow</button><button onclick="simulate(true)">Run resilient flow</button><button onclick="resetFlow()">Reset</button></div>
+<div id="status" class="status" aria-live="polite">Choose a flow to animate packets, event traces and customer-visible outcomes.</div>
+<div id="timeline" class="timeline" aria-live="polite"></div></section>
+<div class="two"><section class="card"><h2>What goes wrong?</h2><p>The payment succeeds while the order-history read model is still stale.</p><h2>Root cause path</h2><p>Payment → outbox → Kafka → order projection</p></section>
+<section class="card"><h2>How to fix it</h2><p>Transactional outbox, event version gates, idempotent projections and reconciliation.</p><p class="muted">Validate with representative integration tests, fault injection and observability. No performance figures are implied.</p></section></div>
+<section class="card"><h2>Check your understanding</h2><p>Which approach best protects correctness for Episode 014?</p>
+<label><input type="radio" name="q" value="0"> Retry every request automatically without deduplication</label><br>
+<label><input type="radio" name="q" value="1"> Transactional outbox, event version gates, idempotent projections and reconciliation.</label><br>
+<label><input type="radio" name="q" value="2"> Hide failures from logs to improve perceived reliability</label>
+<div class="actions"><button onclick="grade()">Check answer</button></div><div id="quiz" aria-live="polite"></div>
+</section><section class="card"><h2>Original episode materials</h2><p>See the accompanying article, runnable source, SQL where applicable, Mermaid diagrams, video storyboard, captions, carousel and publishing prompt in this episode folder.</p><p class="note">This animated HTML is a functional conceptual simulation, not a recorded or narrated video.</p></section>
+<p><a href="../index.html">← Back to all nine episodes</a></p></main>
+<script>
+const count=4, symptom="The payment succeeds while the order-history read model is still stale.", fix="Transactional outbox, event version gates, idempotent projections and reconciliation.";
+let sequence=0;function resetFlow(){sequence++;document.querySelectorAll('.node').forEach(n=>n.className='node');document.getElementById('status').textContent='Ready to simulate.';document.getElementById('timeline').innerHTML='';}
+function addEvent(message){let e=document.createElement('div');e.className='event';e.textContent=message;document.getElementById('timeline').appendChild(e);}
+async function simulate(safe){resetFlow();const id=sequence;document.getElementById('status').textContent='Simulating '+(safe?'resilient':'unsafe')+' flow…';addEvent('Customer sends request.');for(let i=0;i<count;i++){if(id!==sequence)return;await new Promise(r=>setTimeout(r,450));if(id!==sequence)return;document.getElementById('node'+i).classList.add('active');addEvent('Step '+(i+1)+': '+document.getElementById('node'+i).textContent);}
+const node=document.getElementById('node'+(count-1));node.classList.remove('active');node.classList.add(safe?'good':'failed');document.getElementById('status').textContent=safe?'Resilient outcome: '+fix:'Failure mode: '+symptom;addEvent(safe?'Safety guard applied; validate the final business state.':'Failure observed; investigate logs, state and retries.');}
+function grade(){const checked=document.querySelector('input[name=q]:checked');document.getElementById('quiz').textContent=!checked?'Select an answer.':checked.value==='1'?'1/1 — Correct. '+fix:'0/1 — Not correct. Blind retries and missing observability make failures harder to control. '+fix;}
+</script></body></html>

@@ -1,0 +1,6 @@
+flowchart TD
+  N0["Shopper / mobile checkout"] --> N1["API gateway: auth, request ID, timeouts"]
+  N1["API gateway: auth, request ID, timeouts"] --> N2["Readiness-aware service endpoint selection"]
+  N2["Readiness-aware service endpoint selection"] --> N3["Spring Boot checkout pod"]
+  N3["Spring Boot checkout pod"] --> N4["PostgreSQL order/idempotency store"]
+  N4["PostgreSQL order/idempotency store"] --> N5["Observability and retry policy"]

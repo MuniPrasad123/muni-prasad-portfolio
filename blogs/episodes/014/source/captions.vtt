@@ -1,0 +1,25 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:12.000
+Payment succeeds but My Orders still says Pending.
+
+2
+00:00:12.000 --> 00:00:24.000
+Payment callback updates order and outbox atomically.
+
+3
+00:00:24.000 --> 00:00:36.000
+Outbox relay publishes versioned OrderPaid event.
+
+4
+00:00:36.000 --> 00:00:48.000
+Read model may be behind; do not mislabel payment as failed.
+
+5
+00:00:48.000 --> 00:01:00.000
+Duplicate and older events cannot roll the projection backward.
+
+6
+00:01:00.000 --> 00:01:12.000
+Detect lag, replay safely, and show synchronization status.

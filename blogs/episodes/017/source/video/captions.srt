@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:07,932
+Your customer clicks Place Order, but checkout freezes. They retry, worried their payment failed.
+
+2
+00:00:08,532 --> 00:00:18,642
+The request travels through an API gateway into a Java twenty one checkout service, then to inventory, payment, and the database.
+
+3
+00:00:19,242 --> 00:00:27,772
+Inside the JVM, temporary cart objects and repeated serialization can drive a high allocation rate.
+
+4
+00:00:28,372 --> 00:00:38,508
+Garbage collection reclaims unreachable objects. Some phases pause application threads, which may contribute to tail latency.
+
+5
+00:00:39,108 --> 00:00:51,048
+But do not blame garbage collection from a spinner alone. Correlate request traces, garbage collection logs, CPU, and Java Flight Recorder.
+
+6
+00:00:51,648 --> 00:01:09,548
+Reduce unnecessary allocations, bound caches, and compare G one with generational Z G C using real workload tests. Protect payment retries with durable idempotency. Measure customer outcomes, not just pause time.

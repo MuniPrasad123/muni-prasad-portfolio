@@ -1,0 +1,5 @@
+flowchart LR
+ Customer --> Gateway --> Checkout[Java 21 virtual threads]
+ Checkout --> Database[(Idempotency + order DB)]
+ Checkout --> Bulkhead --> Payment[Payment provider]
+ Database --> Outbox --> Fulfillment

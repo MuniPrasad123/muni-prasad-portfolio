@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:10,000
+A checkout that never finishes can trigger risky retries.
+
+2
+00:00:10,000 --> 00:00:20,000
+Two requests can hold different locks, then wait forever for each other.
+
+3
+00:00:20,000 --> 00:00:30,000
+Low CPU does not mean the service is healthy. Threads may be blocked.
+
+4
+00:00:30,000 --> 00:00:42,000
+Capture repeated thread dumps, inspect lock owners, and correlate JFR with traces.
+
+5
+00:00:42,000 --> 00:00:55,000
+Keep transactions short. Avoid remote calls inside locks. Reconcile uncertain payments.
+
+6
+00:00:55,000 --> 00:01:08,000
+Test contention, retries, and downstream failures before claiming improvement.

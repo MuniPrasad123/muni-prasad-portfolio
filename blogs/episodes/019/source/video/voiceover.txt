@@ -1,0 +1,6 @@
+A checkout that never finishes can trigger risky retries.
+Two requests can hold different locks, then wait forever for each other.
+Low CPU does not mean the service is healthy. Threads may be blocked.
+Capture repeated thread dumps, inspect lock owners, and correlate JFR with traces.
+Keep transactions short. Avoid remote calls inside locks. Reconcile uncertain payments.
+Test contention, retries, and downstream failures before claiming improvement.

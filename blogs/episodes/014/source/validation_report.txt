@@ -1,0 +1,4 @@
+javac exit: 0
+java exit: 0 PASS: status=PAID, version=2
+
+HTML is a conceptual simulation, not browser-automated tested.

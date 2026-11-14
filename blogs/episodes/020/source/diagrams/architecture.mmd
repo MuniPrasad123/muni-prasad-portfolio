@@ -1,0 +1,12 @@
+flowchart TD
+ A[Customer] --> B[Gateway: auth + rate limit]
+ B --> C[Checkout API: idempotency key]
+ C --> D[(PostgreSQL checkout_attempt)]
+ C --> E[Inventory and shipping reads]
+ C --> F[Payment API: provider idempotency]
+ F -->|confirmed| G[Commit CONFIRMED + outbox]
+ F -->|timeout / uncertain| H[Persist UNKNOWN; return 202]
+ H --> I[Webhook + status reconciliation]
+ I --> G
+ G --> J[Outbox relay -> fulfillment]
+ J --> K[Order status UI]

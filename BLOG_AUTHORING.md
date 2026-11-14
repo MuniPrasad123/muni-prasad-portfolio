@@ -4,7 +4,7 @@
 
 The portfolio remains a Next.js App Router + React + TypeScript app, using npm and Payload CMS. Blog content is repository-based Markdown, not database content. Marked parses Markdown on the server; sanitize-html removes unsafe markup; highlight.js renders code highlighting on the server. Small client components handle search, copying and simulations. No Markdown executes JavaScript.
 
-- `content/lessons/*.md`: articles and validated frontmatter.
+- `content/lessons/episode-NNN/*.md`: articles and validated frontmatter.
 - `src/lib/blog.ts`: content inventory, draft policy, rendering, RSS.
 - `src/components/blog/`: interactive lab, article and video components.
 - `src/app/(frontend)/blog/`: index, article routes and social PNGs.
@@ -116,3 +116,9 @@ Local development without NEON_DATABASE_URL uses .local-data/blog-feedback.json 
 ## Organized episode library
 
 Start at [blogs/README.md](blogs/README.md). Article Markdown is under content/lessons/episode-NNN/. New public media is under public/blog/episodes/NNN/. Source notes and social drafts belong in blogs/episodes/NNN/. Existing article URLs remain unchanged. The content loader discovers numbered episode folders recursively.
+
+## Rich lesson metadata and shared labs
+
+For Episodes 013 onward, use `overview: {problem: "...", solution: "...", note: "Illustrative system"}` for a compact problem/solution panel. Optional `videoSummary` and `videoChapters: [{time: 0, label: "Customer problem"}]` add player guidance; chapter times are seconds. Only set video metadata when the actual clip exists.
+
+Use `public/blog/episodes/NNN/lab.html` with shared `lesson-shell.css`, `lesson-shell.js`, and `practice-frame.js`. Keep episode-specific steps in the inline lesson-config JSON. Each step needs a cause, active component indexes, unsafe/protected outcomes, and accurate teaching counters. Visual replay must never process a second business event. Archive original inputs under `blogs/episodes/NNN/source/`. See `blogs/README.md` for the episode index.

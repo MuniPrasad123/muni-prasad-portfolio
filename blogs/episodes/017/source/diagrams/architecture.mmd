@@ -1,0 +1,10 @@
+flowchart LR
+ A[Customer checkout] --> B[API gateway]
+ B --> C[Spring Boot Java 21]
+ C --> D[Inventory API]
+ C --> E[Payment API]
+ C --> F[(PostgreSQL)]
+ C -. JVM metrics / GC logs .-> G[Observability]
+ B -. Traces .-> G
+ G --> H{Correlate p99 spikes?}
+ H --> I[Profile allocations / tune safely]

@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:10,000
+Flash-sale customers tap Pay. The checkout spinner keeps turning, even though the database is healthy.
+
+2
+00:00:10,000 --> 00:00:20,000
+Each traditional platform thread waits while the payment API responds. A limited thread pool fills up.
+
+3
+00:00:20,000 --> 00:00:30,000
+Virtual threads allow many blocking requests to wait without occupying an operating system thread.
+
+4
+00:00:30,000 --> 00:00:40,000
+But virtual threads do not increase database connections, payment capacity, or CPU throughput.
+
+5
+00:00:40,000 --> 00:00:50,000
+Use bounded downstream concurrency, timeouts, idempotency keys, and a durable order state machine.
+
+6
+00:00:50,000 --> 00:01:00,000
+Load test queue time, p ninety nine latency, connection pool waits, and payment-provider errors.
+
+7
+00:01:00,000 --> 00:01:10,000
+Fewer requests stuck waiting for threads, without promising impossible throughput or duplicate-free payments.

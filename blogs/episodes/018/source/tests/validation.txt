@@ -1,0 +1,12 @@
+Java compile/run return code: 0
+STDOUT:
+Unbounded entries=20000
+Bounded entries=500
+
+STDERR:
+
+HTML simulation: static inspection only; browser execution not automated.
+MP4: not generated.
+Audio: not generated.
+Benchmark: not run.
+Deployment: none.

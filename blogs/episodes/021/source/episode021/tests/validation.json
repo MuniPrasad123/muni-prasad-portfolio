@@ -1,0 +1,10 @@
+{
+  "java_compile": "PASS",
+  "java_execution": "PASS",
+  "narrated_mp4": "NOT_GENERATED",
+  "audio": "NOT_GENERATED",
+  "video_captions": "PLANNED_NOT_SYNCHRONIZED",
+  "live_integration": "NOT_RUN",
+  "deployment": "NOT_DEPLOYED",
+  "benchmark": "NOT_RUN"
+}

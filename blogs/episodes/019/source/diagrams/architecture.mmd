@@ -1,0 +1,12 @@
+flowchart TD
+ A[Customer checkout] --> B[API gateway]
+ B --> C[Checkout service]
+ C --> D{Order transition}
+ D --> E[PostgreSQL conditional inventory update]
+ D --> F[Payment provider with idempotency key]
+ F --> G[Reconciliation on unknown outcome]
+ E --> H[Transactional outbox]
+ G --> H
+ H --> I[Async fulfillment]
+ C -.-> J[JFR and thread dumps]
+ J --> K[Deadlock and pool wait diagnosis]

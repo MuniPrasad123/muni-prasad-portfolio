@@ -1,0 +1,2 @@
+# 9:16 video production storyboard
+Six scenes, about 10–14 seconds each. Single consistent six-section dashboard, 2 columns × 3 rows; do NOT split sections into separate slides. Smooth spotlight transitions, animated arrows and request packets, a pause indicator, and an allocation gauge. Spoken narration in `voiceover.txt`. Captions in `captions.srt`. Background music optional, quiet enough to keep speech clear. All values are conceptual. Scene transitions must preserve all six visible panels.

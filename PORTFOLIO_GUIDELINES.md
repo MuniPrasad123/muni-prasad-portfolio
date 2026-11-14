@@ -33,6 +33,8 @@ These preferences were requested by the owner. Apply them to future work in this
 
 ## Space, accessibility, and content structure
 
+- Keep every blog listing cover emerald and gold, including the soft emerald circular background motif. Do not use navy or blue cover backgrounds on `/blog`; navy remains appropriate inside interactive labs.
+
 - Use screen space wisely. Avoid oversized sparse covers, repeated headings, and unnecessary full-screen sections. Prefer short problem/solution panels with useful content.
 - Embed HTML labs with the shared `PracticeFrame` component and `/blog/episodes/practice-frame.js` height reporter. Size to actual content and remeasure after interactions or viewport changes; do not reserve a fixed 1,200px frame that leaves a large blank gap or clips taller labs.
 - Keep essential explanations readable even if motion is paused. Use visible focus, labeled controls, adequate contrast, comfortable touch targets, and accessible state feedback.

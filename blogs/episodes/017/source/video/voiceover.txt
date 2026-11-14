@@ -1,0 +1,11 @@
+1. Your customer clicks Place Order, but checkout freezes. They retry, worried their payment failed.
+
+2. The request travels through an API gateway into a Java twenty one checkout service, then to inventory, payment, and the database.
+
+3. Inside the JVM, temporary cart objects and repeated serialization can drive a high allocation rate.
+
+4. Garbage collection reclaims unreachable objects. Some phases pause application threads, which may contribute to tail latency.
+
+5. But do not blame garbage collection from a spinner alone. Correlate request traces, garbage collection logs, CPU, and Java Flight Recorder.
+
+6. Reduce unnecessary allocations, bound caches, and compare G one with generational Z G C using real workload tests. Protect payment retries with durable idempotency. Measure customer outcomes, not just pause time.

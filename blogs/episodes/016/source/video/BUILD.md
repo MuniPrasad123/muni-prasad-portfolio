@@ -1,0 +1,2 @@
+# Rebuilding / upgrading the video
+The packaged MP4 is a motion explainer with English synthetic narration. Source scene text is in `voiceover.txt`, captions in SRT/VTT, and storyboard in `storyboard.md`. Re-render with preferred TTS and 1080x1920 compositor if studio quality is required. Validate with `ffprobe -show_streams` and listen to the narration before publishing. The video is an explanatory animation, not benchmark footage.

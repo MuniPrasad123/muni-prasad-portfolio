@@ -9,6 +9,9 @@ export type ArticleMeta = {
   title: string; description: string; slug: string; date: string; updated?: string
   tags: string[]; cover: string; coverAlt: string; draft: boolean; sample: boolean
   folder?: string; level: string; readingMinutes: number; lab?: string; simulation?: 'rate-limiting' | 'outbox' | 'payment-idempotency' | 'locking' | 'kafka-retries' | 'circuit-breaker' | 'cache-stampede'; videoCaptions?: string; video?: string; videoPoster?: string; videoCaption?: string
+  overview?: { problem: string; solution: string; note?: string }
+  videoSummary?: string
+  videoChapters?: { time: number; label: string }[]
 }
 export type Article = ArticleMeta & { body: string }
 export const siteOrigin = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.muniprasad.in').replace(/\/$/, '')
@@ -36,12 +39,16 @@ export function parseArticle(source: string, filename: string): Article {
   if (data.videoCaptions && (!/^\/blog\/[a-zA-Z0-9/_.-]+\.vtt$/.test(data.videoCaptions) || data.videoCaptions.includes('..'))) fail('captions path')
   if (data.lab && (!/^\/blog\/episodes\/\d{3}\/lab\.html$/.test(data.lab) || !fs.existsSync(path.join(process.cwd(), 'public', data.lab)))) fail('lab path')
   if (data.simulation && !['rate-limiting', 'outbox', 'payment-idempotency', 'locking', 'kafka-retries', 'circuit-breaker', 'cache-stampede'].includes(data.simulation)) fail('simulation')
+  if (data.overview && (typeof data.overview.problem !== 'string' || typeof data.overview.solution !== 'string' || (data.overview.note !== undefined && typeof data.overview.note !== 'string'))) fail('overview')
+  if (data.videoSummary !== undefined && typeof data.videoSummary !== 'string') fail('video summary')
+  if (data.videoChapters && (!Array.isArray(data.videoChapters) || data.videoChapters.some((chapter: { time: number; label: string }) => !chapter || !Number.isFinite(chapter.time) || chapter.time < 0 || typeof chapter.label !== 'string' || !chapter.label.trim()))) fail('video chapters')
   const published = date('date'), updated = data.updated ? date('updated') : undefined
   if (updated && updated < published) fail('updated date before publication')
   return { title: text('title'), description: text('description'), slug, date: published, updated,
     tags: [...new Set<string>(data.tags.map((tag: string) => tag.trim()))], cover, coverAlt: text('coverAlt'),
     folder: typeof data.folder === 'string' ? data.folder : 'More engineering topics', draft: data.draft, sample: data.sample === true, level: data.level || 'Practical guide',
     readingMinutes: Math.max(1, Math.ceil(content.split(/\s+/).length / 200)),
+    overview: data.overview, videoSummary: data.videoSummary, videoChapters: data.videoChapters,
     lab: data.lab, simulation: data.simulation, videoCaptions: data.videoCaptions, video: data.video, videoPoster: data.videoPoster, videoCaption: data.videoCaption, body: content }
 }
 

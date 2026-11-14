@@ -1,0 +1,9 @@
+{
+  "java_version": "javac 21.0.12.1",
+  "java_compile": "passed",
+  "java_execution": "Quote[stock=4, shippingCents=799]",
+  "zip_integrity": "passed (testzip returned None)",
+  "video_mp4": "not generated",
+  "narration": "not generated",
+  "deployment": "not deployed"
+}

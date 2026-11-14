@@ -1,0 +1,13 @@
+// Illustrative Spring Boot configuration; add Spring and Caffeine dependencies.
+@Configuration
+class SpringCacheConfiguration {
+  @Bean
+  com.github.benmanes.caffeine.cache.Cache<String, CartSnapshot> cartCache() {
+    return com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
+        .maximumSize(10_000)
+        .expireAfterAccess(java.time.Duration.ofMinutes(20))
+        .recordStats()
+        .build();
+  }
+}
+// Define CartSnapshot in your application. Never cache cardholder data.

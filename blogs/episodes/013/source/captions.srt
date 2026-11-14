@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:12,000
+Customers see 503 at checkout; the order status is uncertain.
+
+2
+00:00:12,000 --> 00:00:24,000
+Browser packet enters gateway and selects a checkout endpoint.
+
+3
+00:00:24,000 --> 00:00:36,000
+Terminating pod still receives traffic while readiness is stale.
+
+4
+00:00:36,000 --> 00:00:48,000
+Readiness fails first; connections drain before pod termination.
+
+5
+00:00:48,000 --> 00:01:00,000
+Idempotency key protects POST /checkout from duplicate orders.
+
+6
+00:01:00,000 --> 00:01:12,000
+Trace request IDs, watch 5xx, drain behavior, and order uniqueness.

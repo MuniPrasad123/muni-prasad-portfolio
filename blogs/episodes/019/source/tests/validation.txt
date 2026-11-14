@@ -1,0 +1,11 @@
+Java compile: PASS
+Java deliberate deadlock detection: PASS
+DEADLOCK DETECTED: 2 threads
+checkout-inventory-first waits for java.lang.Object@5fd0d5ae owned by checkout-payment-first
+checkout-payment-first waits for java.lang.Object@6d03e736 owned by checkout-inventory-first
+
+HTML: generated, browser not automatically tested
+PostgreSQL SQL: not executed against a database
+Video: no MP4 rendered; natural voice and burned subtitles not verified
+Benchmark: not performed
+Deployment: not performed

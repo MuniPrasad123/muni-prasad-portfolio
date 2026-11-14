@@ -1,0 +1,6 @@
+00:00–00:11: One checkout click. The screen times out. But the payment request might still be running.
+00:11–00:22: Java futures can complete exceptionally while an external payment call continues. Timeout does not mean rollback.
+00:22–00:34: Run independent stock and shipping reads concurrently, using a bounded executor and real deadlines.
+00:34–00:47: Before charging, persist a checkout attempt and send a stable provider idempotency key.
+00:47–01:00: If the response is uncertain, return pending, reconcile through signed webhooks and provider status, and never blindly charge again.
+01:00–01:12: Publish fulfillment only after confirmed payment, through a transactional outbox. Reliable checkout tells the truth when networks fail.
