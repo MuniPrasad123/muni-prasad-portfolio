@@ -4,7 +4,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { careerHistory, pillars, portfolioProjects, siteFacts, personProfile } from '@/data/site'
 import { KoiAnimation } from '@/components/site/KoiAnimation'
 
-export const metadata = { title: 'Muni Prasad K | Senior Software Engineer | Java, Spring Boot, Microservices & Oracle ATG Commerce', description: personProfile.summary, alternates: { canonical: '/' } }
+export const metadata = { title: 'Muni Prasad K | Senior Java Backend Engineer | Java, Spring Boot, Microservices & Oracle ATG Commerce', description: personProfile.summary, alternates: { canonical: '/' } }
 
 export default function HomePage() {
   const articles = articleSummaries()
@@ -13,7 +13,7 @@ export default function HomePage() {
     <section className="hero hero-home">
       <KoiAnimation />
       <div className="hero-home-copy">
-        <div className="eyebrow"><span className="eyebrow-line" />Senior Software Engineer</div>
+        <div className="eyebrow"><span className="eyebrow-line" />Senior Java Backend Engineer</div>
         <h1 className="hero-name">{personProfile.name}</h1>
         <p className="hero-specialties"><em>Java · Spring Boot · Microservices · Oracle ATG Commerce · React.js · AWS</em></p>
         <p className="hero-lede">{personProfile.summary}</p>

@@ -4,7 +4,7 @@ These preferences were requested by the owner. Apply them to future work in this
 
 ## Professional identity
 
-- Use the name **Muni Prasad K**, without a trailing period, and the role **Senior Software Engineer**.
+- Use the name **Muni Prasad K**, without a trailing period, and the role **Senior Java Backend Engineer**.
 - Lead with Java, Spring Boot, Microservices, and Oracle ATG Commerce. Include React.js, AWS, PostgreSQL, and practical AI work where supported by the actual project evidence.
 - Preserve the emerald-and-gold portfolio identity. Do not reposition the owner as a cloud or DevOps specialist or invent projects, results, metrics, or infrastructure.
 - Avoid resume-style repetition. Explain capabilities through concrete work and individual contributions. Keep the resume download and international-availability statements removed unless the owner requests them again.

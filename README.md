@@ -908,11 +908,11 @@ Update `src/app/(frontend)/page.tsx`:
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Muni Prasad – Senior Software Engineer & Enterprise Consultant',
+  title: 'Muni Prasad – Senior Java Backend Engineer & Enterprise Consultant',
   description: 'Full-stack developer specializing in enterprise e-commerce, Spring Boot, React.js, AWS, and cloud solutions.',
-  keywords: ['Senior Software Engineer', 'Full-Stack Developer', 'Enterprise Consultant'],
+  keywords: ['Senior Java Backend Engineer', 'Full-Stack Developer', 'Enterprise Consultant'],
   openGraph: {
-    title: 'Muni Prasad – Senior Software Engineer',
+    title: 'Muni Prasad – Senior Java Backend Engineer',
     description: 'Enterprise-grade portfolio showcasing 10+ years of experience.',
     image: 'https://www.muniprasad.in/profile-photo.jpg',
     url: 'https://www.muniprasad.in',
@@ -928,7 +928,7 @@ export const metadata: Metadata = {
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Muni Prasad K",
-  "jobTitle": "Senior Software Engineer",
+  "jobTitle": "Senior Java Backend Engineer",
   "url": "https://www.muniprasad.in",
   "image": "https://www.muniprasad.in/profile-photo.jpg",
   "sameAs": [
@@ -988,7 +988,7 @@ Already included at `src/app/favicon.ico`. Verify it's linked in HTML.
 
 ### Keywords to Target
 
-- Primary: "Muni Prasad", "Senior Software Engineer"
+- Primary: "Muni Prasad", "Senior Java Backend Engineer"
 - Secondary: "Full-Stack Developer", "Enterprise Consultant", "React.js", "Spring Boot"
 - Niche: "E-commerce Engineering", "AWS Solutions", "Salesforce Integration"
 
@@ -1040,7 +1040,7 @@ Already included at `src/app/favicon.ico`. Verify it's linked in HTML.
 ```tsx
 <img
   src="/profile-photo.jpg"
-  alt="Muni Prasad K, Senior Software Engineer and Enterprise Consultant"
+  alt="Muni Prasad K, Senior Java Backend Engineer and Enterprise Consultant"
 />
 ```
 
@@ -1277,7 +1277,7 @@ npm run dev
 ## Author
 
 **Muni Prasad K**  
-Senior Software Engineer | Enterprise Solutions Architect | Technical Consultant
+Senior Java Backend Engineer | Enterprise Solutions Architect | Technical Consultant
 
 ### Expertise
 

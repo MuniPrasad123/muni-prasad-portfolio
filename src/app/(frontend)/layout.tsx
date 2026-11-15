@@ -12,7 +12,7 @@ import { profile } from '@/data/profile'
 
 const person = {
   '@context': 'https://schema.org', '@type': 'Person', name: profile.name,
-  jobTitle: 'Senior Software Engineer', description: profile.headline,
+  jobTitle: 'Senior Java Backend Engineer', description: profile.headline,
   url: 'https://www.muniprasad.in', image: 'https://www.muniprasad.in/media/muni-profile.png.jpg',
   sameAs: [profile.linkedin, profile.github],
   homeLocation: { '@type': 'Place', name: profile.location },

@@ -7,7 +7,7 @@ Welcome to the comprehensive technical documentation for the Muni Prasad Profess
 ## 1. Project Overview
 
 **Purpose**  
-This project is a personal web portfolio for Muni Prasad, designed to showcase professional experience, projects, skills, and certifications as a Senior Software Engineer & Technical Consultant.
+This project is a personal web portfolio for Muni Prasad, designed to showcase professional experience, projects, skills, and certifications as a Senior Java Backend Engineer & Technical Consultant.
 
 **What problem it solves**  
 It provides a centralized, professional online presence that potential employers and clients can visit to evaluate Muni's expertise. Furthermore, by integrating a Headless CMS (Payload CMS), it solves the problem of hard-coded content—allowing Muni to easily add new projects, update work experiences, or modify certifications through a secure admin dashboard without touching the code.

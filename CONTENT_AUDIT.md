@@ -11,7 +11,7 @@
 - Earlier owner-supplied links define the selected 12 credentials. The original downloaded issuer badge assets are retained. Kibo entries use a plain document icon because an original badge image is unavailable.
 
 ## Editorial changes
-- Primary identity is now Senior Software Engineer with Java, Spring Boot, Microservices, and Oracle ATG Commerce prominent throughout.
+- Primary identity is now Senior Java Backend Engineer with Java, Spring Boot, Microservices, and Oracle ATG Commerce prominent throughout.
 - Home presents positioning, two visitor paths, About, a profile-at-a-glance panel, contribution summaries, recent experience, selected work, and clearly marked draft notes.
 - Capabilities are distinct from the organized technology inventory and practical contribution list.
 - Professional work, independent applications, and technical blueprints are explicitly labeled. Twelve case studies include individual responsibilities, approach, source-supported validation and outcomes, and optional evidence notes.

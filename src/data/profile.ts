@@ -2,15 +2,15 @@
 // See CONTENT_AUDIT.md for source boundaries and unresolved evidence.
 export const profile = {
   name: 'Muni Prasad K',
-  headline: 'Senior Software Engineer | Java, Spring Boot, Microservices & Oracle ATG Commerce',
+  headline: 'Senior Java Backend Engineer | Java, Spring Boot, Microservices & Oracle ATG Commerce',
   location: 'Chennai, India',
   email: 'prasad.krish95@gmail.com',
   linkedin: 'https://www.linkedin.com/in/muni-prasad-k-7600bb105',
   github: 'https://github.com/MuniPrasad123',
-  targetRoles: ['Senior Java Backend Engineer', 'Senior Software Engineer', 'Spring Boot / Microservices Engineer', 'Backend Technical Lead', 'Enterprise Commerce Engineer / Technical Consultant'],
+  targetRoles: ['Senior Java Backend Engineer', 'Spring Boot / Microservices Engineer', 'Backend Technical Lead', 'Enterprise Commerce Engineer / Technical Consultant'],
   summary: 'I build Java backend services and enterprise commerce solutions, connecting payments, business workflows, and cloud services.',
   introduction: 'With 10+ years in software engineering, I work across Java, Spring Boot, microservices, and Oracle ATG Commerce—developing APIs, integrating payments and enterprise platforms, and improving the systems behind checkout, orders, and customer operations.',
-  about: 'I’m a Senior Software Engineer and Technical Consultant who translates business requirements into Java services, Spring Boot applications, microservices, and enterprise integrations. My Oracle ATG Commerce experience gives me a detailed understanding of retail business rules, while React.js extends my contribution to customer-facing applications.',
+  about: 'I’m a Senior Java Backend Engineer and Technical Consultant who translates business requirements into Java services, Spring Boot applications, microservices, and enterprise integrations. My Oracle ATG Commerce experience gives me a detailed understanding of retail business rules, while React.js extends my contribution to customer-facing applications.',
   commerce: 'My work spans checkout, payment integrations, promotions engine customization, pricing, shipping, tax, order management, and Salesforce CRM synchronization. I contribute to established commerce platforms and modernization initiatives, connecting systems through REST services and asynchronous workflows to build stable, scalable, and maintainable applications.',
   approach: 'I also work with AWS cloud services and containerized applications. In HelpCorner, I used EC2, S3, IAM, and SQS alongside React.js, Spring Boot, and MongoDB. Across my engineering work, I contribute through code reviews, mentoring, performance investigations, production support, and root-cause analysis.',
   aiWork: 'My independent AI work explores retrieval-augmented generation (RAG), document-grounded answers, and in-memory conversation context. MuniAI connects a Java and Spring Boot backend with React and Ollama for local-first chat, while DharmaAI combines OpenAI file-based retrieval with speech-to-text and text-to-speech for a voice-based book assistant.',

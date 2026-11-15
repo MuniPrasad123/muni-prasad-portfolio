@@ -7,7 +7,7 @@ export const metadata:Metadata={
   title,
   description:profile.summary,
   authors:[{name:profile.name}],
-  openGraph:{title,description:profile.summary,siteName:'Muni Prasad — Software Engineering',type:'website',images:[{url:'/media/muni-profile.png.jpg',alt:'Muni Prasad K, Senior Software Engineer'}]},
+  openGraph:{title,description:profile.summary,siteName:'Muni Prasad — Software Engineering',type:'website',images:[{url:'/media/muni-profile.png.jpg',alt:'Muni Prasad K, Senior Java Backend Engineer'}]},
   twitter:{card:'summary',title,description:profile.summary,images:['/media/muni-profile.png.jpg']},
 }
 export default function RootLayout({children}:Readonly<{children:React.ReactNode}>){return children}
