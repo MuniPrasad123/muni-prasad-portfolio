@@ -5,7 +5,7 @@ const flows: Record<string, { title: string; steps: string[] }> = {
   integration: { title: 'Simplified integration workflow', steps: ['Commerce activity', 'REST mapping & validation', 'Salesforce CRM'] },
   shipping: { title: 'Simplified service interaction', steps: ['Order journey', 'Shipping estimate service', 'Estimate response'] },
   'local-chat': { title: 'Simplified application flow', steps: ['React / TypeScript chat', 'Java 21 / Spring Boot', 'Ollama local inference'] },
-  voice: { title: 'Simplified voice and retrieval workflow', steps: ['Spoken question', 'Speech-to-text', 'OpenAI file retrieval', 'Text-to-speech answer'] },
+  voice: { title: 'Local retrieval and voice workflow', steps: ['PDF text and chunks', 'Ollama embeddings', 'Cosine-similarity retrieval', 'Ollama answer and sources', 'Browser voice input and playback'] },
   workflow: { title: 'Simplified business workflow', steps: ['Customer records', 'Service tracking', 'Operational coordination'] },
   database: { title: 'Documented implementation areas', steps: ['Query tuning', 'Relevant-column indexes', 'Audit-update triggers'] },
 }
