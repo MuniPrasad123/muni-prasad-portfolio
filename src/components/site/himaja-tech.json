@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Next.js 16",
+    "layer": "Framework",
+    "detail": "App Router serves the storefront, ERP screens and API routes.",
+    "source": "src/app/catalog/page.tsx"
+  },
+  {
+    "name": "React 19",
+    "layer": "Interface",
+    "detail": "Catalog filters, account tabs, gallery zoom and cart state use React.",
+    "source": "src/components/catalog/CatalogView.tsx"
+  },
+  {
+    "name": "TypeScript",
+    "layer": "Data contracts",
+    "detail": "Typed components and routes connect the browsing and operational workflows.",
+    "source": "src/context/CartContext.tsx"
+  },
+  {
+    "name": "Bootstrap 5",
+    "layer": "Presentation",
+    "detail": "The source uses Bootstrap and custom CSS for responsive storefront and ERP layouts.",
+    "source": "src/app/globals.css"
+  },
+  {
+    "name": "Prisma 5",
+    "layer": "Database access",
+    "detail": "Prisma models the data and groups related operational writes into database transactions.",
+    "source": "prisma/schema.prisma"
+  },
+  {
+    "name": "PostgreSQL",
+    "layer": "Persistence",
+    "detail": "Stores products, quotes, users, ledger accounts, sales, purchases and chat history.",
+    "source": "prisma/schema.prisma"
+  },
+  {
+    "name": "NextAuth",
+    "layer": "Sessions",
+    "detail": "Credentials-based sign-in uses JWT sessions with a user ID and role.",
+    "source": "src/lib/auth.ts"
+  },
+  {
+    "name": "React context",
+    "layer": "Quote draft",
+    "detail": "Guest and per-user cart drafts persist in localStorage. Bulk pricing changes at quantity ten.",
+    "source": "src/context/CartContext.tsx"
+  },
+  {
+    "name": "jsPDF",
+    "layer": "Invoice documents",
+    "detail": "jsPDF and AutoTable generate PDF invoice documents in the administration code.",
+    "source": "src/app/admin/page.tsx"
+  },
+  {
+    "name": "SheetJS / XLSX",
+    "layer": "Product import",
+    "detail": "The administrator bulk-import route reads CSV or spreadsheet rows and maps product fields.",
+    "source": "src/app/api/products/bulk/route.ts"
+  },
+  {
+    "name": "Nodemailer",
+    "layer": "Email delivery",
+    "detail": "The invoice-send route accepts a PDF payload and uses environment-configured SMTP.",
+    "source": "src/app/api/invoices/send/route.ts"
+  },
+  {
+    "name": "Gemini",
+    "layer": "Customer support",
+    "detail": "The source sends business-context prompts and stored conversation history to a configured Gemini model. Chat generation was not exercised in this walkthrough.",
+    "source": "src/app/api/chat/route.ts"
+  },
+  {
+    "name": "Recharts",
+    "layer": "Reporting",
+    "detail": "Retailer detail screens use charts to present activity and account statistics.",
+    "source": "src/app/admin/retailers/[id]/page.tsx"
+  }
+]

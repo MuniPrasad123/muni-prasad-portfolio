@@ -24,7 +24,7 @@ const projectProfiles: Record<string, { slug: string; category: string; diagram:
   MuniAI: { slug: 'muniai', category: 'Applied AI', diagram: 'local-chat', approach: 'Connected a React and TypeScript chat interface with a Java 21 / Spring Boot backend and Ollama for local model inference.' },
   DharmaAI: { slug: 'dharmaai', category: 'Applied AI', diagram: 'voice', approach: 'Built a PDF knowledge assistant with a custom RAG pipeline, local Ollama embeddings and inference, source inspection, and browser voice interaction.' },
   HelpCorner: { slug: 'helpcorner', category: 'Full-stack & AWS', diagram: 'helpcorner', approach: 'Combined donation coordination with MongoDB records, SQS location messages, containerization, and practical AWS setup.' },
-  'Himaja Communication ERP': { slug: 'himaja-communication-erp', category: 'Business workflows', diagram: 'workflow', approach: 'Mapped customer and service-tracking needs into connected operational workflows.' },
+  'Himaja Communication ERP': { slug: 'himaja-communication-erp', category: 'Wholesale & ERP', diagram: 'wholesale-erp', approach: 'Connected a Next.js storefront and customer quote journey with Prisma-backed product, inventory, sales, purchase and ledger records in PostgreSQL.' },
 }
 export const portfolioProjects = projects.map(project => ({
   ...project,

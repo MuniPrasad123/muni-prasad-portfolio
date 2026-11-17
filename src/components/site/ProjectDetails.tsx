@@ -1,4 +1,5 @@
 const flows: Record<string, { title: string; steps: string[] }> = {
+  'wholesale-erp': { title: 'Wholesale and operational responsibilities', steps: ['Catalog and local quote draft', 'Customer quote request', 'Product and stock records', 'ERP invoices and ledger entries'] },
   service: { title: 'Simplified application integration', steps: ['Angular utility', 'Spring Boot backend', 'Sales Hub APIs'] },
   checkout: { title: 'Simplified checkout workflow', steps: ['Customer checkout', 'Payment integration', 'Authorization', 'Order submission'] },
   modernization: { title: 'Simplified modernization responsibilities', steps: ['Existing ATG capabilities', 'REST service interfaces', 'Authentication, payment, shipping & tax'] },

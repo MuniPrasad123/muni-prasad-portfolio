@@ -1,0 +1,177 @@
+[
+  {
+    "id": "quote",
+    "label": "Quote workflow",
+    "endpoint": "Customer → quote → review",
+    "steps": [
+      {
+        "title": "Browse the catalog",
+        "tag": "Next.js → Prisma → PostgreSQL",
+        "detail": "The catalog page loads products and categories. React applies category, brand and name/SKU filters to the loaded products.",
+        "payload": "Product + Category → CatalogView",
+        "source": "src/app/catalog/page.tsx"
+      },
+      {
+        "title": "Build a local draft",
+        "tag": "React context · localStorage",
+        "detail": "Add to Quote updates the browser cart. The context uses a guest key or a per-user key. Draft changes do not create a quote record.",
+        "payload": "{ product, quantity } → cart_items_*",
+        "source": "src/context/CartContext.tsx"
+      },
+      {
+        "title": "Calculate the estimate",
+        "tag": "Quantity, membership, tax & shipping",
+        "detail": "Quantity 10 or more selects a configured bulk price. The cart estimates discounts, tax and shipping from user data and configured application rates. These are estimates, not a tax-compliance guarantee.",
+        "payload": "subtotal − discounts + tax + shipping",
+        "source": "src/app/cart/page.tsx"
+      },
+      {
+        "title": "Submit a quote request",
+        "tag": "POST /api/quotes · session required",
+        "detail": "The route checks the session and creates Quote and QuoteItem records for the signed-in user. This was reviewed in code; no quote was submitted during the recording.",
+        "payload": "items[] + shippingCost + taxAmount → Quote",
+        "source": "src/app/api/quotes/route.ts"
+      },
+      {
+        "title": "Review and adjust stock",
+        "tag": "Administrator quote status",
+        "detail": "The status-update route checks ADMIN access. Entering APPROVED decreases stock; leaving APPROVED restores it. The quote update and stock changes run in one Prisma transaction. This is not a claim of concurrency-safe reservation.",
+        "payload": "Quote status + Product.stockQty",
+        "source": "src/app/api/quotes/[id]/route.ts"
+      }
+    ]
+  },
+  {
+    "id": "sales",
+    "label": "Sales entry",
+    "endpoint": "POST /api/sales · code-based explanation",
+    "steps": [
+      {
+        "title": "Resolve the customer ledger",
+        "tag": "Before the transaction",
+        "detail": "The route finds the ledger by customer name or creates it. This lookup/create happens before the grouped invoice transaction.",
+        "payload": "customerName → LedgerAccount",
+        "source": "src/app/api/sales/route.ts"
+      },
+      {
+        "title": "Create invoice and items",
+        "tag": "Prisma transaction",
+        "detail": "The transaction creates a Sale with invoice number, totals and related SaleItem records. Values are supplied by the entry form; this diagram is not a financial validation guarantee.",
+        "payload": "Sale + SaleItem[]",
+        "source": "src/app/api/sales/route.ts"
+      },
+      {
+        "title": "Decrease stock",
+        "tag": "Product update",
+        "detail": "For each product the route calculates cases times units-per-case plus pieces, then decrements stock. This code path does not include free units in that deduction.",
+        "payload": "stockQty − (caseQty × unitCase + pieceQty)",
+        "source": "src/app/api/sales/route.ts"
+      },
+      {
+        "title": "Post receivable and balance",
+        "tag": "Voucher + account update",
+        "detail": "A SALE voucher records the invoice amount as a debit and the customer ledger balance is incremented. Invoice, item, stock, voucher and balance writes are grouped in the transaction.",
+        "payload": "SALE debit → customer balance + amount",
+        "source": "src/app/api/sales/route.ts"
+      }
+    ]
+  },
+  {
+    "id": "purchase",
+    "label": "Purchases",
+    "endpoint": "POST /api/purchases · code-based explanation",
+    "steps": [
+      {
+        "title": "Resolve the supplier",
+        "tag": "Ledger lookup/create",
+        "detail": "The supplier ledger is found or created before the purchase transaction. Purchase entry is independent of the customer quote workflow.",
+        "payload": "supplierName → LedgerAccount",
+        "source": "src/app/api/purchases/route.ts"
+      },
+      {
+        "title": "Record purchase and items",
+        "tag": "Prisma transaction",
+        "detail": "The route creates the Purchase record and its PurchaseItem lines with invoice, quantities, rates and tax fields.",
+        "payload": "Purchase + PurchaseItem[]",
+        "source": "src/app/api/purchases/route.ts"
+      },
+      {
+        "title": "Increase stock",
+        "tag": "Cases + pieces + free units",
+        "detail": "The purchase route increments stock using cases times units-per-case, piece quantity and free quantity.",
+        "payload": "stockQty + cases × unitCase + pieces + free",
+        "source": "src/app/api/purchases/route.ts"
+      },
+      {
+        "title": "Post the supplier payable",
+        "tag": "Credit voucher + balance",
+        "detail": "A PURCHASE voucher records a credit. The supplier balance decreases by the purchase amount. A negative ledger balance represents the payable in this implementation.",
+        "payload": "PURCHASE credit → supplier balance − amount",
+        "source": "src/app/api/purchases/route.ts"
+      }
+    ]
+  },
+  {
+    "id": "ledger",
+    "label": "Receipts & payments",
+    "endpoint": "POST /api/transactions · code-based explanation",
+    "steps": [
+      {
+        "title": "Choose the voucher type",
+        "tag": "RECEIPT · PAYMENT · JOURNAL",
+        "detail": "The ERP exposes receipts, payments and vouchers as entry screens. The route receives account, debit, credit, particulars and optional references.",
+        "payload": "{ vchType, accountName, debit, credit, refNo }",
+        "source": "src/app/api/transactions/route.ts"
+      },
+      {
+        "title": "Calculate net movement",
+        "tag": "Signed balance convention",
+        "detail": "The route calculates netChange as debit minus credit. These are account ledger entries; this code does not demonstrate a complete double-entry general ledger.",
+        "payload": "netChange = debit − credit",
+        "source": "src/app/api/transactions/route.ts"
+      },
+      {
+        "title": "Write voucher and balance",
+        "tag": "One Prisma transaction",
+        "detail": "The transaction stores the voucher and increments the ledger balance by netChange. Financial actions were not executed on the live system for the video.",
+        "payload": "Transaction + LedgerAccount.balance",
+        "source": "src/app/api/transactions/route.ts"
+      }
+    ]
+  },
+  {
+    "id": "account",
+    "label": "Customer history",
+    "endpoint": "GET /api/users/orders · session required",
+    "steps": [
+      {
+        "title": "Establish a customer session",
+        "tag": "NextAuth credentials + JWT",
+        "detail": "The authentication callback checks the supplied credentials and places the user ID and role in the token and session. Customer sign-in was verified with the owner-provided account.",
+        "payload": "credentials → session.user.id + role",
+        "source": "src/lib/auth.ts"
+      },
+      {
+        "title": "Load the user's quotes",
+        "tag": "Filter by customerId",
+        "detail": "The orders route checks the session, then queries quotes for that user ID. Existing identifiers and financial details are excluded from the recording.",
+        "payload": "customerId = session.user.id",
+        "source": "src/app/api/users/orders/route.ts"
+      },
+      {
+        "title": "Link ERP invoices",
+        "tag": "Company name → ledger",
+        "detail": "The route reads the user's companyName, looks up a ledger with that name, and loads its sales. The supplied account showed no purchase invoices.",
+        "payload": "companyName → LedgerAccount → Sale[]",
+        "source": "src/app/api/users/orders/route.ts"
+      },
+      {
+        "title": "Present separate tabs",
+        "tag": "Digital Quotes · Purchase Invoices",
+        "detail": "The customer interface separates quote requests from formal purchase invoices. My Profile is explained without capturing personal fields.",
+        "payload": "{ quotes, sales } → customer history",
+        "source": "src/app/account/orders/page.tsx"
+      }
+    ]
+  }
+]

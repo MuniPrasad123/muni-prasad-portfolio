@@ -1,0 +1,139 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:08.520
+Welcome to Himaja Communications. This wholesale storefront helps retailers discover products, prepare quote requests, and stay connected
+
+00:00:08.520 --> 00:00:17.040
+with the distributor. Let us explore the main tabs and the customer journey.
+
+00:00:17.490 --> 00:00:26.490
+The Products tab presents the wholesale catalog. Each card includes a product image, SKU, availability, and pricing.
+
+00:00:26.490 --> 00:00:35.490
+Next.js loads the catalog with Prisma, while React manages the browsing interface.
+
+00:00:35.940 --> 00:00:43.645
+Category and brand filters narrow the selection. Here, the chocolates category reduces the catalog to a focused
+
+00:00:43.645 --> 00:00:51.350
+product list. These filters work on the catalog already loaded into the browser.
+
+00:00:51.800 --> 00:01:00.165
+Search accepts a product name, brand, or SKU. Entering a specific SKU finds the matching KitKat product.
+
+00:01:00.165 --> 00:01:08.530
+This helps retailers locate an exact item rather than scan the complete catalog.
+
+00:01:08.980 --> 00:01:16.670
+Add to Quote puts the product into a browser-based draft. This action is separate from placing a
+
+00:01:16.670 --> 00:01:24.360
+purchase or submitting a request. The cart persists locally so quantities can be reviewed.
+
+00:01:24.810 --> 00:01:32.430
+In the quote cart, the customer can change quantities or remove items. Increasing this sample quantity to
+
+00:01:32.430 --> 00:01:40.050
+ten activates its configured bulk price. The subtotal updates immediately.
+
+00:01:40.500 --> 00:01:49.430
+The delivery estimator recalculates shipping and tax using the selected location and configured rates. These are application
+
+00:01:49.430 --> 00:01:58.360
+estimates, not a tax-compliance guarantee. We reviewed the total without submitting a live quote.
+
+00:01:58.810 --> 00:02:06.585
+The sign-in page separates customer and administrator access. We verified the customer journey with the account supplied
+
+00:02:06.585 --> 00:02:14.360
+by the project owner. Login credentials are excluded from this video.
+
+00:02:14.810 --> 00:02:21.690
+My Orders includes a Digital Quotes tab for the signed-in customer's requests. It presents their status and
+
+00:02:21.690 --> 00:02:28.570
+history. The account navigation was verified, and this diagram explains it without recording existing order identifiers or
+
+00:02:28.570 --> 00:02:35.450
+financial details.
+
+00:02:35.900 --> 00:02:44.265
+Purchase Invoices is a separate tab. The implementation links customer invoices through the company ledger account. The
+
+00:02:44.265 --> 00:02:52.630
+supplied account displayed an empty invoice state, rather than a completed purchase.
+
+00:02:53.080 --> 00:03:01.875
+My Profile brings business information, contact details, and membership status together. To keep personal information out of
+
+00:03:01.875 --> 00:03:10.670
+the public recording, this section uses an explanatory diagram instead of the account's profile screen.
+
+00:03:11.120 --> 00:03:17.817
+The Support tab opens Himaja Assistant. Its entry screen asks for a name and phone number. The
+
+00:03:17.817 --> 00:03:24.513
+repository includes a Gemini-backed chat flow with stored conversation history. No live support conversation was created for
+
+00:03:24.513 --> 00:03:31.210
+this recording.
+
+00:03:31.660 --> 00:03:39.460
+The Contact tab gives visitors business information and direct contact channels. It helps a retailer reach the
+
+00:03:39.460 --> 00:03:47.260
+distributor when pricing, supply, or delivery requirements need a conversation.
+
+00:03:47.710 --> 00:03:55.810
+Partners presents the brand directory and links to product browsing. It also includes a partnership application form.
+
+00:03:55.810 --> 00:04:03.910
+We show the form's purpose without sending an application to the live business.
+
+00:04:04.360 --> 00:04:11.525
+The Blog tab tells the company's story and introduces the business behind the catalog. It complements product
+
+00:04:11.525 --> 00:04:18.690
+discovery with background about the distributor and its retail relationships.
+
+00:04:19.140 --> 00:04:25.535
+Gallery gives visitors a visual tour of the store. Selecting a photograph opens a larger view. This
+
+00:04:25.535 --> 00:04:31.930
+interaction was recorded on the public site.
+
+00:04:32.380 --> 00:04:40.557
+The repository also contains an administrator ERP. Dashboard summarizes sales, purchases, and outstanding balances. Master Info manages
+
+00:04:40.557 --> 00:04:48.733
+product data and imports. Stock Summary uses current stock, but some historical movement columns are illustrative rather
+
+00:04:48.733 --> 00:04:56.910
+than a full stock audit.
+
+00:04:57.360 --> 00:05:05.280
+Sales Entry groups an invoice, stock reduction, and customer ledger updates in a Prisma transaction. Purchase Entry
+
+00:05:05.280 --> 00:05:13.200
+adds supplier purchases, increases stock, and updates amounts payable. These are separate ERP operations, explained from the
+
+00:05:13.200 --> 00:05:21.120
+code without creating live transactions.
+
+00:05:21.570 --> 00:05:29.210
+Ledgers organize accounts and balances. Receipts and Payments represent customer collections and supplier outflows. Vouchers provide transaction
+
+00:05:29.210 --> 00:05:36.850
+references and debit or credit entries. The narration describes their implemented roles; it does not perform financial
+
+00:05:36.850 --> 00:05:44.490
+actions.
+
+00:05:44.940 --> 00:05:53.627
+The application combines Next.js, React, TypeScript, Prisma, and PostgreSQL. The source also includes authentication, PDF invoices, spreadsheet
+
+00:05:53.627 --> 00:06:02.313
+imports, email delivery, and reporting components. The portfolio case study separates recorded customer behavior from code-based ERP
+
+00:06:02.313 --> 00:06:11.000
+explanations.
