@@ -1,0 +1,19 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.000
+A shopper checks out a ₹4,999 product. Customer expectation: one successful order.
+
+00:00:04.000 --> 00:00:08.000
+Kubernetes starts replacing checkout Pod A. Existing traffic needs time to finish.
+
+00:00:08.000 --> 00:00:12.000
+The gateway uses a stale endpoint or connection. Shopper sees: “Could not confirm order.”
+
+00:00:12.000 --> 00:00:16.000
+A later request reaches Pod B and commits the order. Shopper cannot know whether payment/order succeeded.
+
+00:00:16.000 --> 00:00:20.000
+The shopper retries the same logical purchase. Never treat a timeout as proof of rollback.
+
+00:00:20.000 --> 00:00:24.000
+Drain Pod A; route new traffic only to ready Pod B. Result: reliable routing and one logical order.

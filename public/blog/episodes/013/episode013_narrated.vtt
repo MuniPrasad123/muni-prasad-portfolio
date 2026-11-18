@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.905
+A shopper presses Place Order and expects one purchase confirmation. The client
+
+00:00:05.905 --> 00:00:11.810
+should create one stable checkout identity before sending the request.
+
+00:00:12.250 --> 00:00:18.180
+Kubernetes starts replacing checkout pod A. Readiness updates and connection draining need
+
+00:00:18.180 --> 00:00:24.110
+time to move new traffic away while existing requests finish.
+
+00:00:24.542 --> 00:00:30.987
+A stale gateway endpoint or pooled connection still reaches pod A. The
+
+00:00:30.987 --> 00:00:37.432
+shopper sees an error. Readiness-aware routing and draining protect this path.
+
+00:00:37.833 --> 00:00:41.610
+A later retry reaches pod B and saves the order, but its
+
+00:00:41.610 --> 00:00:45.387
+reply is lost. A timeout does not prove that the database rolled
+
+00:00:45.387 --> 00:00:49.163
+back.
+
+00:00:49.583 --> 00:00:56.508
+The shopper retries the same purchase. Reuse the original customer-scoped idempotency key
+
+00:00:56.508 --> 00:01:03.433
+and compare the payload. A fresh identity can create a duplicate order.
+
+00:01:03.833 --> 00:01:08.730
+Route new traffic to ready pod B, and return the original saved
+
+00:01:08.730 --> 00:01:13.627
+result for the same request. Draining protects routing. Durable idempotency protects one
+
+00:01:13.627 --> 00:01:18.523
+logical purchase.
