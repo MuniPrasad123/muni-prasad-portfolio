@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { portfolioProjects } from '@/data/site'
-import { ArchitectureDiagram } from './ProjectDetails'
+import { ProjectThumbnail } from './ProjectThumbnail'
 
 const categories = [
   { value: 'All', label: 'All' },
@@ -42,13 +42,13 @@ export function ProjectGallery() {
     </div>
     <div id="project-results">
       {filtered.length ? <div className="project-grid">{filtered.map(project => <Link key={project.slug} href={`/portfolio/${project.slug}`} className="case-card">
-        <div className="case-card-art"><ArchitectureDiagram type={project.diagram} compact/></div>
+        <ProjectThumbnail slug={project.slug} category={project.category}/>
         <div className="case-card-body">
           <div className="project-meta"><span>{project.category}</span><span>{project.context}</span></div>
           <h2>{project.title}</h2><p>{project.problemStatement}</p>
           <div className="tag-list">{project.stack.slice(0,5).map(tech => <span className="tag" key={tech}>{tech}</span>)}</div>
           {project.outcome && <div className="case-card-outcome">{project.outcome}</div>}
-          <span className="project-link">Read project detail <span aria-hidden="true">↗</span></span>
+          <span className="project-link">Explore case study <span aria-hidden="true">↗</span></span>
         </div>
       </Link>)}</div> : <div className="empty-state"><p>No projects match these filters. Try another technology or reset the selection.</p><button className="button button-outline" type="button" onClick={reset}>Show all projects</button></div>}
     </div>

@@ -66,7 +66,7 @@ export function StudioControls() {
   }
 
   return <section className="site-playback-controls" aria-label="Site sound and animation controls">
-    <audio ref={player} src="/audio/quiet-water-meditation.wav" loop preload="none"
+    <audio ref={player} src="/audio/leberch-peaceful-piano-590944.mp3" loop preload="none"
       onPlaying={() => { setPlaying(true); setBusy(false) }} onPause={() => setPlaying(false)}
       onError={() => { setPlaying(false); setBusy(false); setMessage('Music could not load. Please reload the page and try again.') }}/>
     <div className="playback-buttons">
