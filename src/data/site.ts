@@ -41,6 +41,7 @@ export const careerHistory = experiences.map(item => ({
 }))
 
 const credentialType: Record<string, string> = {
+  'Introducing Joule Studio': 'Course badge',
   'Oracle Cloud Infrastructure Certified Architect Associate': 'Certification',
   'Oracle Multicloud Certified Foundations Associate': 'Certification',
   'Agentic AI Certified Foundations Associate': 'Certification',
