@@ -1,21 +1,21 @@
+// Algorithm-only Java 21 example. NOT durable: use the PostgreSQL guard in OrderFlow.java
+// for multiple replicas and restarts. This file exercises comparison semantics only.
 package demo;
-import java.util.*;
 public class ProjectionDemo {
-  record Event(String id, long version, String status) {}
-  static class Projection {
-    long version = -1; String status = "UNKNOWN"; Set<String> seen = new HashSet<>();
-    boolean apply(Event e) {
-      if (!seen.add(e.id())) return false;
-      if (e.version() <= version) return false;
-      version = e.version(); status = e.status(); return true;
-    }
+  record Snapshot(long version, String status) {}
+  static Snapshot apply(Snapshot stored, Snapshot incoming) {
+    if (incoming.version() == stored.version() && !incoming.status().equals(stored.status()))
+      throw new IllegalArgumentException("Conflicting snapshot: investigate");
+    return incoming.version() > stored.version() ? incoming : stored;
   }
   public static void main(String[] args) {
-    var p = new Projection();
-    p.apply(new Event("evt-paid", 2, "PAID"));
-    p.apply(new Event("evt-pending", 1, "PENDING"));
-    p.apply(new Event("evt-paid", 2, "PAID"));
-    if (!p.status.equals("PAID") || p.version != 2) throw new AssertionError("Projection regressed");
-    System.out.println("PASS: status=" + p.status + ", version=" + p.version);
+    var paid = new Snapshot(2,"PAID");
+    var state = apply(new Snapshot(1,"PENDING"),paid);
+    state = apply(state,new Snapshot(1,"PENDING"));
+    state = apply(state,paid);
+    if (!state.equals(paid)) throw new AssertionError("Projection regressed");
+    try { apply(state,new Snapshot(2,"PENDING")); throw new AssertionError("Conflict accepted"); }
+    catch (IllegalArgumentException expected) { }
+    System.out.println("PASS: newer accepted; stale and duplicate ignored; conflict detected");
   }
 }

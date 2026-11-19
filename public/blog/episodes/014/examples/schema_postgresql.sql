@@ -1,14 +1,26 @@
--- PostgreSQL: command state and outbox share one transaction
-CREATE TABLE orders (id BIGINT PRIMARY KEY, status TEXT NOT NULL, version BIGINT NOT NULL);
-CREATE TABLE outbox (event_id UUID PRIMARY KEY, order_id BIGINT NOT NULL, version BIGINT NOT NULL, event_type TEXT NOT NULL, payload JSONB NOT NULL, published_at TIMESTAMPTZ);
-CREATE TABLE order_projection (order_id BIGINT PRIMARY KEY, status TEXT NOT NULL, version BIGINT NOT NULL);
-BEGIN;
-UPDATE orders SET status='PAID',version=version+1 WHERE id=101 AND status='PENDING';
-INSERT INTO outbox(event_id,order_id,version,event_type,payload)
-SELECT gen_random_uuid(),id,version,'OrderPaid',jsonb_build_object('status',status) FROM orders WHERE id=101 AND status='PAID';
-COMMIT;
--- In production, ensure the UPDATE actually transitioned exactly one row and outbox publication is atomic with that transition.
--- Projection upsert only advances newer versions:
-INSERT INTO order_projection(order_id,status,version) VALUES (101,'PAID',2)
-ON CONFLICT (order_id) DO UPDATE SET status=EXCLUDED.status,version=EXCLUDED.version
-WHERE order_projection.version < EXCLUDED.version;
+-- WRITE DATABASE: order and outbox share one local transaction.
+CREATE TABLE orders (
+  order_id text PRIMARY KEY, customer_id text NOT NULL,
+  status text NOT NULL CHECK (status IN ('PENDING','PAID')),
+  version bigint NOT NULL CHECK (version > 0),
+  amount_minor bigint NOT NULL, currency text NOT NULL,
+  provider_payment_id text UNIQUE
+);
+CREATE TABLE outbox (
+  event_id uuid PRIMARY KEY, order_id text NOT NULL REFERENCES orders(order_id),
+  version bigint NOT NULL, payload jsonb NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now(), published_at timestamptz,
+  UNIQUE(order_id,version)
+);
+CREATE INDEX pending_outbox ON outbox(created_at) WHERE published_at IS NULL;
+-- READ DATABASE: separate service-owned store.
+CREATE TABLE order_projection (
+  order_id text PRIMARY KEY, status text NOT NULL CHECK (status IN ('PENDING','PAID')),
+  version bigint NOT NULL CHECK (version > 0), updated_at timestamptz NOT NULL DEFAULT now()
+);
+-- Parameterized conditional UPSERT (bind ?, do not interpolate):
+-- INSERT INTO order_projection(order_id,status,version) VALUES (?,?,?)
+-- ON CONFLICT(order_id) DO UPDATE
+-- SET status=EXCLUDED.status,version=EXCLUDED.version,updated_at=now()
+-- WHERE order_projection.version < EXCLUDED.version
+-- RETURNING order_id,status,version;
