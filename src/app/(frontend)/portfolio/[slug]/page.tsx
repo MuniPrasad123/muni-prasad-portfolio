@@ -6,6 +6,7 @@ import { portfolioProjects } from '@/data/site'
 import { caseNotes } from '@/data/engineering'
 import { ProjectDetails } from '@/components/site/ProjectDetails'
 import { DharmaShowcase } from '@/components/site/DharmaShowcase'
+import { MuniAiShowcase } from '@/components/site/MuniAiShowcase'
 import { HimajaShowcase } from '@/components/site/HimajaShowcase'
 
 type Props={params:Promise<{slug:string}>}
@@ -23,6 +24,7 @@ export default async function ProjectDetailPage({params}:Props){
   return <article className="page">
     <header className="page-hero"><Link className="text-link" href="/portfolio"><ArrowLeft size={14}/> Back to selected work</Link><div className="eyebrow" style={{marginTop:25}}><span className="eyebrow-line"/>{project.context}</div><h1>{project.title}</h1><p>{project.problemStatement}</p><div className="detail-meta">{project.stack.map(tag=><span className="tag" key={tag}>{tag}</span>)}</div></header>
     <div className="article-body case-study">
+      {slug==='muniai'&&<MuniAiShowcase/>}
       {slug==='dharmaai'&&<DharmaShowcase/>}
       {slug==='himaja-communication-erp'&&<HimajaShowcase/>}
       <section className="detail-block"><h2>My contribution</h2><p>{project.role}</p></section>
@@ -30,7 +32,7 @@ export default async function ProjectDetailPage({params}:Props){
       <ProjectDetails type={project.diagram} title={project.title}/>
       {notes?.validation&&<section className="detail-block"><h2>Testing & validation</h2><p>{notes.validation}</p></section>}
       {(project.outcome||notes?.lesson)&&<section className="detail-block"><h2>Outcome & lessons</h2>{project.outcome&&<p>{project.outcome}</p>}{notes?.lesson&&<p>{notes.lesson}</p>}</section>}
-      <details className="source-note"><summary>Project context & evidence</summary><p>{notes?.evidence}</p>{project.context==='Professional contribution'?<p>Client source code is not published here.</p>:slug==='dharmaai'?<p><a href="https://github.com/MuniPrasad123/dharmaai-voice-book-assistant">Public source code and recorded demonstration</a> are available above.</p>:slug==='himaja-communication-erp'?<p><a href="https://www.himajacommunications.com/" target="_blank" rel="noreferrer">Live storefront</a> and an edited walkthrough are available above.</p>:<p>A public repository or demo link has not been provided for this project.</p>}</details>
+      <details className="source-note"><summary>Project context & evidence</summary><p>{notes?.evidence}</p>{project.context==='Professional contribution'?<p>Client source code is not published here.</p>:slug==='muniai'?<p><a href="https://github.com/MuniPrasad123/muniai">Public source code and recorded demonstration</a> are available above.</p>:slug==='dharmaai'?<p><a href="https://github.com/MuniPrasad123/dharmaai-voice-book-assistant">Public source code and recorded demonstration</a> are available above.</p>:slug==='himaja-communication-erp'?<p><a href="https://www.himajacommunications.com/" target="_blank" rel="noreferrer">Live storefront</a> and an edited walkthrough are available above.</p>:<p>A public repository or demo link has not been provided for this project.</p>}</details>
       <div className="case-footer"><Link className="text-link" href="/portfolio">← More selected work</Link><Link className="text-link" href="/contact">Discuss a similar challenge ↗</Link></div>
     </div>
   </article>
