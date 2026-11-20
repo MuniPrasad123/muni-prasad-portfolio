@@ -1,0 +1,122 @@
+[
+  {
+    "start": 0.102625,
+    "end": 0.247375,
+    "text": "The"
+  },
+  {
+    "start": 0.273666,
+    "end": 0.655249,
+    "text": "payment"
+  },
+  {
+    "start": 0.668416,
+    "end": 1.181582,
+    "text": "provider"
+  },
+  {
+    "start": 1.207875,
+    "end": 1.497333,
+    "text": "sends"
+  },
+  {
+    "start": 1.523666,
+    "end": 1.589457,
+    "text": "a"
+  },
+  {
+    "start": 1.615791,
+    "end": 1.971041,
+    "text": "signed"
+  },
+  {
+    "start": 1.997375,
+    "end": 2.484208,
+    "text": "success"
+  },
+  {
+    "start": 2.510541,
+    "end": 3.089499,
+    "text": "webhook"
+  },
+  {
+    "start": 4.013166,
+    "end": 4.236832,
+    "text": "Our"
+  },
+  {
+    "start": 4.263166,
+    "end": 4.671041,
+    "text": "server"
+  },
+  {
+    "start": 4.697375,
+    "end": 5.315791,
+    "text": "processes"
+  },
+  {
+    "start": 5.342125,
+    "end": 5.43425,
+    "text": "it"
+  },
+  {
+    "start": 5.64475,
+    "end": 5.776333,
+    "text": "but"
+  },
+  {
+    "start": 5.789458,
+    "end": 5.921041,
+    "text": "its"
+  },
+  {
+    "start": 5.934208,
+    "end": 6.618416,
+    "text": "acknowledgement"
+  },
+  {
+    "start": 6.64475,
+    "end": 6.776333,
+    "text": "is"
+  },
+  {
+    "start": 6.802625,
+    "end": 7.302625,
+    "text": "lost"
+  },
+  {
+    "start": 8.236833,
+    "end": 8.381583,
+    "text": "The"
+  },
+  {
+    "start": 8.407875,
+    "end": 8.947333,
+    "text": "provider"
+  },
+  {
+    "start": 8.973666,
+    "end": 9.315791,
+    "text": "cannot"
+  },
+  {
+    "start": 9.342125,
+    "end": 9.605291,
+    "text": "tell"
+  },
+  {
+    "start": 9.631583,
+    "end": 9.921041,
+    "text": "whether"
+  },
+  {
+    "start": 9.947375,
+    "end": 10.513166,
+    "text": "processing"
+  },
+  {
+    "start": 10.539458,
+    "end": 11.026291,
+    "text": "finished"
+  }
+]

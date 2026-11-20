@@ -1,0 +1,478 @@
+{
+  "fps": 30,
+  "durationInFrames": 3160,
+  "voice": "en-US-GuyNeural",
+  "scenes": [
+    {
+      "title": "One payment. Three emails.",
+      "label": "MAYA'S CHECKOUT",
+      "seconds": 11,
+      "voice": "Maya pays one hundred and twenty dollars once. Her bank confirms one transaction. Then three order confirmation emails arrive, and the warehouse receives repeated shipping requests.",
+      "active": 0,
+      "deliveries": 0,
+      "emails": 3,
+      "shipments": 3,
+      "state": "Payment succeeded",
+      "note": "Repeated notifications do not prove repeated charges.",
+      "from": 0,
+      "frames": 417,
+      "audio": "blog/episodes/015/speech/scene-1.mp3",
+      "cues": [
+        {
+          "start": 0.102625,
+          "end": 2.8,
+          "text": "Maya pays one hundred and twenty dollars once."
+        },
+        {
+          "start": 3.736833,
+          "end": 5.934207,
+          "text": "Her bank confirms one transaction."
+        },
+        {
+          "start": 6.85525,
+          "end": 9.776291,
+          "text": "Then three order confirmation emails arrive, and the"
+        },
+        {
+          "start": 9.802625,
+          "end": 12.342083,
+          "text": "warehouse receives repeated shipping requests."
+        }
+      ]
+    },
+    {
+      "title": "The acknowledgement was lost",
+      "label": "WHAT WENT WRONG?",
+      "seconds": 11,
+      "voice": "The payment provider sends a signed success webhook. Our server processes it, but its acknowledgement is lost. The provider cannot tell whether processing finished.",
+      "active": 1,
+      "deliveries": 1,
+      "emails": 1,
+      "shipments": 1,
+      "state": "Commit succeeded \u00b7 reply lost",
+      "note": "A lost reply does not undo the database commit.",
+      "from": 417,
+      "frames": 378,
+      "audio": "blog/episodes/015/speech/scene-2.mp3",
+      "cues": [
+        {
+          "start": 0.102625,
+          "end": 3.089499,
+          "text": "The payment provider sends a signed success webhook."
+        },
+        {
+          "start": 4.013166,
+          "end": 6.776333,
+          "text": "Our server processes it, but its acknowledgement is"
+        },
+        {
+          "start": 6.802625,
+          "end": 7.302625,
+          "text": "lost."
+        },
+        {
+          "start": 8.236833,
+          "end": 11.026291,
+          "text": "The provider cannot tell whether processing finished."
+        }
+      ]
+    },
+    {
+      "title": "Retry repeats the unsafe work",
+      "label": "SAME EVENT, AGAIN",
+      "seconds": 11,
+      "voice": "The provider retries the same event. An unsafe handler sends another email and shipment request. The webhook reports an existing payment. It does not charge the customer again.",
+      "active": 2,
+      "deliveries": 3,
+      "emails": 3,
+      "shipments": 3,
+      "state": "Unsafe: repeated business effects",
+      "note": "One charge \u00b7 three deliveries \u00b7 repeated fulfillment intents",
+      "from": 795,
+      "frames": 438,
+      "audio": "blog/episodes/015/speech/scene-3.mp3",
+      "cues": [
+        {
+          "start": 0.102625,
+          "end": 2.273666,
+          "text": "The provider retries the same event."
+        },
+        {
+          "start": 3.210541,
+          "end": 6.0,
+          "text": "An unsafe handler sends another email and shipment"
+        },
+        {
+          "start": 6.026333,
+          "end": 6.644749,
+          "text": "request."
+        },
+        {
+          "start": 7.578958,
+          "end": 9.947374,
+          "text": "The webhook reports an existing payment."
+        },
+        {
+          "start": 10.868416,
+          "end": 13.013125,
+          "text": "It does not charge the customer again."
+        }
+      ]
+    },
+    {
+      "title": "First protection: durable inbox",
+      "label": "VERIFY, THEN ACCEPT",
+      "seconds": 12,
+      "voice": "First, verify the original request bytes, timestamp and merchant. Save the event identity in a durable PostgreSQL inbox. A repeated delivery is safely acknowledged without creating new work.",
+      "active": 3,
+      "deliveries": 3,
+      "emails": 1,
+      "shipments": 1,
+      "state": "Duplicate event rejected",
+      "note": "Inbox = durable delivery deduplication across restarts and replicas.",
+      "from": 1233,
+      "frames": 450,
+      "audio": "blog/episodes/015/speech/scene-4.mp3",
+      "cues": [
+        {
+          "start": 0.102625,
+          "end": 3.589499,
+          "text": "First, verify the original request bytes, timestamp and"
+        },
+        {
+          "start": 3.615791,
+          "end": 4.142124,
+          "text": "merchant."
+        },
+        {
+          "start": 5.065791,
+          "end": 8.144707,
+          "text": "Save the event identity in a durable PostgreSQL"
+        },
+        {
+          "start": 8.171041,
+          "end": 8.802624,
+          "text": "inbox."
+        },
+        {
+          "start": 9.723666,
+          "end": 12.89475,
+          "text": "A repeated delivery is safely acknowledged without creating"
+        },
+        {
+          "start": 12.921041,
+          "end": 13.460541,
+          "text": "new work."
+        }
+      ]
+    },
+    {
+      "title": "Second: guard the payment state",
+      "label": "NEW ID, SAME PAYMENT",
+      "seconds": 11,
+      "voice": "A different event identifier can still describe the same payment. Transition pending to succeeded only once. A late success notification must never move a refunded payment back to succeeded.",
+      "active": 3,
+      "deliveries": 3,
+      "emails": 1,
+      "shipments": 1,
+      "state": "PENDING \u2192 SUCCEEDED \u00b7 once",
+      "note": "Delivery identity and business identity are different protections.",
+      "from": 1683,
+      "frames": 422,
+      "audio": "blog/episodes/015/speech/scene-5.mp3",
+      "cues": [
+        {
+          "start": 0.102625,
+          "end": 2.786875,
+          "text": "A different event identifier can still describe the"
+        },
+        {
+          "start": 2.8,
+          "end": 3.563124,
+          "text": "same payment."
+        },
+        {
+          "start": 4.473666,
+          "end": 7.197375,
+          "text": "Transition pending to succeeded only once."
+        },
+        {
+          "start": 8.118416,
+          "end": 10.592083,
+          "text": "A late success notification must never move a"
+        },
+        {
+          "start": 10.60525,
+          "end": 12.513125,
+          "text": "refunded payment back to succeeded."
+        }
+      ]
+    },
+    {
+      "title": "Third: commit a reliable intent",
+      "label": "OUTBOX + DESTINATION KEYS",
+      "seconds": 13,
+      "voice": "Commit the inbox, payment update and outbox intent in one database transaction, then acknowledge. A separate worker retries with stable email and fulfillment keys. Downstream systems must deduplicate too.",
+      "active": 4,
+      "deliveries": 3,
+      "emails": 1,
+      "shipments": 1,
+      "state": "One transaction \u00b7 retryable dispatch",
+      "note": "No external network calls inside the acceptance transaction.",
+      "from": 2105,
+      "frames": 468,
+      "audio": "blog/episodes/015/speech/scene-6.mp3",
+      "cues": [
+        {
+          "start": 0.102625,
+          "end": 3.194708,
+          "text": "Commit the inbox, payment update and outbox intent"
+        },
+        {
+          "start": 3.207875,
+          "end": 5.760541,
+          "text": "in one database transaction, then acknowledge."
+        },
+        {
+          "start": 6.697375,
+          "end": 9.381583,
+          "text": "A separate worker retries with stable email and"
+        },
+        {
+          "start": 9.407875,
+          "end": 10.447375,
+          "text": "fulfillment keys."
+        },
+        {
+          "start": 11.381583,
+          "end": 14.052625,
+          "text": "Downstream systems must deduplicate too."
+        }
+      ]
+    },
+    {
+      "title": "One payment. One logical outcome.",
+      "label": "CUSTOMER PROTECTED",
+      "seconds": 13,
+      "voice": "Now repeated webhooks receive a safe acknowledgement without repeating the business action. One payment, one logical confirmation, one fulfillment intent. Monitor failures and reconcile ambiguous outcomes. These are illustrative counts, not production measurements.",
+      "active": 5,
+      "deliveries": 3,
+      "emails": 1,
+      "shipments": 1,
+      "state": "Safe retries \u00b7 customer reassured",
+      "note": "Outbox intent alone is not exactly-once physical delivery.",
+      "from": 2573,
+      "frames": 587,
+      "audio": "blog/episodes/015/speech/scene-7.mp3",
+      "cues": [
+        {
+          "start": 0.102625,
+          "end": 2.878916,
+          "text": "Now repeated webhooks receive a safe acknowledgement"
+        },
+        {
+          "start": 2.90525,
+          "end": 4.760541,
+          "text": "without repeating the business action."
+        },
+        {
+          "start": 5.697375,
+          "end": 9.131583,
+          "text": "One payment, one logical confirmation, one fulfillment"
+        },
+        {
+          "start": 9.14475,
+          "end": 9.684208,
+          "text": "intent."
+        },
+        {
+          "start": 10.618416,
+          "end": 13.75,
+          "text": "Monitor failures and reconcile ambiguous outcomes."
+        },
+        {
+          "start": 14.684208,
+          "end": 18.013125,
+          "text": "These are illustrative counts, not production measurements."
+        }
+      ]
+    }
+  ],
+  "cues": [
+    {
+      "start": 0.102625,
+      "end": 2.8,
+      "text": "Maya pays one hundred and twenty dollars once."
+    },
+    {
+      "start": 3.736833,
+      "end": 5.934207,
+      "text": "Her bank confirms one transaction."
+    },
+    {
+      "start": 6.85525,
+      "end": 9.776291,
+      "text": "Then three order confirmation emails arrive, and the"
+    },
+    {
+      "start": 9.802625,
+      "end": 12.342083,
+      "text": "warehouse receives repeated shipping requests."
+    },
+    {
+      "start": 14.002625,
+      "end": 16.989499000000002,
+      "text": "The payment provider sends a signed success webhook."
+    },
+    {
+      "start": 17.913166,
+      "end": 20.676333,
+      "text": "Our server processes it, but its acknowledgement is"
+    },
+    {
+      "start": 20.702625,
+      "end": 21.202625,
+      "text": "lost."
+    },
+    {
+      "start": 22.136833000000003,
+      "end": 24.926291,
+      "text": "The provider cannot tell whether processing finished."
+    },
+    {
+      "start": 26.602625,
+      "end": 28.773666,
+      "text": "The provider retries the same event."
+    },
+    {
+      "start": 29.710541,
+      "end": 32.5,
+      "text": "An unsafe handler sends another email and shipment"
+    },
+    {
+      "start": 32.526333,
+      "end": 33.144749,
+      "text": "request."
+    },
+    {
+      "start": 34.078958,
+      "end": 36.447373999999996,
+      "text": "The webhook reports an existing payment."
+    },
+    {
+      "start": 37.368415999999996,
+      "end": 39.513125,
+      "text": "It does not charge the customer again."
+    },
+    {
+      "start": 41.202625000000005,
+      "end": 44.689499,
+      "text": "First, verify the original request bytes, timestamp and"
+    },
+    {
+      "start": 44.715791,
+      "end": 45.242124000000004,
+      "text": "merchant."
+    },
+    {
+      "start": 46.165791,
+      "end": 49.244707000000005,
+      "text": "Save the event identity in a durable PostgreSQL"
+    },
+    {
+      "start": 49.271041000000004,
+      "end": 49.902624,
+      "text": "inbox."
+    },
+    {
+      "start": 50.823666,
+      "end": 53.99475,
+      "text": "A repeated delivery is safely acknowledged without creating"
+    },
+    {
+      "start": 54.021041000000004,
+      "end": 54.560541,
+      "text": "new work."
+    },
+    {
+      "start": 56.202625000000005,
+      "end": 58.886875,
+      "text": "A different event identifier can still describe the"
+    },
+    {
+      "start": 58.9,
+      "end": 59.663124,
+      "text": "same payment."
+    },
+    {
+      "start": 60.573666,
+      "end": 63.297375,
+      "text": "Transition pending to succeeded only once."
+    },
+    {
+      "start": 64.218416,
+      "end": 66.692083,
+      "text": "A late success notification must never move a"
+    },
+    {
+      "start": 66.70525,
+      "end": 68.613125,
+      "text": "refunded payment back to succeeded."
+    },
+    {
+      "start": 70.26929166666667,
+      "end": 73.36137466666668,
+      "text": "Commit the inbox, payment update and outbox intent"
+    },
+    {
+      "start": 73.37454166666667,
+      "end": 75.92720766666667,
+      "text": "in one database transaction, then acknowledge."
+    },
+    {
+      "start": 76.86404166666667,
+      "end": 79.54824966666666,
+      "text": "A separate worker retries with stable email and"
+    },
+    {
+      "start": 79.57454166666668,
+      "end": 80.61404166666667,
+      "text": "fulfillment keys."
+    },
+    {
+      "start": 81.54824966666666,
+      "end": 84.21929166666668,
+      "text": "Downstream systems must deduplicate too."
+    },
+    {
+      "start": 85.86929166666667,
+      "end": 88.64558266666667,
+      "text": "Now repeated webhooks receive a safe acknowledgement"
+    },
+    {
+      "start": 88.67191666666666,
+      "end": 90.52720766666667,
+      "text": "without repeating the business action."
+    },
+    {
+      "start": 91.46404166666666,
+      "end": 94.89824966666666,
+      "text": "One payment, one logical confirmation, one fulfillment"
+    },
+    {
+      "start": 94.91141666666667,
+      "end": 95.45087466666666,
+      "text": "intent."
+    },
+    {
+      "start": 96.38508266666666,
+      "end": 99.51666666666667,
+      "text": "Monitor failures and reconcile ambiguous outcomes."
+    },
+    {
+      "start": 100.45087466666666,
+      "end": 103.77979166666667,
+      "text": "These are illustrative counts, not production measurements."
+    }
+  ]
+}

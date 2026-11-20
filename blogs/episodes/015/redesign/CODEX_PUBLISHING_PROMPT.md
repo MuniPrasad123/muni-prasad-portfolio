@@ -1,0 +1,7 @@
+# Codex prompt — update the existing blog safely
+
+You are updating the EXISTING Next.js blog route `/blog/payment-webhook-idempotency-inbox-outbox` at muniprasad.in. Do NOT create a duplicate slug or overwrite unrelated articles.
+
+Read this ZIP fully. Rewrite the existing article with `ARTICLE.md`, preserving correct original technical details and its Episode 015 identity. Begin with the customer's actual on-screen symptoms, distinguish duplicate webhooks from duplicate charges, then animate the unsafe retry sequence and the three protective layers. Integrate the self-contained `index.html` as an interactive lab or port its accessible controls and state machine to existing React components. Match the site's theme, responsive layout, SEO metadata and accessibility conventions. Embed the existing video only if it truly explains the revised story and has verified audible narration and synchronized captions; otherwise use the new storyboard/voiceover to produce a real video and do not falsely label a silent preview narrated. Avoid broken video players.
+
+Use the diagram and poster. Add the SQL/Java examples with clear production-vs-teaching labels. Keep exact signature verification provider-specific. Do not put credentials in source. Run lint, typecheck, build, accessibility checks, and browser tests for duplicate/lost-ACK/invalid-signature/state-guard scenarios. Provide before/after screenshots and an explicit test report. Do not deploy until the user reviews the result. Preserve existing comments, likes and canonical URL.

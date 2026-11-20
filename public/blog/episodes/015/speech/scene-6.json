@@ -1,0 +1,147 @@
+[
+  {
+    "start": 0.102625,
+    "end": 0.457875,
+    "text": "Commit"
+  },
+  {
+    "start": 0.484208,
+    "end": 0.589458,
+    "text": "the"
+  },
+  {
+    "start": 0.615791,
+    "end": 1.155249,
+    "text": "inbox"
+  },
+  {
+    "start": 1.313166,
+    "end": 1.668416,
+    "text": "payment"
+  },
+  {
+    "start": 1.69475,
+    "end": 2.05,
+    "text": "update"
+  },
+  {
+    "start": 2.142125,
+    "end": 2.247375,
+    "text": "and"
+  },
+  {
+    "start": 2.273666,
+    "end": 2.773666,
+    "text": "outbox"
+  },
+  {
+    "start": 2.786833,
+    "end": 3.194708,
+    "text": "intent"
+  },
+  {
+    "start": 3.207875,
+    "end": 3.326291,
+    "text": "in"
+  },
+  {
+    "start": 3.352625,
+    "end": 3.55,
+    "text": "one"
+  },
+  {
+    "start": 3.576333,
+    "end": 4.063166,
+    "text": "database"
+  },
+  {
+    "start": 4.089458,
+    "end": 4.799999,
+    "text": "transaction"
+  },
+  {
+    "start": 4.984208,
+    "end": 5.128958,
+    "text": "then"
+  },
+  {
+    "start": 5.142125,
+    "end": 5.760541,
+    "text": "acknowledge"
+  },
+  {
+    "start": 6.697375,
+    "end": 6.815791,
+    "text": "A"
+  },
+  {
+    "start": 6.842125,
+    "end": 7.263166,
+    "text": "separate"
+  },
+  {
+    "start": 7.289458,
+    "end": 7.684208,
+    "text": "worker"
+  },
+  {
+    "start": 7.710541,
+    "end": 8.223707,
+    "text": "retries"
+  },
+  {
+    "start": 8.25,
+    "end": 8.407875,
+    "text": "with"
+  },
+  {
+    "start": 8.434208,
+    "end": 8.828958,
+    "text": "stable"
+  },
+  {
+    "start": 8.85525,
+    "end": 9.276291,
+    "text": "email"
+  },
+  {
+    "start": 9.289458,
+    "end": 9.381583,
+    "text": "and"
+  },
+  {
+    "start": 9.407875,
+    "end": 9.973666,
+    "text": "fulfillment"
+  },
+  {
+    "start": 10.0,
+    "end": 10.447375,
+    "text": "keys"
+  },
+  {
+    "start": 11.381583,
+    "end": 12.013166,
+    "text": "Downstream"
+  },
+  {
+    "start": 12.039458,
+    "end": 12.565791,
+    "text": "systems"
+  },
+  {
+    "start": 12.592125,
+    "end": 12.828958,
+    "text": "must"
+  },
+  {
+    "start": 12.85525,
+    "end": 13.631583,
+    "text": "deduplicate"
+  },
+  {
+    "start": 13.64475,
+    "end": 14.052625,
+    "text": "too"
+  }
+]

@@ -1,0 +1,20 @@
+00–11s · CUSTOMER
+Maya pays $120 once. Her bank confirms one transaction. Then three order-confirmation emails arrive.
+
+11–22s · WHAT WENT WRONG?
+The payment provider sent a signed success webhook. Our server processed it, but its acknowledgment was lost.
+
+22–33s · RETRY
+The provider retries the same event. An unsafe webhook handler sends another email and shipment request.
+
+33–45s · INBOX
+First fix: verify the signature and save the provider event ID in a durable PostgreSQL inbox. Duplicates stop here.
+
+45–56s · STATE GUARD
+Second: transition the payment from pending to succeeded only once, even if different event IDs describe the same payment.
+
+56–69s · OUTBOX
+Third: commit one outbox intent with the payment update. A separate worker delivers it with stable downstream idempotency keys.
+
+69–82s · CUSTOMER PROTECTED
+Now repeated webhooks receive a safe acknowledgment without repeating the business action. One payment, one logical confirmation, one fulfillment intent.

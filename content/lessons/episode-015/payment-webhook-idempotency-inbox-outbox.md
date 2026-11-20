@@ -1,9 +1,10 @@
 ---
 title: "Payment Webhook Idempotency: Preventing Duplicate Emails and Fulfillment"
-description: "One successful payment produces repeated emails or fulfillment commands when its notification is delivered several times."
+description: "Maya pays $120 once, then receives three confirmations. Follow lost webhook acknowledgements, durable inbox deduplication, payment state guards and retryable outbox delivery."
 slug: "payment-webhook-idempotency-inbox-outbox"
 folder: "Payments & inventory correctness"
 date: "2026-11-14"
+updated: "2026-11-20"
 tags: ["Java","Spring Boot","Payments","PostgreSQL","E-commerce"]
 cover: "/blog/episodes/015/cover.svg"
 coverAlt: "Payment Webhook Idempotency: Preventing Duplicate Emails and Fulfillment"
@@ -11,139 +12,196 @@ draft: false
 sample: false
 level: "Architecture in Motion · Episode 015"
 lab: "/blog/episodes/015/lab.html"
-overview: {"problem":"One successful payment produces repeated emails or fulfillment commands when its notification is delivered several times.","solution":"Verify the raw signature, deduplicate durably, guard payment state, and commit the inbox, transition, and outbox together.","note":"Illustrative system · supplied narrated video and interactive lab"}
-video: "/blog/episodes/015/lesson.mp4"
-videoPoster: "/blog/episodes/015/poster.svg"
-videoCaptions: "/blog/episodes/015/captions.vtt"
-videoCaption: "Supplied narrated lesson · English captions · illustrative scenario"
-videoSummary: "One successful payment produces repeated emails or fulfillment commands when its notification is delivered several times. Verify the raw signature, deduplicate durably, guard payment state, and commit the inbox, transition, and outbox together."
-videoChapters: [{"time":0,"label":"The customer problem"},{"time":19.464,"label":"The safe design"},{"time":25.657,"label":"Deduplicate in the inbox"},{"time":31.85,"label":"Commit state and outbox"},{"time":40.255,"label":"Handle duplicate delivery"}]
+overview: {"problem":"Maya pays once. Her bank shows one transaction, but repeated confirmations and shipping requests make her worry she was charged again.","solution":"Authenticate the notification, accept each delivery durably, guard the payment transition and commit one retryable business intent.","note":"Illustrative scenario · customer-first lab · original comparison preserved · local review"}
+video: "/blog/episodes/015/lesson-redesign.mp4"
+videoPoster: "/blog/episodes/015/poster-redesign.png"
+videoCaptions: "/blog/episodes/015/captions-redesign.vtt"
+videoCaption: "New narrated animation · synthetic English voice · speech-aligned English captions"
+videoSummary: "Maya pays once. Follow the lost acknowledgement and retry, then see durable inbox acceptance, the payment state guard, transactional outbox and destination idempotency protect the customer."
+videoChapters: [{"time":0,"label":"MAYA'S CHECKOUT"},{"time":13.9,"label":"WHAT WENT WRONG?"},{"time":26.5,"label":"SAME EVENT, AGAIN"},{"time":41.1,"label":"VERIFY, THEN ACCEPT"},{"time":56.1,"label":"NEW ID, SAME PAYMENT"},{"time":70.16666666666667,"label":"OUTBOX + DESTINATION KEYS"},{"time":85.76666666666667,"label":"CUSTOMER PROTECTED"}]
 ---
 
-## Start with the customer
+## 1. Start with the customer, not the database
 
-A shopper pays once and receives three confirmation emails. The provider retried one notification, and the application treated every delivery as new work.
+Meet Maya. She buys a pair of headphones for $120. Her checkout page says **Payment successful**, and her banking app shows **one** payment. One minute later she receives three emails saying **Your order is confirmed**. A warehouse integration also sees repeated requests to prepare the package. Maya wonders: *Was I charged three times? Will three packages arrive? Should I cancel?*
 
-**Normal behavior:** The provider completes one payment and sends a signed notification. The merchant records it durably, acknowledges it, and schedules one logical downstream action.
+The support team must check the payment provider's actual transaction ID to answer whether any duplicate charge occurred. **Duplicate webhooks are notifications, not additional charges.** The defect is that the merchant repeatedly triggers business side effects for the same completed payment.
 
-**What protects the customer:** Verify the raw signature, deduplicate durably, guard payment state, and commit the inbox, transition, and outbox together.
+**Customer-visible symptoms:** repeated emails, conflicting order-status updates, duplicate fulfillment intents, increased support volume. Duplicate charges are a *different* possible defect requiring independent payment evidence.
 
-This is an illustrative engineering incident, not an employer case study or a performance benchmark. The article, comparison lab, and any supplied video explain the same core failure.
+## 2. The sequence that caused the incident
 
-## Follow the incident yourself
+1. The provider completes payment `pay_100` and sends signed webhook `evt_501`.
+2. The merchant accepts the notification, marks payment successful, and initiates an email and shipping command.
+3. The merchant's HTTP acknowledgment is lost or times out **after** processing.
+4. The provider cannot tell whether processing succeeded, so it sends `evt_501` again.
+5. An unsafe handler repeats email and shipping side effects. It may do so a third time.
+6. The customer sees repeated confirmations although the provider processed only one payment.
 
-[Open the interactive lab](#interactive-lab). Choose **Lost acknowledgment and repeated delivery** and predict the outcome before each step. The unsafe and protected paths receive the same situation.
+**Important:** The webhook does not instruct the merchant to charge the customer again. It reports an existing payment outcome.
 
-1. **A signed success event arrives.** The original payment has already happened. The event is a notification, not permission to charge again. Protected outcome: Verifies signature and merchant.
-2. **The merchant commits its handling.** Unique inbox acceptance, a guarded payment update, and outbox intent commit together. Actual email or warehouse delivery occurs separately. Protected outcome: Creates one logical email intent.
-3. **The acknowledgment is lost.** The provider cannot know that the merchant committed, so it may retry the same event ID. Protected outcome: Saved inbox survives lost reply.
-4. **The same event is delivered twice more.** A unique provider-and-event key rejects duplicates. A downstream worker still needs its own idempotency; outbox intent is not exactly-once email delivery. Protected outcome: Acknowledges duplicates safely.
+## 3. Why the unsafe implementation fails
 
-Then choose **Invalid signature** to test a different cause or a healthy/control path. Previous revisits the teaching state; Reset starts the experiment again. Autoplay and visual motion have separate pause controls.
+```java
+@PostMapping("/webhooks/payments")
+public ResponseEntity<Void> unsafe(@RequestBody PaymentEvent event) {
+    emailClient.sendConfirmation(event.orderId());
+    fulfillmentClient.createShipment(event.orderId());
+    return ResponseEntity.ok().build();
+}
+```
 
-## Watch the supplied lesson
+Every delivery invokes both external systems. A 200 response may be lost. No durable uniqueness, signature check, payment state guard or recovery boundary exists. Worse, the network calls occur before a durable acceptance boundary.
 
-The video includes English narration and captions. Use the player to pause, seek, and enable captions, then compare its example with the lab. Narration is synthetic; animations and quantities are illustrative.
+## 4. Follow the diagram and test the incident
 
-> **A customer sees a successful payment, then three order-confirmation emails and two duplicate fulfillment requests.** The payment provider retried its webhook after your endpoint timed out. A webhook is a delivery notification—not a command you can safely execute twice.
+The diagram above separates provider verification, the single PostgreSQL transaction and downstream delivery. The provider payment already exists before any webhook arrives.
 
-## What the customer sees
-A shopper checks out once. Their bank shows one authorization, but the merchant sends multiple emails, the order page changes status unexpectedly, or a warehouse creates two shipments. These are possible outcomes of an incorrectly implemented webhook consumer, not evidence that the provider charged twice. Support must distinguish duplicate webhook deliveries from duplicate charges by checking payment-provider transaction IDs.
+[Open the customer-first lab](#interactive-lab). Compare **Unsafe: lost ACK + retries** with **Protected: lost ACK + retries**, then try invalid signatures, a different event ID for the same payment, late success after a refund, a wrong merchant and a worker crash after sending. Every step shows active components, the customer impact and a cumulative trace.
 
-## Follow the request
-1. The payment provider sends `payment.succeeded` with an event ID and signed body to `/webhooks/payments`.
-2. The gateway terminates TLS and enforces a modest request-size limit; it must preserve the **raw request body** for signature verification.
-3. The webhook controller verifies the provider-specific HMAC signature, timestamp tolerance, and expected account/merchant identifier. Reject invalid signatures before any state change.
-4. The application stores a unique `(provider, event_id)` inbox record in PostgreSQL in the **same transaction** as a guarded payment/order transition and an outbox record.
-5. Return a 2xx only after the durable transaction commits. A retry of an already committed event returns 2xx without repeating side effects.
-6. A separate outbox worker sends notifications or fulfillment commands with their own idempotency keys. Consumer-side deduplication is still required.
+The original side-by-side lab is preserved in **Open the original side-by-side comparison** underneath. Its URL and existing controls still work. Play/Pause, Previous, Next, Reset, speed, independent motion pause and reduced-motion support are available in the customer-first lab. Previous and Reset reconstruct teaching state; they do not roll back a real payment.
 
-## Root cause: at-least-once delivery
-A provider may retry after a lost response even if the server committed. Events may be delayed, duplicated, or delivered out of order. A 200 response is not a global exactly-once guarantee. Ordering is enforced through authoritative payment state and guarded transitions, not through arrival time.
+**Read the counters carefully:** three unsafe deliveries can produce three email/shipment intents, but only one actual `PENDING → SUCCEEDED` transition. Repeating an assignment or business side effect is not a new payment-state transition or a new provider charge. One `PaymentSucceeded` outbox row can fan out to one intent per destination; it is not two payment events.
 
-## Why not Redis-only deduplication?
-A TTL cache is useful as an optimization but loses entries on expiration or failover. A PostgreSQL unique constraint gives durable event deduplication. It still does not atomically commit changes in external systems; the outbox and downstream idempotency close that gap. Do not hold database transactions open while making network calls.
+## 5. Explain the three protections in plain English
 
-## Teaching PostgreSQL schema
+**Inbox = the guest list.** The event has a unique identity `(provider, event_id)`. If that exact event comes back, the database knows it has already been accepted. The unique constraint works across application restarts and multiple pods. This is durable *delivery* deduplication.
+
+**Payment state guard = the one-way turnstile.** A new event ID can still describe the same payment. Update `PENDING -> SUCCEEDED` only if the payment is currently pending; if no state change occurs, do not create another `PaymentSucceeded` business event. Never regress `REFUNDED` to `SUCCEEDED` because of a late event.
+
+**Outbox = the reliable dispatch tray.** Save the intention to notify and fulfill in the same PostgreSQL transaction as the payment state change. A worker later dispatches it. If the worker crashes, it retries. Downstream email and warehouse systems must also deduplicate by a stable business key: the outbox alone cannot guarantee that an external provider delivers exactly once.
+
+## 6. Step-by-step safe algorithm
+
+1. Receive the **original raw request bytes**; enforce HTTPS, request size and rate limits.
+2. Verify provider-specific signature against the raw bytes, timestamp tolerance, expected merchant/account and key rotation policy. Do this before state mutation.
+3. Start a PostgreSQL transaction.
+4. `INSERT ... ON CONFLICT DO NOTHING RETURNING ...` into the inbox; if already present, commit and return 2xx.
+5. Guard the payment transition by payment ID and expected state. If it changes no rows, treat as already applied or a state conflict requiring reconciliation.
+6. Only on a real transition, insert one unique business event into the outbox.
+7. Commit. **Then** acknowledge the webhook with 2xx.
+8. Outbox workers deliver with bounded retries, backoff and stable downstream idempotency keys; track acknowledgment, failures and reconciliation.
+
+Never hold the database transaction open while calling the email, shipping or payment provider API.
+
+## Java 21, Spring and PostgreSQL teaching implementation
+
+The downloadable [WebhookService.java](/blog/episodes/015/examples/WebhookService.java) is compiled and exercised against real PostgreSQL by the integration package. It demonstrates acceptance after verification, not a complete payment application. Provider-specific cryptographic verification, HTTP controllers, configuration, dispatch adapters and production observability remain integration work.
+
+The signature adapter must accept the **original raw bytes**. It verifies the provider protocol, timestamp tolerance, key rotation and expected account, then produces a trusted event bound to the stored order, amount and currency. Never replace this with a parsed JSON boolean or a generic signature format copied from another provider.
+
+A separate Spring-proxied service performs the transaction; the controller returns 2xx **after the proxy returns and commit succeeds**:
+
+```java
+@Transactional
+public Outcome acceptVerifiedSuccess(VerifiedSuccess event) {
+    // 1. Insert inbox identity; duplicate means validate the stored binding and ACK.
+    // 2. Lock the matching provider/merchant/payment row and check checkout terms.
+    // 3. If already SUCCEEDED, create no new intent.
+    // 4. If REFUNDED, preserve it and persist a reconciliation candidate.
+    // 5. Only PENDING -> SUCCEEDED creates one unique PaymentSucceeded outbox row.
+    // No email, warehouse or provider network calls inside this transaction.
+}
+```
+
+The comments above describe the control flow. The download contains the actual SQL and row-count branches. Self-invocation bypasses Spring proxy advice; call the annotated service through its injected proxy. A database exception must propagate to roll back inbox and state with the outbox.
+
+### Scope delivery identity to the provider contract
+
+This example uses a trusted merchant/account scope in addition to provider and event ID. If the provider guarantees globally unique event IDs, a smaller key may suffice; do not assume uniqueness across accounts without its documented contract.
+
 ```sql
 CREATE TABLE webhook_inbox (
   provider text NOT NULL,
+  merchant_id text NOT NULL,
   event_id text NOT NULL,
   payment_id text NOT NULL,
+  body_sha256 text NOT NULL,
   received_at timestamptz NOT NULL DEFAULT now(),
-  PRIMARY KEY(provider,event_id)
+  PRIMARY KEY (provider, merchant_id, event_id)
 );
-CREATE TABLE payments (
-  payment_id text PRIMARY KEY,
-  order_id text NOT NULL,
-  status text NOT NULL CHECK(status IN ('PENDING','SUCCEEDED','REFUNDED'))
-);
-CREATE TABLE outbox (
-  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  event_key text NOT NULL UNIQUE,
-  event_type text NOT NULL,
-  payload jsonb NOT NULL,
-  published_at timestamptz
-);
-INSERT INTO payments VALUES ('pay_100','order_100','PENDING');
 ```
 
-## Safe transactional algorithm
+A repeated ID with a conflicting payment binding or body hash needs investigation, not silent success. Hashing the original body detects conflict; it does not authenticate a sender. Signature/timestamp checks remain separate. Keep signed raw payload retention restricted and avoid payment PII in routine logs.
+
+### The guarded transition
+
 ```sql
-BEGIN;
-INSERT INTO webhook_inbox(provider,event_id,payment_id)
-VALUES ('acme','evt_501','pay_100') ON CONFLICT DO NOTHING;
--- Only continue if the INSERT returned one row. Otherwise COMMIT and ACK.
-UPDATE payments SET status='SUCCEEDED'
-WHERE payment_id='pay_100' AND status='PENDING';
--- Only insert the outbox event if the UPDATE changed one row.
-INSERT INTO outbox(event_key,event_type,payload)
-VALUES ('payment-succeeded:pay_100','PaymentSucceeded',
-        '{"paymentId":"pay_100","orderId":"order_100"}')
-ON CONFLICT DO NOTHING;
-COMMIT;
+UPDATE payments SET status = 'SUCCEEDED'
+WHERE provider = :provider
+  AND merchant_id = :trustedMerchant
+  AND payment_id = :paymentId
+  AND status = 'PENDING';
+-- Only one affected row permits the success outbox INSERT.
+-- No affected row: inspect already-applied vs. incompatible state.
 ```
-**Important:** The SQL above illustrates the transaction steps; a production implementation must branch on affected-row counts. The Java sample does this using a single transaction. Do not blindly run the outbox insert after a duplicate event.
 
-## Spring Boot / Java 21 implementation
-The accompanying [WebhookService.java](/blog/episodes/015/examples/WebhookService.java) shows transactional inbox insert, conditional state update, and outbox insert. Signature verification is a provider-specific adapter: never substitute an arbitrary shared secret or parse/re-serialize JSON before HMAC verification. Use constant-time comparison and bounded replay tolerance; verify key rotation and webhook endpoint configuration.
+The actual service first locks the scoped payment row, checks its order, amount and currency, and branches on state. Unknown payments or mismatched terms roll back acceptance and require retry/quarantine according to the provider integration policy. A late success on REFUNDED persists a reconciliation candidate without changing state or generating fulfillment.
 
-## Failure modes and validation
-- **Response lost after commit:** provider retries; inbox unique key turns retry into safe ACK.
-- **Database unavailable:** return 5xx; provider retries with backoff; alert on persistent failure.
-- **Notification worker crashes:** outbox row remains unpublished; worker retries; email service must deduplicate by event key.
-- **Refund arrives before success:** reconcile from provider's authoritative API, apply valid state machine transitions; never regress `REFUNDED` to `SUCCEEDED`.
-- **Forged/replayed payload:** validate raw-body signature and timestamp; event ID dedup alone does not authenticate.
-- **Tenant crossover:** verify merchant/account mapping and authorization boundaries before updating orders.
+The [full schema](/blog/episodes/015/examples/schema.sql) defines scoped payments, inbox, outbox and durable reconciliation candidates. One outbox insertion failure rolls back the entire acceptance transaction. The tests deliberately inject that failure.
 
-## Scaling and trade-offs
-Partition inbox/outbox retention by time when event volume warrants it, but preserve the deduplication window required by provider retries and audits. Monitor duplicate rate, webhook ACK latency, outbox age, dead-letter volume, and mismatch between provider and local payment state. Apply bounded worker concurrency and exponential backoff with jitter. Separate webhook acceptance latency from downstream notification latency.
+### Dispatch is a second boundary
 
-## Three practice exercises
-1. Send `evt_501` twice. Explain why only one inbox row and one outbox event should exist.
-2. Simulate a crash after database commit but before HTTP ACK. What does the retry do?
-3. Model `refunded` arriving before `succeeded`. Define a safe reconciliation policy and metrics.
+A worker claims pending outbox rows with bounded leases or a short 'FOR UPDATE SKIP LOCKED' transaction. Send outside the webhook acceptance transaction. Use stable keys such as 'email:payment-succeeded:acme:merchant_1:pay_100' and 'shipment:payment-succeeded:acme:merchant_1:pay_100'. Mark delivery only after destination acknowledgement. A crash after send may resend; retain per-destination progress or let each destination deduplicate its key. Without that support, reconcile ambiguous outcomes instead of promising exactly-once delivery.
 
-## Interview Q&A
-**Q: Are webhooks exactly once?** No. Assume at-least-once delivery and make processing idempotent.
+### Run the teaching examples
 
-**Q: Is a Redis SETNX enough?** No. A lock/TTL is not durable deduplication tied atomically to the payment transition.
+```powershell
+java public/blog/episodes/015/examples/WebhookStateMachine.java
+node --test tests/webhook-lesson.test.ts
+mvn -B -f blogs/episodes/015/integration/pom.xml test
+```
 
-**Q: When should we return 200?** After signature verification and durable acceptance/commit, not after slow external email or shipping calls.
+The supplied [standalone state machine](/blog/episodes/015/examples/WebhookStateMachine.java) is a **single-payment, in-memory algorithm exercise**, not durable storage or a multi-payment service. Its synchronized sets do not protect a production cluster. The database tests compile the actual Spring/JDBC service and wrap it in a real transaction manager, checking duplicates, lost ACK, distinct IDs, concurrency, merchant mismatch, rollback, same-ID conflict and refund preservation. Their generic HMAC fixture proves raw-body mutation rejection, not compatibility with any real provider's signature protocol.
 
-**Q: Can an outbox guarantee one email?** It guarantees retryable intent, not exactly-once delivery at the email provider. Use downstream idempotency.
+## 7. Real failure paths
 
-## Practical takeaway
-**One payment event may arrive multiple times. One business transition must happen once.** Design for retries, not for perfect networks.
+| Failure | Correct behavior | Customer outcome |
+|---|---|---|
+| ACK lost after commit | Same event ID hits inbox uniqueness; return 2xx | No new logical confirmation |
+| Duplicate event with different ID | Guarded payment transition blocks second success intent | No second business transition |
+| DB unavailable | Return non-2xx and rely on provider retry policy | Event eventually processed or escalated |
+| Outbox worker crashes after send | Retry using same idempotency key; reconcile ambiguous delivery | Avoid repeat external side effect when provider supports dedup |
+| `refunded` event arrives before `succeeded` | Verify authoritative state; do not regress terminal state | Accurate order/payment history |
+| Forged webhook | Reject before mutation; alert and audit | Prevent fraudulent status updates |
+| Wrong merchant or tenant | Reject / quarantine | No cross-tenant order mutation |
 
-## Teaching source files
+## 8. Why not Redis SETNX alone?
 
-- [schema.sql](/blog/episodes/015/examples/schema.sql)
-- [WebhookService.java](/blog/episodes/015/examples/WebhookService.java)
+Redis TTL-based deduplication can expire, be evicted or be lost under some failure configurations, and it is not atomically committed with the PostgreSQL payment update. It can reduce duplicate load, but the authoritative unique constraint and state transition belong in durable storage.
 
-These are supplied teaching examples, not a complete deployable checkout service. They have not been executed as JVM or database tests in this integration. Read their dependencies and limits before running them in an isolated environment.
+## 9. Scale, performance and security
 
-## Primary references used for this lesson
+Keep the webhook path short: verify, persist, commit, acknowledge. Dispatch separately. Monitor webhook signature failures, duplicate rate, acknowledgment latency, outbox oldest age, worker retry count, DLQ volume and mismatched payment statuses. Use bounded concurrency, exponential backoff with jitter and retention aligned to the provider retry horizon and audit needs. Do not expose raw payment PII or secrets in logs. Verify merchant mapping and least-privilege DB credentials. Use a stable event key at *each* side-effect boundary.
 
-- [Reference 1](https://docs.stripe.com/webhooks)
-- [Reference 2](https://www.postgresql.org/docs/current/sql-insert.html)
+This article provides no measured performance numbers. The lab uses **conceptual counters**, not throughput or latency benchmarks.
+
+## 10. Three exercises
+
+1. **Beginner:** Deliver `evt_501` three times. How many inbox records and `PaymentSucceeded` outbox intents exist? Answer: one each, assuming one valid payment transition.
+2. **Intermediate:** Simulate a crash after commit but before the HTTP response. What happens on retry? Answer: the inbox conflict is recognized and the handler safely acknowledges without repeating the transition.
+3. **Advanced:** A refund notification arrives before a delayed success notification. Design state-machine guards and provider reconciliation. Answer: verify the authoritative provider state, do not regress refunded state, and audit conflicts for manual or automated reconciliation.
+
+## 11. Interview Q&A
+
+**Does Kafka or a webhook provider guarantee exactly once?** No external side effect is automatically exactly-once. At-least-once delivery is common; design idempotent processing.
+
+**Why both inbox and outbox?** Inbox protects against duplicate *input*. Outbox ensures the database transition and the *intent* to publish downstream commit together.
+
+**Is unique `(provider,event_id)` enough?** No. Two distinct event IDs can describe the same payment; guard the business transition and downstream effects.
+
+**When do we send HTTP 200?** After authenticating the request and durably accepting/committing it, not after performing slow external side effects.
+
+**Does one outbox record guarantee one physical email?** No. A crash after an external send but before marking the outbox published may cause retry. Downstream idempotency is essential where supported; otherwise reconciliation/compensation is required.
+
+## 12. The takeaway
+
+**One payment may generate many notifications. The merchant must create one logical payment transition and one set of downstream business intents.** The inbox blocks repeated delivery, the state guard blocks repeated business transitions, and the outbox makes follow-up actions recoverable.
+
+## Official technical references
+
+- [Stripe webhook delivery, duplicates, signatures and ordering](https://docs.stripe.com/webhooks) — a concrete provider example; follow your own provider's contract.
+- [PostgreSQL INSERT and ON CONFLICT](https://www.postgresql.org/docs/17/sql-insert.html) — durable uniqueness and affected-row semantics used in this example.
+- [Spring transaction annotations and proxy semantics](https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html) — why the service must be invoked through a proxy.
+
+The customer counts are illustrative. The article, lab and narrated animation make no production throughput, latency or exactly-once external-delivery claim.

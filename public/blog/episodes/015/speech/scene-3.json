@@ -1,0 +1,142 @@
+[
+  {
+    "start": 0.102625,
+    "end": 0.247375,
+    "text": "The"
+  },
+  {
+    "start": 0.273666,
+    "end": 0.813124,
+    "text": "provider"
+  },
+  {
+    "start": 0.839458,
+    "end": 1.365791,
+    "text": "retries"
+  },
+  {
+    "start": 1.392125,
+    "end": 1.510541,
+    "text": "the"
+  },
+  {
+    "start": 1.523666,
+    "end": 1.786832,
+    "text": "same"
+  },
+  {
+    "start": 1.8,
+    "end": 2.273666,
+    "text": "event"
+  },
+  {
+    "start": 3.210541,
+    "end": 3.407916,
+    "text": "An"
+  },
+  {
+    "start": 3.434208,
+    "end": 3.868416,
+    "text": "unsafe"
+  },
+  {
+    "start": 3.89475,
+    "end": 4.2895,
+    "text": "handler"
+  },
+  {
+    "start": 4.315791,
+    "end": 4.605249,
+    "text": "sends"
+  },
+  {
+    "start": 4.631583,
+    "end": 5.052624,
+    "text": "another"
+  },
+  {
+    "start": 5.078958,
+    "end": 5.473708,
+    "text": "email"
+  },
+  {
+    "start": 5.486833,
+    "end": 5.578958,
+    "text": "and"
+  },
+  {
+    "start": 5.60525,
+    "end": 6.0,
+    "text": "shipment"
+  },
+  {
+    "start": 6.026333,
+    "end": 6.644749,
+    "text": "request"
+  },
+  {
+    "start": 7.578958,
+    "end": 7.736833,
+    "text": "The"
+  },
+  {
+    "start": 7.763166,
+    "end": 8.236832,
+    "text": "webhook"
+  },
+  {
+    "start": 8.25,
+    "end": 8.697375,
+    "text": "reports"
+  },
+  {
+    "start": 8.710541,
+    "end": 8.815791,
+    "text": "an"
+  },
+  {
+    "start": 8.842125,
+    "end": 9.421083,
+    "text": "existing"
+  },
+  {
+    "start": 9.434208,
+    "end": 9.947374,
+    "text": "payment"
+  },
+  {
+    "start": 10.868416,
+    "end": 11.039457,
+    "text": "It"
+  },
+  {
+    "start": 11.052625,
+    "end": 11.25,
+    "text": "does"
+  },
+  {
+    "start": 11.263166,
+    "end": 11.486832,
+    "text": "not"
+  },
+  {
+    "start": 11.5,
+    "end": 11.881583,
+    "text": "charge"
+  },
+  {
+    "start": 11.907875,
+    "end": 12.026291,
+    "text": "the"
+  },
+  {
+    "start": 12.052625,
+    "end": 12.578958,
+    "text": "customer"
+  },
+  {
+    "start": 12.60525,
+    "end": 13.013125,
+    "text": "again"
+  }
+]

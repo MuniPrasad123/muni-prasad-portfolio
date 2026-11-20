@@ -1,0 +1,142 @@
+[
+  {
+    "start": 0.102625,
+    "end": 0.523666,
+    "text": "First"
+  },
+  {
+    "start": 0.721041,
+    "end": 1.207874,
+    "text": "verify"
+  },
+  {
+    "start": 1.234208,
+    "end": 1.352624,
+    "text": "the"
+  },
+  {
+    "start": 1.365791,
+    "end": 1.865791,
+    "text": "original"
+  },
+  {
+    "start": 1.878958,
+    "end": 2.326333,
+    "text": "request"
+  },
+  {
+    "start": 2.339458,
+    "end": 2.668416,
+    "text": "bytes"
+  },
+  {
+    "start": 2.852625,
+    "end": 3.418416,
+    "text": "timestamp"
+  },
+  {
+    "start": 3.510541,
+    "end": 3.589499,
+    "text": "and"
+  },
+  {
+    "start": 3.615791,
+    "end": 4.142124,
+    "text": "merchant"
+  },
+  {
+    "start": 5.065791,
+    "end": 5.460541,
+    "text": "Save"
+  },
+  {
+    "start": 5.486833,
+    "end": 5.578958,
+    "text": "the"
+  },
+  {
+    "start": 5.60525,
+    "end": 5.921041,
+    "text": "event"
+  },
+  {
+    "start": 5.947375,
+    "end": 6.5,
+    "text": "identity"
+  },
+  {
+    "start": 6.526333,
+    "end": 6.644749,
+    "text": "in"
+  },
+  {
+    "start": 6.671041,
+    "end": 6.749999,
+    "text": "a"
+  },
+  {
+    "start": 6.776333,
+    "end": 7.210541,
+    "text": "durable"
+  },
+  {
+    "start": 7.223666,
+    "end": 8.144707,
+    "text": "PostgreSQL"
+  },
+  {
+    "start": 8.171041,
+    "end": 8.802624,
+    "text": "inbox"
+  },
+  {
+    "start": 9.723666,
+    "end": 9.842082,
+    "text": "A"
+  },
+  {
+    "start": 9.85525,
+    "end": 10.328916,
+    "text": "repeated"
+  },
+  {
+    "start": 10.35525,
+    "end": 10.868416,
+    "text": "delivery"
+  },
+  {
+    "start": 10.89475,
+    "end": 11.026333,
+    "text": "is"
+  },
+  {
+    "start": 11.052625,
+    "end": 11.473666,
+    "text": "safely"
+  },
+  {
+    "start": 11.486833,
+    "end": 12.026291,
+    "text": "acknowledged"
+  },
+  {
+    "start": 12.052625,
+    "end": 12.368416,
+    "text": "without"
+  },
+  {
+    "start": 12.39475,
+    "end": 12.89475,
+    "text": "creating"
+  },
+  {
+    "start": 12.921041,
+    "end": 13.065791,
+    "text": "new"
+  },
+  {
+    "start": 13.092125,
+    "end": 13.460541,
+    "text": "work"
+  }
+]

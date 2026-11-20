@@ -1,0 +1,167 @@
+[
+  {
+    "start": 0.102625,
+    "end": 0.392083,
+    "text": "Now"
+  },
+  {
+    "start": 0.418416,
+    "end": 0.905249,
+    "text": "repeated"
+  },
+  {
+    "start": 0.931583,
+    "end": 1.418416,
+    "text": "webhooks"
+  },
+  {
+    "start": 1.44475,
+    "end": 1.773708,
+    "text": "receive"
+  },
+  {
+    "start": 1.8,
+    "end": 1.865791,
+    "text": "a"
+  },
+  {
+    "start": 1.892125,
+    "end": 2.181583,
+    "text": "safe"
+  },
+  {
+    "start": 2.207875,
+    "end": 2.878916,
+    "text": "acknowledgement"
+  },
+  {
+    "start": 2.90525,
+    "end": 3.234208,
+    "text": "without"
+  },
+  {
+    "start": 3.247375,
+    "end": 3.747375,
+    "text": "repeating"
+  },
+  {
+    "start": 3.773666,
+    "end": 3.878916,
+    "text": "the"
+  },
+  {
+    "start": 3.892125,
+    "end": 4.286875,
+    "text": "business"
+  },
+  {
+    "start": 4.313166,
+    "end": 4.760541,
+    "text": "action"
+  },
+  {
+    "start": 5.697375,
+    "end": 6.0,
+    "text": "One"
+  },
+  {
+    "start": 6.026333,
+    "end": 6.447374,
+    "text": "payment"
+  },
+  {
+    "start": 6.64475,
+    "end": 6.868416,
+    "text": "one"
+  },
+  {
+    "start": 6.89475,
+    "end": 7.381583,
+    "text": "logical"
+  },
+  {
+    "start": 7.407875,
+    "end": 8.118416,
+    "text": "confirmation"
+  },
+  {
+    "start": 8.328958,
+    "end": 8.513166,
+    "text": "one"
+  },
+  {
+    "start": 8.526333,
+    "end": 9.131583,
+    "text": "fulfillment"
+  },
+  {
+    "start": 9.14475,
+    "end": 9.684208,
+    "text": "intent"
+  },
+  {
+    "start": 10.618416,
+    "end": 11.092082,
+    "text": "Monitor"
+  },
+  {
+    "start": 11.10525,
+    "end": 11.657875,
+    "text": "failures"
+  },
+  {
+    "start": 11.684208,
+    "end": 11.802624,
+    "text": "and"
+  },
+  {
+    "start": 11.828958,
+    "end": 12.473708,
+    "text": "reconcile"
+  },
+  {
+    "start": 12.486833,
+    "end": 13.065791,
+    "text": "ambiguous"
+  },
+  {
+    "start": 13.092125,
+    "end": 13.75,
+    "text": "outcomes"
+  },
+  {
+    "start": 14.684208,
+    "end": 15.013166,
+    "text": "These"
+  },
+  {
+    "start": 15.039458,
+    "end": 15.171041,
+    "text": "are"
+  },
+  {
+    "start": 15.184208,
+    "end": 15.868416,
+    "text": "illustrative"
+  },
+  {
+    "start": 15.89475,
+    "end": 16.315791,
+    "text": "counts"
+  },
+  {
+    "start": 16.486833,
+    "end": 16.749999,
+    "text": "not"
+  },
+  {
+    "start": 16.763166,
+    "end": 17.328957,
+    "text": "production"
+  },
+  {
+    "start": 17.35525,
+    "end": 18.013125,
+    "text": "measurements"
+  }
+]

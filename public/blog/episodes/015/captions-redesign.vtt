@@ -1,0 +1,106 @@
+WEBVTT
+
+00:00:00.103 --> 00:00:02.800
+Maya pays one hundred and twenty dollars once.
+
+00:00:03.737 --> 00:00:05.934
+Her bank confirms one transaction.
+
+00:00:06.855 --> 00:00:09.776
+Then three order confirmation emails arrive, and the
+
+00:00:09.803 --> 00:00:12.342
+warehouse receives repeated shipping requests.
+
+00:00:14.003 --> 00:00:16.989
+The payment provider sends a signed success webhook.
+
+00:00:17.913 --> 00:00:20.676
+Our server processes it, but its acknowledgement is
+
+00:00:20.703 --> 00:00:21.203
+lost.
+
+00:00:22.137 --> 00:00:24.926
+The provider cannot tell whether processing finished.
+
+00:00:26.603 --> 00:00:28.774
+The provider retries the same event.
+
+00:00:29.711 --> 00:00:32.500
+An unsafe handler sends another email and shipment
+
+00:00:32.526 --> 00:00:33.145
+request.
+
+00:00:34.079 --> 00:00:36.447
+The webhook reports an existing payment.
+
+00:00:37.368 --> 00:00:39.513
+It does not charge the customer again.
+
+00:00:41.203 --> 00:00:44.689
+First, verify the original request bytes, timestamp and
+
+00:00:44.716 --> 00:00:45.242
+merchant.
+
+00:00:46.166 --> 00:00:49.245
+Save the event identity in a durable PostgreSQL
+
+00:00:49.271 --> 00:00:49.903
+inbox.
+
+00:00:50.824 --> 00:00:53.995
+A repeated delivery is safely acknowledged without creating
+
+00:00:54.021 --> 00:00:54.561
+new work.
+
+00:00:56.203 --> 00:00:58.887
+A different event identifier can still describe the
+
+00:00:58.900 --> 00:00:59.663
+same payment.
+
+00:01:00.574 --> 00:01:03.297
+Transition pending to succeeded only once.
+
+00:01:04.218 --> 00:01:06.692
+A late success notification must never move a
+
+00:01:06.705 --> 00:01:08.613
+refunded payment back to succeeded.
+
+00:01:10.269 --> 00:01:13.361
+Commit the inbox, payment update and outbox intent
+
+00:01:13.375 --> 00:01:15.927
+in one database transaction, then acknowledge.
+
+00:01:16.864 --> 00:01:19.548
+A separate worker retries with stable email and
+
+00:01:19.575 --> 00:01:20.614
+fulfillment keys.
+
+00:01:21.548 --> 00:01:24.219
+Downstream systems must deduplicate too.
+
+00:01:25.869 --> 00:01:28.646
+Now repeated webhooks receive a safe acknowledgement
+
+00:01:28.672 --> 00:01:30.527
+without repeating the business action.
+
+00:01:31.464 --> 00:01:34.898
+One payment, one logical confirmation, one fulfillment
+
+00:01:34.911 --> 00:01:35.451
+intent.
+
+00:01:36.385 --> 00:01:39.517
+Monitor failures and reconcile ambiguous outcomes.
+
+00:01:40.451 --> 00:01:43.780
+These are illustrative counts, not production measurements.

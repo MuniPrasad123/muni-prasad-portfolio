@@ -1,0 +1,6 @@
+javac exit=0
+java exit=0
+PASS: one transition, one email intent, one shipment intent
+
+HTML presence checks: True
+SQL not executed; browser not independently tested.
