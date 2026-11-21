@@ -1,0 +1,97 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.15,
+    "text": "A"
+  },
+  {
+    "start": 0.1625,
+    "end": 0.725,
+    "text": "bulkhead"
+  },
+  {
+    "start": 0.725,
+    "end": 1.1875,
+    "text": "bounds"
+  },
+  {
+    "start": 1.25,
+    "end": 1.675,
+    "text": "active"
+  },
+  {
+    "start": 1.6875,
+    "end": 2.1875,
+    "text": "calls"
+  },
+  {
+    "start": 2.275,
+    "end": 2.5375,
+    "text": "and"
+  },
+  {
+    "start": 2.5375,
+    "end": 2.975,
+    "text": "waiting"
+  },
+  {
+    "start": 2.975,
+    "end": 3.35,
+    "text": "work"
+  },
+  {
+    "start": 4.275,
+    "end": 4.5375,
+    "text": "Give"
+  },
+  {
+    "start": 4.5375,
+    "end": 4.9125,
+    "text": "busy"
+  },
+  {
+    "start": 4.9125,
+    "end": 5.45,
+    "text": "guidance"
+  },
+  {
+    "start": 5.525,
+    "end": 5.9,
+    "text": "only"
+  },
+  {
+    "start": 5.9,
+    "end": 6.3375,
+    "text": "before"
+  },
+  {
+    "start": 6.3375,
+    "end": 6.775,
+    "text": "payment"
+  },
+  {
+    "start": 6.775,
+    "end": 7.3375,
+    "text": "starts"
+  },
+  {
+    "start": 8.2,
+    "end": 8.475,
+    "text": "Keep"
+  },
+  {
+    "start": 8.525,
+    "end": 9.175,
+    "text": "database"
+  },
+  {
+    "start": 9.175,
+    "end": 10.0,
+    "text": "transactions"
+  },
+  {
+    "start": 10.0,
+    "end": 10.4625,
+    "text": "short"
+  }
+]

@@ -7,4 +7,6 @@
 - Original video remains available as lesson.mp4; the separately generated redesign uses lesson-redesign.mp4 after verification.
 - Redesign package: redesign/; video scripts and narration source are in redesign/video/.
 - Review and validation: [REDESIGN_REVIEW.md](REDESIGN_REVIEW.md).
+- Beginner explanation alignment across article, simulator and video: [ALIGNMENT_REVIEW.md](ALIGNMENT_REVIEW.md).
+- Active aligned video: lesson-aligned.mp4 with captions-aligned.vtt and poster-aligned.png; previous video assets are preserved.
 - Source material is archived for reference, not instructions to execute or publish claims.

@@ -1,0 +1,65 @@
+[
+  {
+    "title": "Why does checkout keep spinning?",
+    "label": "CUSTOMER PROBLEM",
+    "seconds": 8,
+    "voice": "Asha's checkout times out. Platform threads stay occupied waiting for responses. When the request thread pool fills, new shoppers queue.",
+    "phase": "platform",
+    "status": "Busy thread pool \u2192 waiting shoppers",
+    "note": "The server can be short of threads even with spare CPU."
+  },
+  {
+    "title": "Virtual threads help more requests progress",
+    "label": "HOW JAVA 21 HELPS",
+    "seconds": 8,
+    "voice": "Virtual threads are lightweight. During supported network waits, Java frees the underlying operating system thread for other requests. More checkouts can progress together.",
+    "phase": "threads",
+    "status": "Pause waiting request \u2192 reuse carrier \u2192 resume",
+    "note": "Like a waiter helping another table while food cooks."
+  },
+  {
+    "title": "The kitchen still has a limit",
+    "label": "DEPENDENCY CAPACITY",
+    "seconds": 8,
+    "voice": "This helps when threads were the bottleneck. Payment is not faster. Twenty database connections still allow only twenty connections at once.",
+    "phase": "overload",
+    "status": "Cheap waiting \u2260 extra database connections",
+    "note": "Illustrative limits; no measured speedup is claimed."
+  },
+  {
+    "title": "One checkout, one payment identity",
+    "label": "MAKE RETRIES SAFE",
+    "seconds": 8,
+    "voice": "Save one payment attempt. Repeated clicks reuse its reference. A timeout does not prove payment failed.",
+    "phase": "identity",
+    "status": "Same customer + key \u2192 same attempt",
+    "note": "A changed payload with the same key is a conflict."
+  },
+  {
+    "title": "Protect the systems doing the work",
+    "label": "BOUNDED CALLS + BACKPRESSURE",
+    "seconds": 8,
+    "voice": "A bulkhead bounds active calls and waiting work. Give busy guidance only before payment starts. Keep database transactions short.",
+    "phase": "bounded",
+    "status": "20 active \u00b7 10 waiting \u00b7 excess work gets busy guidance",
+    "note": "A bulkhead is a bounded waiting room for a dependency."
+  },
+  {
+    "title": "Timeout? Check the original payment",
+    "label": "HONEST STATUS + RECOVERY",
+    "seconds": 8,
+    "voice": "Set network deadlines. For uncertain payment, show checking and query the original provider reference before confirming. Never blindly pay again.",
+    "phase": "recovery",
+    "status": "UNKNOWN \u2192 lookup original reference \u2192 verified result",
+    "note": "A local timeout may leave remote work running."
+  },
+  {
+    "title": "Efficient waiting. Safer checkout.",
+    "label": "THE COMPLETE IMPROVEMENT",
+    "seconds": 8,
+    "voice": "Virtual threads improve waiting efficiency. Capacity limits protect dependencies. Safe recovery protects Asha's payment. Checkout needs all three.",
+    "phase": "confirmed",
+    "status": "Concurrency + capacity protection + safe payment recovery",
+    "note": "Article, simulation and video follow this same story."
+  }
+]

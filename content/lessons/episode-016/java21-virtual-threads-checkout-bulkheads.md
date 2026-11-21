@@ -1,6 +1,6 @@
 ---
 title: "Java 21 Virtual Threads: Protecting Checkout When Downstream Capacity Is Limited"
-description: "Asha’s checkout spins and times out. See why virtual threads cannot enlarge database pools or payment-provider capacity—and how bounded work and safe recovery protect her payment."
+description: "Why does checkout slow down when many shoppers arrive? Learn how Java 21 virtual threads help a server handle waiting requests, and why database and payment limits still need protection."
 slug: "java21-virtual-threads-checkout-bulkheads"
 folder: "Java & JVM reliability"
 date: "2026-11-14"
@@ -13,12 +13,12 @@ sample: false
 level: "Architecture in Motion · Episode 016"
 lab: "/blog/episodes/016/lab.html"
 overview: {"problem":"Asha cannot tell whether her timed-out checkout charged her. More virtual threads do not enlarge the database pool or payment provider.","solution":"Bound active and waiting work, preserve one durable payment identity, set real deadlines and reconcile uncertain outcomes.","note":"Illustrative system · customer-first redesign · local review"}
-video: "/blog/episodes/016/lesson-redesign.mp4"
-videoPoster: "/blog/episodes/016/poster-redesign.png"
-videoCaptions: "/blog/episodes/016/captions-redesign.vtt"
-videoCaption: "Indian English male neural narration · synchronized English captions · illustrative scenario"
-videoSummary: "Asha’s checkout times out while payment may already have succeeded. Virtual threads reduce waiting cost, not dependency limits. Follow bounded admission, one durable identity, real deadlines and payment-safe recovery."
-videoChapters: [{"time": 0.0, "label": "ASHA'S CHECKOUT"}, {"time": 11.133, "label": "WHAT VIRTUAL THREADS CHANGE"}, {"time": 21.133, "label": "THE REAL BOTTLENECK"}, {"time": 32.133, "label": "MAKE RETRIES PAYMENT-SAFE"}, {"time": 44.933, "label": "BULKHEAD + BACKPRESSURE"}, {"time": 56.933, "label": "REAL DEADLINES · HONEST STATUS"}, {"time": 69.933, "label": "CUSTOMER PROTECTED"}]
+video: "/blog/episodes/016/lesson-aligned.mp4"
+videoPoster: "/blog/episodes/016/poster-aligned.png"
+videoCaptions: "/blog/episodes/016/captions-aligned.vtt"
+videoCaption: "Indian English male neural narration · synchronized English captions · beginner walkthrough"
+videoSummary: "Checkout requests can queue when platform threads are occupied waiting. See how virtual threads free carriers during supported I/O, then add dependency limits and recovery for uncertain payments."
+videoChapters: [{"time": 0.0, "label": "CUSTOMER PROBLEM"}, {"time": 12.033, "label": "HOW JAVA 21 HELPS"}, {"time": 26.333, "label": "DEPENDENCY CAPACITY"}, {"time": 38.767, "label": "MAKE RETRIES SAFE"}, {"time": 48.733, "label": "BOUNDED CALLS + BACKPRESSURE"}, {"time": 60.733, "label": "HONEST STATUS + RECOVERY"}, {"time": 74.3, "label": "THE COMPLETE IMPROVEMENT"}]
 ---
 
 ## 1. Start with Asha’s checkout
@@ -29,7 +29,37 @@ What does she need? A quick, honest response; an existing order/payment referenc
 
 If payment is unresolved, say **“We’re checking your payment.”** Keep the original attempt identity. Neither a browser timeout nor a canceled Java Future establishes that a remote payment failed.
 
-## 2. The normal path—and where the wait moves
+## 2. First, understand the problem without Java jargon
+
+When Asha clicks **Place Order**, her browser sends a request to our server. The server checks the order in a database, asks a payment service to authorize payment, saves the result and sends a response back. Much of this time can be spent **waiting for another system to answer**, rather than calculating something on the CPU.
+
+A **thread** is a path of execution that runs the code for that request. In a traditional blocking setup, a Java **platform thread** is tied to an operating-system thread. If it waits for a payment response, that operating-system thread remains occupied by the request, even while it is doing no useful computation.
+
+Imagine an illustrative server configured with **100 platform request threads**. If all 100 are waiting for slow network responses, the next shopper may have to wait in a queue before their checkout code can run. The CPU might still have spare capacity. As that queue grows, shoppers see longer spinners and eventually timeouts. Increasing the platform-thread pool can help for a while, but these threads have memory and scheduling costs.
+
+**The problem statement:** How can the server handle many checkout requests that spend most of their time waiting, without needing an expensive operating-system thread for every waiting request—and without overwhelming the database or payment service?
+
+### How Java 21 virtual threads improve this
+
+A **virtual thread** is a lightweight Java thread managed by the JVM. During many supported blocking I/O operations, the JVM can pause the virtual thread and free its underlying operating-system thread, called a **carrier**, to run another virtual thread. When the response arrives, Java schedules the waiting request to continue. Some operations can still pin a carrier in Java 21; the performance section below explains that limitation.
+
+Think of a waiter taking an order and helping another table while the kitchen prepares it. The waiter does not need to stand still at the first table. The kitchen still takes the same time to cook the meal.
+
+| Checkout design | What happens during a network wait? | What improves for the customer? |
+| --- | --- | --- |
+| Platform thread per blocking request | A relatively costly OS thread stays occupied by that request. A limited request pool can fill with waiters. | New shoppers can queue behind requests that are only waiting. |
+| Virtual thread per request | Supported blocking I/O can release the carrier to run other Java work. Many lightweight requests can remain in progress. | If the thread pool was the bottleneck and dependencies have spare capacity, fewer requests wait just to get a thread; more checkouts can progress together. |
+| Virtual threads plus capacity protection | Waiting is cheaper, while explicit limits control database and payment work. | The server can use available capacity while giving prompt busy guidance and an honest status for an existing payment. |
+
+For example, 1,000 requests waiting on independent network calls need not require 1,000 operating-system threads. This can improve **throughput**—the amount of work completed over time—for suitable I/O-heavy workloads. It does not guarantee that each request finishes faster, and it does not speed up CPU-heavy calculations. These numbers illustrate the mechanism; they are not measured results for this application.
+
+### Why the checkout can still be slow afterward
+
+Virtual threads remove one possible bottleneck: the cost and availability of threads waiting on I/O. If the database has only 20 connections, it still lends at most 20 connections at once. If the payment service is overloaded, every kind of thread still waits for that service. Sending more work to an already-full dependency can make its queue worse.
+
+The complete improvement is therefore **virtual threads for efficient waiting, plus bounded work for healthy dependencies**. A payment timeout needs a separate safeguard: keep the existing payment reference and check its result before another payment operation. Virtual threads alone do not prevent duplicate payments.
+
+## 3. The normal path—and where the wait moves
 
 Browser → gateway → Spring Boot checkout → short PostgreSQL transaction → payment provider → persist verified outcome → confirmation outbox.
 
@@ -39,7 +69,7 @@ The illustrative example has 500 concurrent requests and a pool of 20 connection
 
 The before/after architecture above and the [customer-first lab](#interactive-lab) make the bottleneck visible. Original side-by-side comparisons, sliders, navigation, autoplay and quiz remain in **Open the original side-by-side simulation** below the new lab.
 
-## 3. Why “just use virtual threads” is incomplete
+## 4. Why “just use virtual threads” is incomplete
 
 ```java
 try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
@@ -53,7 +83,7 @@ This example is intentionally incomplete. It creates cheap waiting tasks but no 
 
 A semaphore acquired **inside** every newly created task limits active calls but may still leave an unbounded population of waiting tasks until their waits expire. Bound the number admitted into the waiting room as well as the active work, or reject before execution starts. A per-pod limit also multiplies across replicas; it is not a global provider quota.
 
-## 4. The protected design, one boundary at a time
+## 5. The protected design, one boundary at a time
 
 ### Persist a durable operation identity
 
@@ -159,12 +189,13 @@ These durations and the header are illustrative. Follow the actual provider’s 
 
 The [PostgreSQL schema](/blog/episodes/016/examples/schema.sql) defines the operation key, payload hash, stable provider reference, explicit `CREATED / IN_FLIGHT / UNKNOWN / CONFIRMED / FAILED` states and a unique outbox key. Application code must implement atomic claims, ownership checks, hash comparison, leases and reconciliation. The schema alone is not a complete checkout endpoint.
 
-## 5. Try the failure and recovery lab
+## 6. Try the failure and recovery lab
 
 The new lab separates **burst-capacity comparisons** from **Asha’s one payment attempt**. Its moving packets are visual replays and never create additional work. Inputs reset the teaching state; Previous, Next, Reset, Play/Pause, speed, motion pause and reduced-motion support work independently.
 
 | Scenario | What to inspect |
 | --- | --- |
+| Start here: how virtual threads help | Platform threads wait; supported virtual-thread I/O frees carriers for other requests; dependency limits remain |
 | Unbounded virtual threads | Many callers wait; provider/DB execution remains finite |
 | Bounded calls and waiting room | Active + waiting + rejected equals the modeled demand |
 | Database exhaustion | Only pooled connections execute queries; excess queries wait |
@@ -176,7 +207,7 @@ The new lab separates **burst-capacity comparisons** from **Asha’s one payment
 
 The model cannot prove real database isolation, provider behavior or load-test results. It explicitly does not implement a distributed rate limiter.
 
-## 6. Performance, pinning and observability
+## 7. Performance, pinning and observability
 
 Virtual threads suit many blocking I/O workloads; CPU-heavy computation still needs an appropriate bounded compute executor. In **Java 21**, blocking while holding a `synchronized` monitor can pin a carrier. Inspect JFR `jdk.VirtualThreadPinned` events and test relevant native/blocking libraries. This warning is version-specific; later JDK implementations differ.
 
@@ -184,7 +215,7 @@ Observe active and waiting operations, rejected new executions, permit-wait dura
 
 To compare platform and virtual threads, use the same hardware, traffic, provider delay, DB pool and protection policy. Separate queue wait from execution latency and distinguish accepted throughput from rejected demand. No latency or throughput gain in this article is a measured benchmark.
 
-## 7. Failures and customer responses
+## 8. Failures and customer responses
 
 | Failure | Safe handling |
 | --- | --- |
@@ -198,7 +229,7 @@ To compare platform and virtual threads, use the same hardware, traffic, provide
 
 Protect order ownership at every boundary. Redact payment data and secrets. Verify asynchronous provider callbacks using their provider-specific signature, timestamp and account rules. A bulkhead does not provide authentication or durable idempotency.
 
-## 8. Run the examples and tests
+## 9. Run the examples and tests
 
 ```powershell
 javac --add-modules jdk.httpserver -d .cache/episode016/java public/blog/episodes/016/examples/*.java
@@ -209,7 +240,7 @@ node --test tests/capacity-lesson.test.ts
 
 The Java tests exercise active/waiting bounds, failed operations, expired waits, interruption, caller wait timeout and a real local HTTP deadline followed by original-reference lookup. They are correctness tests, not performance measurements. The SQL and Spring wiring are teaching assets; no live payment, production database or provider sandbox transaction is claimed.
 
-## 9. Interview questions
+## 10. Interview questions
 
 **Do virtual threads make each call faster?** No. They can improve the efficiency of blocking concurrency; another bottleneck still determines completion time.
 
@@ -221,7 +252,7 @@ The Java tests exercise active/waiting bounds, failed operations, expired waits,
 
 **Why not keep the DB transaction open while authorizing?** It retains scarce connections during a remote wait and can exhaust the pool. Use short durable claims and persist/reconcile the result separately.
 
-## 10. Exercises and takeaway
+## 11. Exercises and takeaway
 
 1. Set demand to 500 and DB pool to 20. Explain which queries run and which wait, without inventing throughput.
 2. Set active calls to 20 and waiting room to 10. Account for all demand as active, waiting or not admitted. Decide what response is safe for a not-started attempt versus an uncertain one.

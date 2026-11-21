@@ -1,0 +1,367 @@
+{
+  "fps": 30,
+  "durationInFrames": 2641,
+  "voice": "en-IN-PrabhatNeural",
+  "scenes": [
+    {
+      "title": "Why does checkout keep spinning?",
+      "label": "CUSTOMER PROBLEM",
+      "seconds": 8,
+      "voice": "Asha's checkout times out. Platform threads stay occupied waiting for responses. When the request thread pool fills, new shoppers queue.",
+      "phase": "platform",
+      "status": "Busy thread pool \u2192 waiting shoppers",
+      "note": "The server can be short of threads even with spare CPU.",
+      "from": 0,
+      "frames": 361,
+      "audio": "blog/episodes/016/speech-aligned-v2/scene-1.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 1.85,
+          "text": "Asha's checkout times out."
+        },
+        {
+          "start": 2.7375,
+          "end": 6.3875,
+          "text": "Platform threads stay occupied waiting for responses."
+        },
+        {
+          "start": 7.275,
+          "end": 10.2125,
+          "text": "When the request thread pool fills, new shoppers"
+        },
+        {
+          "start": 10.2375,
+          "end": 10.5125,
+          "text": "queue."
+        }
+      ]
+    },
+    {
+      "title": "Virtual threads help more requests progress",
+      "label": "HOW JAVA 21 HELPS",
+      "seconds": 8,
+      "voice": "Virtual threads are lightweight. During supported network waits, Java frees the underlying operating system thread for other requests. More checkouts can progress together.",
+      "phase": "threads",
+      "status": "Pause waiting request \u2192 reuse carrier \u2192 resume",
+      "note": "Like a waiter helping another table while food cooks.",
+      "from": 361,
+      "frames": 429,
+      "audio": "blog/episodes/016/speech-aligned-v2/scene-2.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.0625,
+          "text": "Virtual threads are lightweight."
+        },
+        {
+          "start": 2.9625,
+          "end": 7.0125,
+          "text": "During supported network waits, Java frees the underlying"
+        },
+        {
+          "start": 7.0625,
+          "end": 9.7875,
+          "text": "operating system thread for other requests."
+        },
+        {
+          "start": 10.6375,
+          "end": 12.7625,
+          "text": "More checkouts can progress together."
+        }
+      ]
+    },
+    {
+      "title": "The kitchen still has a limit",
+      "label": "DEPENDENCY CAPACITY",
+      "seconds": 8,
+      "voice": "This helps when threads were the bottleneck. Payment is not faster. Twenty database connections still allow only twenty connections at once.",
+      "phase": "overload",
+      "status": "Cheap waiting \u2260 extra database connections",
+      "note": "Illustrative limits; no measured speedup is claimed.",
+      "from": 790,
+      "frames": 373,
+      "audio": "blog/episodes/016/speech-aligned-v2/scene-3.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.7375,
+          "text": "This helps when threads were the bottleneck."
+        },
+        {
+          "start": 3.625,
+          "end": 5.1125,
+          "text": "Payment is not faster."
+        },
+        {
+          "start": 6.0,
+          "end": 9.4375,
+          "text": "Twenty database connections still allow only twenty"
+        },
+        {
+          "start": 9.4375,
+          "end": 10.925,
+          "text": "connections at once."
+        }
+      ]
+    },
+    {
+      "title": "One checkout, one payment identity",
+      "label": "MAKE RETRIES SAFE",
+      "seconds": 8,
+      "voice": "Save one payment attempt. Repeated clicks reuse its reference. A timeout does not prove payment failed.",
+      "phase": "identity",
+      "status": "Same customer + key \u2192 same attempt",
+      "note": "A changed payload with the same key is a conflict.",
+      "from": 1163,
+      "frames": 299,
+      "audio": "blog/episodes/016/speech-aligned-v2/scene-4.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 1.85,
+          "text": "Save one payment attempt."
+        },
+        {
+          "start": 2.75,
+          "end": 5.1125,
+          "text": "Repeated clicks reuse its reference."
+        },
+        {
+          "start": 5.9875,
+          "end": 8.45,
+          "text": "A timeout does not prove payment failed."
+        }
+      ]
+    },
+    {
+      "title": "Protect the systems doing the work",
+      "label": "BOUNDED CALLS + BACKPRESSURE",
+      "seconds": 8,
+      "voice": "A bulkhead bounds active calls and waiting work. Give busy guidance only before payment starts. Keep database transactions short.",
+      "phase": "bounded",
+      "status": "20 active \u00b7 10 waiting \u00b7 excess work gets busy guidance",
+      "note": "A bulkhead is a bounded waiting room for a dependency.",
+      "from": 1462,
+      "frames": 360,
+      "audio": "blog/episodes/016/speech-aligned-v2/scene-5.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 3.35,
+          "text": "A bulkhead bounds active calls and waiting work."
+        },
+        {
+          "start": 4.275,
+          "end": 7.3375,
+          "text": "Give busy guidance only before payment starts."
+        },
+        {
+          "start": 8.2,
+          "end": 10.4625,
+          "text": "Keep database transactions short."
+        }
+      ]
+    },
+    {
+      "title": "Timeout? Check the original payment",
+      "label": "HONEST STATUS + RECOVERY",
+      "seconds": 8,
+      "voice": "Set network deadlines. For uncertain payment, show checking and query the original provider reference before confirming. Never blindly pay again.",
+      "phase": "recovery",
+      "status": "UNKNOWN \u2192 lookup original reference \u2192 verified result",
+      "note": "A local timeout may leave remote work running.",
+      "from": 1822,
+      "frames": 407,
+      "audio": "blog/episodes/016/speech-aligned-v2/scene-6.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 1.9125,
+          "text": "Set network deadlines."
+        },
+        {
+          "start": 2.8,
+          "end": 6.35,
+          "text": "For uncertain payment, show checking and query the"
+        },
+        {
+          "start": 6.45,
+          "end": 9.425,
+          "text": "original provider reference before confirming."
+        },
+        {
+          "start": 10.3125,
+          "end": 12.0625,
+          "text": "Never blindly pay again."
+        }
+      ]
+    },
+    {
+      "title": "Efficient waiting. Safer checkout.",
+      "label": "THE COMPLETE IMPROVEMENT",
+      "seconds": 8,
+      "voice": "Virtual threads improve waiting efficiency. Capacity limits protect dependencies. Safe recovery protects Asha's payment. Checkout needs all three.",
+      "phase": "confirmed",
+      "status": "Concurrency + capacity protection + safe payment recovery",
+      "note": "Article, simulation and video follow this same story.",
+      "from": 2229,
+      "frames": 412,
+      "audio": "blog/episodes/016/speech-aligned-v2/scene-7.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 3.075,
+          "text": "Virtual threads improve waiting efficiency."
+        },
+        {
+          "start": 3.9375,
+          "end": 6.4,
+          "text": "Capacity limits protect dependencies."
+        },
+        {
+          "start": 7.2625,
+          "end": 9.7625,
+          "text": "Safe recovery protects Asha's payment."
+        },
+        {
+          "start": 10.65,
+          "end": 12.25,
+          "text": "Checkout needs all three."
+        }
+      ]
+    }
+  ],
+  "cues": [
+    {
+      "start": 0.1,
+      "end": 1.85,
+      "text": "Asha's checkout times out."
+    },
+    {
+      "start": 2.7375,
+      "end": 6.3875,
+      "text": "Platform threads stay occupied waiting for responses."
+    },
+    {
+      "start": 7.275,
+      "end": 10.2125,
+      "text": "When the request thread pool fills, new shoppers"
+    },
+    {
+      "start": 10.2375,
+      "end": 10.5125,
+      "text": "queue."
+    },
+    {
+      "start": 12.133333333333333,
+      "end": 14.095833333333333,
+      "text": "Virtual threads are lightweight."
+    },
+    {
+      "start": 14.995833333333334,
+      "end": 19.045833333333334,
+      "text": "During supported network waits, Java frees the underlying"
+    },
+    {
+      "start": 19.09583333333333,
+      "end": 21.820833333333333,
+      "text": "operating system thread for other requests."
+    },
+    {
+      "start": 22.670833333333334,
+      "end": 24.795833333333334,
+      "text": "More checkouts can progress together."
+    },
+    {
+      "start": 26.433333333333334,
+      "end": 29.070833333333333,
+      "text": "This helps when threads were the bottleneck."
+    },
+    {
+      "start": 29.958333333333332,
+      "end": 31.445833333333333,
+      "text": "Payment is not faster."
+    },
+    {
+      "start": 32.33333333333333,
+      "end": 35.77083333333333,
+      "text": "Twenty database connections still allow only twenty"
+    },
+    {
+      "start": 35.77083333333333,
+      "end": 37.25833333333333,
+      "text": "connections at once."
+    },
+    {
+      "start": 38.86666666666667,
+      "end": 40.61666666666667,
+      "text": "Save one payment attempt."
+    },
+    {
+      "start": 41.516666666666666,
+      "end": 43.87916666666666,
+      "text": "Repeated clicks reuse its reference."
+    },
+    {
+      "start": 44.75416666666666,
+      "end": 47.21666666666667,
+      "text": "A timeout does not prove payment failed."
+    },
+    {
+      "start": 48.833333333333336,
+      "end": 52.083333333333336,
+      "text": "A bulkhead bounds active calls and waiting work."
+    },
+    {
+      "start": 53.00833333333333,
+      "end": 56.07083333333333,
+      "text": "Give busy guidance only before payment starts."
+    },
+    {
+      "start": 56.93333333333334,
+      "end": 59.19583333333333,
+      "text": "Keep database transactions short."
+    },
+    {
+      "start": 60.833333333333336,
+      "end": 62.645833333333336,
+      "text": "Set network deadlines."
+    },
+    {
+      "start": 63.53333333333333,
+      "end": 67.08333333333333,
+      "text": "For uncertain payment, show checking and query the"
+    },
+    {
+      "start": 67.18333333333334,
+      "end": 70.15833333333333,
+      "text": "original provider reference before confirming."
+    },
+    {
+      "start": 71.04583333333333,
+      "end": 72.79583333333333,
+      "text": "Never blindly pay again."
+    },
+    {
+      "start": 74.39999999999999,
+      "end": 77.375,
+      "text": "Virtual threads improve waiting efficiency."
+    },
+    {
+      "start": 78.2375,
+      "end": 80.7,
+      "text": "Capacity limits protect dependencies."
+    },
+    {
+      "start": 81.5625,
+      "end": 84.0625,
+      "text": "Safe recovery protects Asha's payment."
+    },
+    {
+      "start": 84.95,
+      "end": 86.55,
+      "text": "Checkout needs all three."
+    }
+  ]
+}

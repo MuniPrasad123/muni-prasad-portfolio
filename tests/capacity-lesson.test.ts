@@ -25,9 +25,15 @@ test('process restart and changed payload do not start another provider operatio
   const recovered=model.stateAt('restart',6);assert.equal(recovered.status,'CONFIRMED');assert.equal(recovered.providerCalls,1);assert.equal(recovered.providerEffects,1)
   const conflict=model.stateAt('conflict',3);assert.match(conflict.response,/409/);assert.equal(conflict.providerCalls,1)
 })
-test('eight scenarios reconstruct deterministically and reject invalid inputs',()=>{
-  assert.equal(Object.keys(model.scenarios).length,8)
+test('nine scenarios reconstruct deterministically and reject invalid inputs',()=>{
+  assert.equal(Object.keys(model.scenarios).length,9)
   const earlier=model.stateAt('safe',1);model.stateAt('unsafe',2);assert.deepEqual(model.stateAt('safe',1),earlier)
   assert.deepEqual(model.stateAt('safe',-1),model.initial())
   assert.throws(()=>model.capacity({demand:0,provider:1,queue:0,db:1},'safe'))
+})
+test('beginner walkthrough explains the benefit without fabricating payment or performance effects',()=>{
+  assert.match(model.stateAt('threads',1).response,/queue/)
+  assert.match(model.stateAt('threads',2).decision,/frees the carrier/)
+  assert.match(model.stateAt('threads',3).decision,/dependencies have spare capacity/)
+  const final=model.stateAt('threads',4);assert.equal(final.providerCalls,0);assert.equal(final.outbox,0)
 })

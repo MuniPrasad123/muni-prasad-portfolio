@@ -1,7 +1,7 @@
 (function(){
   const {nodes,scenarios,capacity,stateAt}=window.CapacityLesson;
   const $=id=>document.getElementById(id);
-  let mode='safe',cursor=0,timer=null;
+  let mode='threads',cursor=0,timer=null;
   const media=matchMedia('(prefers-reduced-motion: reduce)');let paused=media.matches;
   function add(tag,text,parent){const el=document.createElement(tag);if(text!==undefined)el.textContent=String(text);parent.appendChild(el);return el;}
   function inputs(){return {demand:Number($('demand').value),provider:Number($('capacity').value),queue:Number($('queue').value),db:Number($('db').value)};}
@@ -20,6 +20,7 @@
     $('customer').dataset.warning=String(state.status==='UNKNOWN'||state.status==='IN_FLIGHT');
     $('customer-message').textContent=state.status==='CONFIRMED'?'Order confirmed after authoritative payment verification.':state.status==='UNKNOWN'?'We’re checking your payment. Do not pay again.':state.status==='IN_FLIGHT'?'Payment processing. Check this existing attempt.':state.response.startsWith('503')?'Checkout is busy. Payment was not started; retry this same operation later.':state.response.startsWith('409')?'This key belongs to another payload. Resolve the original attempt.':'Place Order → loading… waiting for a reliable result.';
     if(state.response.startsWith('409'))$('customer-message').textContent='This key belongs to another payload. Resolve the original attempt.';
+    if(mode==='threads'&&cursor>0)$('customer-message').textContent=state.response;
     $('metrics').replaceChildren();
     const metrics=[['Asha’s payment status',state.status],['Durable attempt identities',state.attempts],['Asha’s provider calls',state.providerCalls],['Confirmation outbox intents',state.outbox],['Asha’s local permit held',state.permitHeld?'Yes':'No'],['Customer/API result',state.response],['DB connections in use (model)',Math.min(c.demand,c.db)],['DB waiters without a budget',c.dbWaiting],['Local active-call limit',c.provider],['Local waiting-room limit',c.queue]];
     if(['replicas','global'].includes(frame.action))metrics.push(['3-pod potential calls',frame.action==='replicas'?Math.min(c.demand,c.provider*3):Math.min(c.demand,c.provider)]);

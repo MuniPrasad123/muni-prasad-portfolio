@@ -1,0 +1,102 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.4125,
+    "text": "Set"
+  },
+  {
+    "start": 0.475,
+    "end": 1.1375,
+    "text": "network"
+  },
+  {
+    "start": 1.2,
+    "end": 1.9125,
+    "text": "deadlines"
+  },
+  {
+    "start": 2.8,
+    "end": 3.0875,
+    "text": "For"
+  },
+  {
+    "start": 3.175,
+    "end": 3.825,
+    "text": "uncertain"
+  },
+  {
+    "start": 3.8375,
+    "end": 4.3,
+    "text": "payment"
+  },
+  {
+    "start": 4.6375,
+    "end": 4.875,
+    "text": "show"
+  },
+  {
+    "start": 4.875,
+    "end": 5.4,
+    "text": "checking"
+  },
+  {
+    "start": 5.55,
+    "end": 5.7875,
+    "text": "and"
+  },
+  {
+    "start": 5.7875,
+    "end": 6.1875,
+    "text": "query"
+  },
+  {
+    "start": 6.1875,
+    "end": 6.35,
+    "text": "the"
+  },
+  {
+    "start": 6.45,
+    "end": 7.0125,
+    "text": "original"
+  },
+  {
+    "start": 7.0125,
+    "end": 7.6,
+    "text": "provider"
+  },
+  {
+    "start": 7.6,
+    "end": 8.175,
+    "text": "reference"
+  },
+  {
+    "start": 8.2625,
+    "end": 8.7,
+    "text": "before"
+  },
+  {
+    "start": 8.7125,
+    "end": 9.425,
+    "text": "confirming"
+  },
+  {
+    "start": 10.3125,
+    "end": 10.6875,
+    "text": "Never"
+  },
+  {
+    "start": 10.7125,
+    "end": 11.275,
+    "text": "blindly"
+  },
+  {
+    "start": 11.3,
+    "end": 11.5125,
+    "text": "pay"
+  },
+  {
+    "start": 11.575,
+    "end": 12.0625,
+    "text": "again"
+  }
+]

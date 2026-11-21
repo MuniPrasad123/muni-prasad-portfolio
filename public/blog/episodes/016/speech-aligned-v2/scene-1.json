@@ -1,0 +1,102 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.55,
+    "text": "Asha's"
+  },
+  {
+    "start": 0.55,
+    "end": 1.0375,
+    "text": "checkout"
+  },
+  {
+    "start": 1.0875,
+    "end": 1.5125,
+    "text": "times"
+  },
+  {
+    "start": 1.5125,
+    "end": 1.85,
+    "text": "out"
+  },
+  {
+    "start": 2.7375,
+    "end": 3.4,
+    "text": "Platform"
+  },
+  {
+    "start": 3.4,
+    "end": 3.8125,
+    "text": "threads"
+  },
+  {
+    "start": 3.875,
+    "end": 4.1625,
+    "text": "stay"
+  },
+  {
+    "start": 4.1875,
+    "end": 4.8625,
+    "text": "occupied"
+  },
+  {
+    "start": 4.8625,
+    "end": 5.3125,
+    "text": "waiting"
+  },
+  {
+    "start": 5.3125,
+    "end": 5.5875,
+    "text": "for"
+  },
+  {
+    "start": 5.5875,
+    "end": 6.3875,
+    "text": "responses"
+  },
+  {
+    "start": 7.275,
+    "end": 7.475,
+    "text": "When"
+  },
+  {
+    "start": 7.475,
+    "end": 7.6,
+    "text": "the"
+  },
+  {
+    "start": 7.6,
+    "end": 8.0875,
+    "text": "request"
+  },
+  {
+    "start": 8.15,
+    "end": 8.4875,
+    "text": "thread"
+  },
+  {
+    "start": 8.4875,
+    "end": 8.8125,
+    "text": "pool"
+  },
+  {
+    "start": 8.8125,
+    "end": 9.2375,
+    "text": "fills"
+  },
+  {
+    "start": 9.4375,
+    "end": 9.6875,
+    "text": "new"
+  },
+  {
+    "start": 9.6875,
+    "end": 10.2125,
+    "text": "shoppers"
+  },
+  {
+    "start": 10.2375,
+    "end": 10.5125,
+    "text": "queue"
+  }
+]

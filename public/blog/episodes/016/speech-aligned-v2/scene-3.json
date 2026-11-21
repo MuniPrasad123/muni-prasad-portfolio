@@ -1,0 +1,107 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.35,
+    "text": "This"
+  },
+  {
+    "start": 0.35,
+    "end": 0.7375,
+    "text": "helps"
+  },
+  {
+    "start": 0.8,
+    "end": 1.0875,
+    "text": "when"
+  },
+  {
+    "start": 1.0875,
+    "end": 1.5875,
+    "text": "threads"
+  },
+  {
+    "start": 1.65,
+    "end": 1.95,
+    "text": "were"
+  },
+  {
+    "start": 1.95,
+    "end": 2.0875,
+    "text": "the"
+  },
+  {
+    "start": 2.0875,
+    "end": 2.7375,
+    "text": "bottleneck"
+  },
+  {
+    "start": 3.625,
+    "end": 4.0375,
+    "text": "Payment"
+  },
+  {
+    "start": 4.1,
+    "end": 4.275,
+    "text": "is"
+  },
+  {
+    "start": 4.275,
+    "end": 4.5625,
+    "text": "not"
+  },
+  {
+    "start": 4.5625,
+    "end": 5.1125,
+    "text": "faster"
+  },
+  {
+    "start": 6.0,
+    "end": 6.3875,
+    "text": "Twenty"
+  },
+  {
+    "start": 6.3875,
+    "end": 7.0,
+    "text": "database"
+  },
+  {
+    "start": 7.0125,
+    "end": 7.675,
+    "text": "connections"
+  },
+  {
+    "start": 7.775,
+    "end": 8.1,
+    "text": "still"
+  },
+  {
+    "start": 8.175,
+    "end": 8.5875,
+    "text": "allow"
+  },
+  {
+    "start": 8.6875,
+    "end": 9.05,
+    "text": "only"
+  },
+  {
+    "start": 9.05,
+    "end": 9.4375,
+    "text": "twenty"
+  },
+  {
+    "start": 9.4375,
+    "end": 10.1375,
+    "text": "connections"
+  },
+  {
+    "start": 10.2125,
+    "end": 10.4375,
+    "text": "at"
+  },
+  {
+    "start": 10.4375,
+    "end": 10.925,
+    "text": "once"
+  }
+]

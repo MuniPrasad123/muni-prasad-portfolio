@@ -1,0 +1,117 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.675,
+    "text": "Virtual"
+  },
+  {
+    "start": 0.675,
+    "end": 1.1125,
+    "text": "threads"
+  },
+  {
+    "start": 1.175,
+    "end": 1.4125,
+    "text": "are"
+  },
+  {
+    "start": 1.4125,
+    "end": 2.0625,
+    "text": "lightweight"
+  },
+  {
+    "start": 2.9625,
+    "end": 3.325,
+    "text": "During"
+  },
+  {
+    "start": 3.325,
+    "end": 3.9375,
+    "text": "supported"
+  },
+  {
+    "start": 3.9875,
+    "end": 4.6125,
+    "text": "network"
+  },
+  {
+    "start": 4.6125,
+    "end": 5.0875,
+    "text": "waits"
+  },
+  {
+    "start": 5.425,
+    "end": 5.8,
+    "text": "Java"
+  },
+  {
+    "start": 5.8,
+    "end": 6.1875,
+    "text": "frees"
+  },
+  {
+    "start": 6.1875,
+    "end": 6.35,
+    "text": "the"
+  },
+  {
+    "start": 6.4,
+    "end": 7.0125,
+    "text": "underlying"
+  },
+  {
+    "start": 7.0625,
+    "end": 7.6625,
+    "text": "operating"
+  },
+  {
+    "start": 7.6625,
+    "end": 8.125,
+    "text": "system"
+  },
+  {
+    "start": 8.1375,
+    "end": 8.45,
+    "text": "thread"
+  },
+  {
+    "start": 8.4625,
+    "end": 8.775,
+    "text": "for"
+  },
+  {
+    "start": 8.8625,
+    "end": 9.125,
+    "text": "other"
+  },
+  {
+    "start": 9.125,
+    "end": 9.7875,
+    "text": "requests"
+  },
+  {
+    "start": 10.6375,
+    "end": 10.9,
+    "text": "More"
+  },
+  {
+    "start": 10.925,
+    "end": 11.4875,
+    "text": "checkouts"
+  },
+  {
+    "start": 11.4875,
+    "end": 11.7375,
+    "text": "can"
+  },
+  {
+    "start": 11.7375,
+    "end": 12.225,
+    "text": "progress"
+  },
+  {
+    "start": 12.2625,
+    "end": 12.7625,
+    "text": "together"
+  }
+]

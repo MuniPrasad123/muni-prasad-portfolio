@@ -1,0 +1,82 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.475,
+    "text": "Save"
+  },
+  {
+    "start": 0.4875,
+    "end": 0.8125,
+    "text": "one"
+  },
+  {
+    "start": 0.8375,
+    "end": 1.3125,
+    "text": "payment"
+  },
+  {
+    "start": 1.3625,
+    "end": 1.85,
+    "text": "attempt"
+  },
+  {
+    "start": 2.75,
+    "end": 3.25,
+    "text": "Repeated"
+  },
+  {
+    "start": 3.2625,
+    "end": 3.65,
+    "text": "clicks"
+  },
+  {
+    "start": 3.7,
+    "end": 4.1875,
+    "text": "reuse"
+  },
+  {
+    "start": 4.2375,
+    "end": 4.4875,
+    "text": "its"
+  },
+  {
+    "start": 4.4875,
+    "end": 5.1125,
+    "text": "reference"
+  },
+  {
+    "start": 5.9875,
+    "end": 6.0375,
+    "text": "A"
+  },
+  {
+    "start": 6.0375,
+    "end": 6.575,
+    "text": "timeout"
+  },
+  {
+    "start": 6.6375,
+    "end": 6.8625,
+    "text": "does"
+  },
+  {
+    "start": 6.8625,
+    "end": 7.15,
+    "text": "not"
+  },
+  {
+    "start": 7.15,
+    "end": 7.5375,
+    "text": "prove"
+  },
+  {
+    "start": 7.55,
+    "end": 8.0,
+    "text": "payment"
+  },
+  {
+    "start": 8.0,
+    "end": 8.45,
+    "text": "failed"
+  }
+]

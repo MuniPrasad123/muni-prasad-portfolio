@@ -1,11 +1,11 @@
 import React from 'react'
 import { AbsoluteFill, Audio, Composition, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion'
-import timeline from '../public/blog/episodes/016/timeline.json'
+import timeline from '../public/blog/episodes/016/timeline-aligned.json'
 
 function Flow({local,phase}:{local:number;phase:string}) {
   const bounded=['bounded','recovery','confirmed'].includes(phase)
   const packet=(local%100)/100
-  const cards=[{x:0,label:'CHECKOUT',detail:'Asha’s request'},{x:330,label:bounded?'BULKHEAD':'VIRTUAL THREADS',detail:bounded?'Active + waiting limits':'Cheaper I/O waiting'},{x:660,label:'DEPENDENCY',detail:'Finite provider / DB capacity'}]
+  const cards=[{x:0,label:'CHECKOUT',detail:'Asha’s request'},{x:330,label:bounded?'BULKHEAD':phase==='platform'?'PLATFORM THREADS':'VIRTUAL THREADS',detail:bounded?'Active + waiting limits':phase==='platform'?'OS threads occupied':'Pause wait; reuse carrier'},{x:660,label:'DEPENDENCY',detail:'Finite provider / DB capacity'}]
   return <div style={{position:'absolute',left:60,top:490,width:960,height:650}}>
     {cards.map(card=><div key={card.x} style={{position:'absolute',left:card.x,top:20,width:300,height:150,padding:22,border:'2px solid #7292a6',borderRadius:16,background:'#122c40',fontSize:26,lineHeight:1.5}}><b style={{color:'#efcf83'}}>{card.label}</b><div style={{fontSize:24,marginTop:12}}>{card.detail}</div></div>)}
     {[0,1].map(i=><div key={i} style={{position:'absolute',left:310+i*330,top:80,fontSize:30,color:'#8de4ca'}}>→</div>)}
@@ -15,7 +15,8 @@ function Flow({local,phase}:{local:number;phase:string}) {
       return <div key={i} style={{position:'absolute',left:progress*(rejected?540:910),top:210+(i%4)*34+(rejected?progress*90:0),width:13,height:13,borderRadius:4,background:rejected?'#f4c77d':'#79dfc2',opacity:progress<.03?.2:1}}/>
     })}
     <div style={{position:'absolute',top:400,left:0,right:0,padding:24,background:'#0a192a',border:'1px solid #4c6a82',borderRadius:14}}>
-      {phase==='customer'?<><div style={{fontSize:34}}>Place Order → waiting → timeout</div><div style={{width:58,height:58,margin:'18px auto',border:'6px solid #45677f',borderTopColor:'#eecb7d',borderRadius:'50%',transform:`rotate(${local*5}deg)`}}/><div style={{fontSize:29,color:'#f1ce83'}}>“Did my payment go through?”</div></>:
+      {phase==='platform'?<><div style={{fontSize:32}}>100 platform threads waiting on responses</div><div style={{display:'flex',gap:18,marginTop:24}}>{Array.from({length:6},(_,i)=><div key={i} style={{width:125,height:46,background:'#674b28',border:'2px solid #efcf83',textAlign:'center',paddingTop:6}}>waiting</div>)}</div><div style={{fontSize:28,color:'#f1ce83',marginTop:20}}>New shoppers queue → spinner → timeout</div></>:
+       phase==='threads'?<><div style={{fontSize:31,color:'#92e6c8'}}>Waiting request pauses during supported I/O</div><div style={{fontSize:29,marginTop:25}}>Carrier runs another virtual thread →</div><div style={{display:'flex',gap:16,marginTop:22}}>{['A waits','B runs','C waits','D runs'].map((t,i)=><div key={t} style={{padding:12,background:(Math.floor(local/24)+i)%2?'#31576c':'#14634f',borderRadius:6,fontSize:26}}>{t}</div>)}</div><div style={{fontSize:25,color:'#bbd4e2',marginTop:18}}>Response arrives → request resumes</div></>:
        phase==='identity'?<><div style={{fontSize:32,color:'#92e6c8'}}>Two clicks → one durable attempt</div><div style={{fontSize:29,marginTop:25}}>Customer + key + payload hash</div><div style={{fontSize:26,color:'#bbd4e2',marginTop:15}}>Same provider reference across retries</div></>:
        phase==='recovery'?<><div style={{fontSize:34,color:'#f2ce80'}}>UNKNOWN → lookup → confirmed</div><div style={{fontSize:28,marginTop:24}}>Use the original payment reference.</div><div style={{fontSize:27,marginTop:14,color:'#c1d8e8'}}>A timeout does not cancel remote work.</div></>:
        phase==='confirmed'?<><div style={{fontSize:36,color:'#89e5c0'}}>✓ Order confirmed after verification</div><div style={{fontSize:28,marginTop:24}}>Bound capacity · preserve identity</div><div style={{fontSize:28,marginTop:12}}>Reconcile before another payment</div></>:

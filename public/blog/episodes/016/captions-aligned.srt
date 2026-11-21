@@ -1,0 +1,103 @@
+1
+00:00:00,100 --> 00:00:01,850
+Asha's checkout times out.
+
+2
+00:00:02,738 --> 00:00:06,388
+Platform threads stay occupied waiting for responses.
+
+3
+00:00:07,275 --> 00:00:10,212
+When the request thread pool fills, new shoppers
+
+4
+00:00:10,238 --> 00:00:10,512
+queue.
+
+5
+00:00:12,133 --> 00:00:14,096
+Virtual threads are lightweight.
+
+6
+00:00:14,996 --> 00:00:19,046
+During supported network waits, Java frees the underlying
+
+7
+00:00:19,096 --> 00:00:21,821
+operating system thread for other requests.
+
+8
+00:00:22,671 --> 00:00:24,796
+More checkouts can progress together.
+
+9
+00:00:26,433 --> 00:00:29,071
+This helps when threads were the bottleneck.
+
+10
+00:00:29,958 --> 00:00:31,446
+Payment is not faster.
+
+11
+00:00:32,333 --> 00:00:35,771
+Twenty database connections still allow only twenty
+
+12
+00:00:35,771 --> 00:00:37,258
+connections at once.
+
+13
+00:00:38,867 --> 00:00:40,617
+Save one payment attempt.
+
+14
+00:00:41,517 --> 00:00:43,879
+Repeated clicks reuse its reference.
+
+15
+00:00:44,754 --> 00:00:47,217
+A timeout does not prove payment failed.
+
+16
+00:00:48,833 --> 00:00:52,083
+A bulkhead bounds active calls and waiting work.
+
+17
+00:00:53,008 --> 00:00:56,071
+Give busy guidance only before payment starts.
+
+18
+00:00:56,933 --> 00:00:59,196
+Keep database transactions short.
+
+19
+00:01:00,833 --> 00:01:02,646
+Set network deadlines.
+
+20
+00:01:03,533 --> 00:01:07,083
+For uncertain payment, show checking and query the
+
+21
+00:01:07,183 --> 00:01:10,158
+original provider reference before confirming.
+
+22
+00:01:11,046 --> 00:01:12,796
+Never blindly pay again.
+
+23
+00:01:14,400 --> 00:01:17,375
+Virtual threads improve waiting efficiency.
+
+24
+00:01:18,238 --> 00:01:20,700
+Capacity limits protect dependencies.
+
+25
+00:01:21,562 --> 00:01:24,062
+Safe recovery protects Asha's payment.
+
+26
+00:01:24,950 --> 00:01:26,550
+Checkout needs all three.

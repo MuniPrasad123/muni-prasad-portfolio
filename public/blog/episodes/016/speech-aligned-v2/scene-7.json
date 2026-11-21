@@ -1,0 +1,92 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.6875,
+    "text": "Virtual"
+  },
+  {
+    "start": 0.6875,
+    "end": 1.1125,
+    "text": "threads"
+  },
+  {
+    "start": 1.1875,
+    "end": 1.6875,
+    "text": "improve"
+  },
+  {
+    "start": 1.75,
+    "end": 2.2375,
+    "text": "waiting"
+  },
+  {
+    "start": 2.3,
+    "end": 3.075,
+    "text": "efficiency"
+  },
+  {
+    "start": 3.9375,
+    "end": 4.525,
+    "text": "Capacity"
+  },
+  {
+    "start": 4.55,
+    "end": 4.925,
+    "text": "limits"
+  },
+  {
+    "start": 4.9375,
+    "end": 5.3875,
+    "text": "protect"
+  },
+  {
+    "start": 5.45,
+    "end": 6.4,
+    "text": "dependencies"
+  },
+  {
+    "start": 7.2625,
+    "end": 7.625,
+    "text": "Safe"
+  },
+  {
+    "start": 7.6375,
+    "end": 8.1625,
+    "text": "recovery"
+  },
+  {
+    "start": 8.1625,
+    "end": 8.725,
+    "text": "protects"
+  },
+  {
+    "start": 8.7875,
+    "end": 9.25,
+    "text": "Asha's"
+  },
+  {
+    "start": 9.25,
+    "end": 9.7625,
+    "text": "payment"
+  },
+  {
+    "start": 10.65,
+    "end": 11.1,
+    "text": "Checkout"
+  },
+  {
+    "start": 11.1625,
+    "end": 11.55,
+    "text": "needs"
+  },
+  {
+    "start": 11.625,
+    "end": 11.875,
+    "text": "all"
+  },
+  {
+    "start": 11.9,
+    "end": 12.25,
+    "text": "three"
+  }
+]
