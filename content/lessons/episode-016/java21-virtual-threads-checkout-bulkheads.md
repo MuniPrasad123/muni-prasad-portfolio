@@ -1,9 +1,10 @@
 ---
 title: "Java 21 Virtual Threads: Protecting Checkout When Downstream Capacity Is Limited"
-description: "Checkout workers spend time waiting on slow I/O; replacing them with virtual threads can simply move the queue to the database or payment provider."
+description: "Asha’s checkout spins and times out. See why virtual threads cannot enlarge database pools or payment-provider capacity—and how bounded work and safe recovery protect her payment."
 slug: "java21-virtual-threads-checkout-bulkheads"
 folder: "Java & JVM reliability"
 date: "2026-11-14"
+updated: "2026-11-21"
 tags: ["Java 21","Spring Boot","Concurrency","System design"]
 cover: "/blog/episodes/016/cover.svg"
 coverAlt: "Java 21 Virtual Threads: Protecting Checkout When Downstream Capacity Is Limited"
@@ -11,87 +12,112 @@ draft: false
 sample: false
 level: "Architecture in Motion · Episode 016"
 lab: "/blog/episodes/016/lab.html"
-overview: {"problem":"Checkout workers spend time waiting on slow I/O; replacing them with virtual threads can simply move the queue to the database or payment provider.","solution":"Use virtual threads for suitable blocking workloads while bounding downstream concurrency, deadlines, and waiting requests.","note":"Illustrative system · supplied narrated video and interactive lab"}
-video: "/blog/episodes/016/lesson.mp4"
-videoPoster: "/blog/episodes/016/poster.png"
-videoCaptions: "/blog/episodes/016/captions.vtt"
-videoCaption: "Supplied narrated lesson · English captions · illustrative scenario"
-videoSummary: "Checkout workers spend time waiting on slow I/O; replacing them with virtual threads can simply move the queue to the database or payment provider. Use virtual threads for suitable blocking workloads while bounding downstream concurrency, deadlines, and waiting requests."
-videoChapters: [{"time":0,"label":"The checkout bottleneck"},{"time":20,"label":"What virtual threads change"},{"time":40,"label":"Bound downstream concurrency"}]
+overview: {"problem":"Asha cannot tell whether her timed-out checkout charged her. More virtual threads do not enlarge the database pool or payment provider.","solution":"Bound active and waiting work, preserve one durable payment identity, set real deadlines and reconcile uncertain outcomes.","note":"Illustrative system · customer-first redesign · local review"}
+video: "/blog/episodes/016/lesson-redesign.mp4"
+videoPoster: "/blog/episodes/016/poster-redesign.png"
+videoCaptions: "/blog/episodes/016/captions-redesign.vtt"
+videoCaption: "Indian English male neural narration · synchronized English captions · illustrative scenario"
+videoSummary: "Asha’s checkout times out while payment may already have succeeded. Virtual threads reduce waiting cost, not dependency limits. Follow bounded admission, one durable identity, real deadlines and payment-safe recovery."
+videoChapters: [{"time": 0.0, "label": "ASHA'S CHECKOUT"}, {"time": 11.133, "label": "WHAT VIRTUAL THREADS CHANGE"}, {"time": 21.133, "label": "THE REAL BOTTLENECK"}, {"time": 32.133, "label": "MAKE RETRIES PAYMENT-SAFE"}, {"time": 44.933, "label": "BULKHEAD + BACKPRESSURE"}, {"time": 56.933, "label": "REAL DEADLINES · HONEST STATUS"}, {"time": 69.933, "label": "CUSTOMER PROTECTED"}]
 ---
 
-## Start with the customer
+## 1. Start with Asha’s checkout
 
-During a busy sale, shoppers wait for checkout while payment calls occupy the available request threads. Adding more threads can move the bottleneck to the payment provider instead of fixing it.
+During a busy sale, Asha taps **Place Order**. The loading spinner keeps going. After a long wait, the browser says **Something went wrong**. She has no order confirmation, yet her bank may already show an authorization. She presses the button again.
 
-**Normal behavior:** Checkout admits only the work its dependencies can support. Each payment attempt has a stable durable identity, independent of which thread executes it.
+What does she need? A quick, honest response; an existing order/payment reference she can check; and protection against a second authorization or duplicate order. This is an **illustrative production-style incident**, not a measured retailer outage or a performance benchmark.
 
-**What protects the customer:** Use virtual threads for suitable blocking workloads while bounding downstream concurrency, deadlines, and waiting requests.
+If payment is unresolved, say **“We’re checking your payment.”** Keep the original attempt identity. Neither a browser timeout nor a canceled Java Future establishes that a remote payment failed.
 
-This is an illustrative engineering incident, not an employer case study or a performance benchmark. The article, comparison lab, and any supplied video explain the same core failure.
+## 2. The normal path—and where the wait moves
 
-## Follow the incident yourself
+Browser → gateway → Spring Boot checkout → short PostgreSQL transaction → payment provider → persist verified outcome → confirmation outbox.
 
-[Open the interactive lab](#interactive-lab). Choose **Burst reaches a limited provider** and predict the outcome before each step. The unsafe and protected paths receive the same situation.
+A platform thread can remain occupied while waiting on blocking I/O. Java 21 virtual threads often make that waiting cheaper by allowing the underlying carrier to do other work. **They do not make an individual provider request faster, add database connections, or create CPU capacity.**
 
-1. **A burst of checkout requests arrives.** The sliders model concurrent demand and provider slots, not throughput, CPU, or actual response times. Protected outcome: Only available slots are admitted.
-2. **Virtual threads wait cheaply.** Cheaper Java waiting does not add database connections or provider workers. Unbounded admission can overload the dependency. Protected outcome: Bulkhead bounds active calls.
-3. **The dependency reaches its capacity.** A bounded admission policy must reject or limit waiting instead of retaining unlimited work. Protected outcome: Bounded wait or retry guidance.
-4. **A call finishes and capacity is released.** Release permits in finally. A timeout with an unknown payment result still needs durable idempotency and reconciliation. Protected outcome: Next eligible request admitted.
+The illustrative example has 500 concurrent requests and a pool of 20 connections. At most 20 connections can be checked out at once; the remaining queries wait or time out. The 20-connection DB pool and a 20-call provider budget are **separate resources**, not a reason to assign the same number automatically.
 
-Then choose **Database pool is exhausted** to test a different cause or a healthy/control path. Previous revisits the teaching state; Reset starts the experiment again. Autoplay and visual motion have separate pause controls.
+The before/after architecture above and the [customer-first lab](#interactive-lab) make the bottleneck visible. Original side-by-side comparisons, sliders, navigation, autoplay and quiz remain in **Open the original side-by-side simulation** below the new lab.
 
-## Watch the supplied lesson
+## 3. Why “just use virtual threads” is incomplete
 
-The video includes English narration and captions. Use the player to pause, seek, and enable captions, then compare its example with the lab. Narration is synthetic; animations and quantities are illustrative.
-
-> A faster-looking thread model cannot rescue an overloaded payment provider. The customer needs a reliable checkout, not just a different Java API.
-
-## What the customer actually sees
-A shopper taps **Place Order** during a flash sale. The button spins, then shows a timeout. The shopper tries again. If the server lacks durable idempotency, two order attempts may be created. The illustration is a realistic engineering scenario, not a report of a measured incident.
-
-## The real technical problem
-The request path is **Browser → API Gateway → Spring Boot Checkout → PostgreSQL → Payment Provider**. In a traditional thread-per-request server, a platform thread can remain occupied while waiting for a remote HTTP response. A bounded worker pool can queue incoming requests. Java 21 virtual threads make blocking I/O concurrency cheaper, but do not make external systems faster.
-
-## Architecture: what changes
-```text
-Requests → Java executor → Bulkhead → Provider
+```java
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    for (CheckoutRequest request : burst) {
+        executor.submit(() -> paymentProvider.authorize(request));
+    }
+} // close() waits for submitted work to finish
 ```
 
-### Step 1: Adopt virtual threads only where they fit
-Java 21's `Executors.newVirtualThreadPerTaskExecutor()` is suitable for independent blocking tasks. Spring Boot supports `spring.threads.virtual.enabled=true` when running on Java 21+ (subject to server/runtime compatibility). Do not assume this switches every library or every internal executor.
+This example is intentionally incomplete. It creates cheap waiting tasks but no admission boundary, durable payment identity, real HTTP deadline or recovery policy. A slow provider can become the new queue.
 
-### Step 2: Preserve business correctness
-The checkout API requires an idempotency key scoped to customer and operation, persisted with a unique constraint. The server must return the existing result for repeated identical requests and reject reuse with a different payload. Reserve an order state before calling a payment provider; recover ambiguous timeouts by querying provider status rather than blindly charging again.
+A semaphore acquired **inside** every newly created task limits active calls but may still leave an unbounded population of waiting tasks until their waits expire. Bound the number admitted into the waiting room as well as the active work, or reject before execution starts. A per-pod limit also multiplies across replicas; it is not a global provider quota.
 
-### Step 3: Bound the real bottleneck
-Use a semaphore or bulkhead to cap concurrent calls to a provider. Use connect/read deadlines and bounded retries only for safe operations. A semaphore permit must be released in `finally`; the limit is an example to tune against actual capacity.
+## 4. The protected design, one boundary at a time
 
-### Step 4: Monitor the bottleneck you moved
-Collect gateway queue time, active downstream calls, HikariCP pending connection count, p95/p99 latency, provider error rates, idempotency conflict rate and CPU. Compare identical traffic profiles with and without virtual threads. Virtual threads may improve concurrency under I/O waiting; they do not guarantee a latency improvement.
+### Persist a durable operation identity
 
-## Minimal Java 21 example
+Authenticate the customer and derive ownership from the verified security context. Reserve an operation using a database uniqueness constraint on customer, operation and idempotency key. Store a request hash and a unique stable provider reference. An identical retry returns the existing state; the same key with another payload is a conflict, not another charge.
+
+`CREATED` means the record exists but no provider call has been claimed. After local admission, atomically claim `CREATED → IN_FLIGHT`. Another replica handling the same key sees that claim and does not initiate another operation. Release the database connection before making the network call.
+
+### Bound active calls and waiting work
+
+A payment bulkhead is a small waiting room in front of a scarce dependency. The Java example allows at most `maxActive + maxWaiting` operations inside it. Beyond that bound, new execution is rejected immediately. A waiting operation also has a finite permit-wait budget.
+
+Use a fast **503 busy** response with appropriate retry guidance only when that attempt **has not started** at the provider. A caller-specific rate limit may use 429. An already-started or uncertain payment needs an existing-operation response such as 202 and a status lookup—not “try paying again.”
+
+Queues trade rejection for latency and retained work. Keep them bounded; sometimes a zero-length waiting room is the right choice. Upstream gateways and clients must also bound pending requests. A local bulkhead does not bound every queue in the system.
+
+### Give the database its own budget
+
+Keep DB transactions short. Use a finite connection-acquisition timeout and reserve capacity for status reads, writes and reconciliation. Do not hold a database connection open while waiting for payment-provider HTTP I/O.
+
+Size the application’s DB workload and each pool against actual query duration, transactions per request, replica count, database limits and operational headroom. Replacing platform threads with virtual threads does not increase a HikariCP pool’s maximum size.
+
+### Set real deadlines
+
+Configure the actual HTTP client’s connect and request/response budgets, plus an end-to-end checkout deadline. Derive per-stage timeouts from the remaining overall budget; arbitrary independent timeouts can add up beyond the customer deadline. Check the transport’s exact body/read/cancellation behavior.
+
+`Future.get(timeout)` only bounds the caller’s wait. It does not guarantee that the underlying task or remote payment stopped. The local permit stays owned until that task exits. When a real transport deadline ends the local call, its permit may release, but remote work can still be unresolved. Use provider quotas, stable idempotency references and reconciliation to manage that uncertainty; a local semaphore cannot prove a global remote-concurrency bound.
+
+### Recover payment state safely
+
+Persist `UNKNOWN` for an ambiguous outcome, or recover a stale durable `IN_FLIGHT` claim after a crash. Query the authority using the **original** provider reference. Only authoritative confirmation or a definitive decline should resolve the result. A “not found” response needs the provider’s documented consistency/retry policy; it is not universal proof that no operation occurred.
+
+If persistence fails after provider authorization, the earlier durable claim is the recovery anchor. Return an honest checking state where possible and reconcile once storage recovers. Never assume the provider rolled back because a local database write failed.
+
+### Commit follow-up intent with the verified result
+
+Commit a confirmed state and its confirmation outbox event atomically. Workers deliver using stable downstream idempotency keys. `UNKNOWN` may schedule a distinctly typed status-check task; it must not emit a success/fulfillment event. This corrects a potential ambiguity in the package diagram’s generic notification branch.
+
+## Implementation: Java 21
+
+The [PaymentBulkhead.java](/blog/episodes/016/examples/PaymentBulkhead.java) download is compiled and tested on Java 21. It runs on an existing request/task thread and creates no hidden executor or unbounded task queue:
+
 ```java
-import java.time.Duration;
-import java.util.concurrent.*;
-
-public final class PaymentBulkhead implements AutoCloseable {
-  private final Semaphore permits = new Semaphore(40, true);
-  private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
-  public <T> Future<T> submit(Callable<T> paymentCall) {
-    return executor.submit(() -> {
-      if (!permits.tryAcquire(200, TimeUnit.MILLISECONDS))
-        throw new RejectedExecutionException("Payment capacity reached");
-      try { return paymentCall.call(); }
-      finally { permits.release(); }
-    });
-  }
-  @Override public void close() { executor.close(); }
+public <T> T call(Callable<T> operation) throws Exception {
+    if (!admitted.tryAcquire())
+        throw new RejectedExecutionException("Active and waiting budgets full");
+    boolean acquired = false;
+    try {
+        acquired = active.tryAcquire(waitNanos, TimeUnit.NANOSECONDS);
+        if (!acquired)
+            throw new RejectedExecutionException("Permit wait expired before execution");
+        return operation.call();
+    } finally {
+        if (acquired) active.release();
+        admitted.release();
+    }
 }
 ```
-The example demonstrates admission control, **not** payment idempotency, cancellation, or a production-ready checkout endpoint. For HTTP timeouts, configure the underlying client explicitly; `Future.get(timeout)` alone does not reliably stop an in-flight network request.
 
-### Spring Boot configuration
+The constructor gives `admitted` a capacity of active plus waiting operations, and `active` the provider-call capacity. `finally` releases only resources actually acquired, including exception and interruption paths. This is **local admission control**, not a payment ledger, global quota or automatic remote cancellation. Timed acquisition and a fairness setting are not a blanket FIFO guarantee for every admission operation.
+
+### Spring Boot configuration and wiring
+
+For Spring Boot 3.2+ on a supported Java 21/server combination:
+
 ```yaml
 spring:
   threads:
@@ -99,46 +125,114 @@ spring:
       enabled: true
   datasource:
     hikari:
-      maximum-pool-size: 20
+      maximum-pool-size: 20  # illustrative; measure before sizing
+      connection-timeout: 500  # milliseconds; a DB wait budget, not a payment deadline
 ```
-The pool value is illustrative; use measurements to size it. For Java 21 synchronized blocks can pin a virtual thread to its carrier while blocking; inspect JFR `jdk.VirtualThreadPinned` events and test native/blocking libraries. Later JDK behavior differs, so avoid version-general claims.
 
-## Failure modes and trade-offs
-* **Payment provider slow:** threads become cheaper, but provider queues still grow. Apply admission control and customer-friendly retry guidance.
-* **Database pool exhausted:** virtual threads simply wait for scarce connections; keep transactions short and monitor pool wait.
-* **Timeout after provider accepted charge:** reconcile by payment reference and idempotency key before retrying.
-* **CPU-heavy work:** virtual threads do not accelerate CPU; use bounded computation pools.
-* **Security:** authenticate customer ownership, redact payment data, protect idempotency keys from cross-user reuse, and avoid logging secrets.
+Enabling this property does not switch every third-party library or internal executor to virtual threads. A small illustrative bean configuration is:
 
-## How to validate
-Use a repeatable test with the same traffic, database pool, provider simulator delay and hardware. Capture latency distributions and saturation metrics. **No throughput or latency numbers in this article are benchmark claims.** Run chaos tests for slow provider, connection pool starvation, duplicate requests and process crash after payment acknowledgment.
+```java
+@Bean
+PaymentBulkhead paymentBulkhead() {
+    return new PaymentBulkhead(20, 10, Duration.ofMillis(100));
+}
+```
 
-## Interview Q&A
-**Do virtual threads make requests faster?** Not necessarily; they reduce the cost of waiting on blocking I/O, enabling higher concurrency when another bottleneck does not dominate.
+A request coordinator first loads/reserves the durable attempt, then calls the bulkhead. **Inside admission**, claim the attempt once and invoke the provider outside the DB transaction. If another replica already claimed it, return that existing operation. On rejection, re-read the operation state before mapping a busy response; do not overwrite an operation that another replica started.
 
-**Should every request create unlimited virtual threads?** No. Bound expensive downstream resources even if virtual threads are inexpensive.
+### Actual HTTP deadlines
 
-**Can virtual threads prevent duplicate charges?** No. Use durable idempotency and payment reconciliation.
+The [DeadlinePaymentClient.java](/blog/episodes/016/examples/DeadlinePaymentClient.java) teaching adapter configures a JDK HTTP client and preserves its original reference:
 
-**What is pinning?** A virtual thread can hold its carrier while blocked in certain operations; monitor JFR and library behavior for the target JDK.
+```java
+var client = HttpClient.newBuilder()
+    .connectTimeout(Duration.ofMillis(300)).build();
+var request = HttpRequest.newBuilder(trustedProviderUri)
+    .timeout(Duration.ofMillis(1500))
+    .header("Idempotency-Key", stableProviderReference)
+    .POST(HttpRequest.BodyPublishers.ofString(trustedRequestBody)).build();
+```
 
-## Exercises
-1. Explain why 500 virtual threads do not allow 500 simultaneous queries with a 20-connection pool.
-2. Add a safe `Retry-After` response when the payment bulkhead is full.
-3. Design a crash-recovery state machine for a provider timeout after authorization.
+These durations and the header are illustrative. Follow the actual provider’s authentication, signing, idempotency retention and HTTP contract. The caller must validate the provider’s result and persist it safely. A transport exception is not a definitive decline. The sample’s separate lookup method demonstrates recovery against a **local fixture**, not a live provider SDK.
 
-## Takeaway
-Virtual threads are a concurrency tool. The customer-facing solution combines efficient waiting with strict downstream limits, idempotency, observable timeouts, and recovery.
+### Durable identity and state
 
-## Teaching source files
+The [PostgreSQL schema](/blog/episodes/016/examples/schema.sql) defines the operation key, payload hash, stable provider reference, explicit `CREATED / IN_FLIGHT / UNKNOWN / CONFIRMED / FAILED` states and a unique outbox key. Application code must implement atomic claims, ownership checks, hash comparison, leases and reconciliation. The schema alone is not a complete checkout endpoint.
 
-- [application.yml](/blog/episodes/016/examples/application.yml)
-- [PaymentBulkhead.java](/blog/episodes/016/examples/PaymentBulkhead.java)
-- [schema.sql](/blog/episodes/016/examples/schema.sql)
+## 5. Try the failure and recovery lab
 
-These are supplied teaching examples, not a complete deployable checkout service. They have not been executed as JVM or database tests in this integration. Read their dependencies and limits before running them in an isolated environment.
+The new lab separates **burst-capacity comparisons** from **Asha’s one payment attempt**. Its moving packets are visual replays and never create additional work. Inputs reset the teaching state; Previous, Next, Reset, Play/Pause, speed, motion pause and reduced-motion support work independently.
 
-## Primary references used for this lesson
+| Scenario | What to inspect |
+| --- | --- |
+| Unbounded virtual threads | Many callers wait; provider/DB execution remains finite |
+| Bounded calls and waiting room | Active + waiting + rejected equals the modeled demand |
+| Database exhaustion | Only pooled connections execute queries; excess queries wait |
+| Timeout and recovery | UNKNOWN retains the identity and does not start another payment |
+| Busy before provider start | No provider call occurred; retry guidance uses the same operation |
+| Crash after provider acceptance | Durable reference survives; reconcile before another operation |
+| Same key, changed payload | 409 conflict before any second provider call |
+| Multiple replicas | Local limits multiply unless a shared budget is actually coordinated |
 
-- [Reference 1](https://docs.oracle.com/en/java/javase/21/core/virtual-threads.html)
-- [Reference 2](https://docs.spring.io/spring-boot/reference/features/spring-application.html#features.spring-application.virtual-threads)
+The model cannot prove real database isolation, provider behavior or load-test results. It explicitly does not implement a distributed rate limiter.
+
+## 6. Performance, pinning and observability
+
+Virtual threads suit many blocking I/O workloads; CPU-heavy computation still needs an appropriate bounded compute executor. In **Java 21**, blocking while holding a `synchronized` monitor can pin a carrier. Inspect JFR `jdk.VirtualThreadPinned` events and test relevant native/blocking libraries. This warning is version-specific; later JDK implementations differ.
+
+Observe active and waiting operations, rejected new executions, permit-wait duration, Hikari pending/acquisition time, provider errors and latency, unknown-payment age, reconciliation lag, idempotency conflicts and p95/p99 end-to-end latency. Include replica counts and provider-global limits in capacity planning.
+
+To compare platform and virtual threads, use the same hardware, traffic, provider delay, DB pool and protection policy. Separate queue wait from execution latency and distinguish accepted throughput from rejected demand. No latency or throughput gain in this article is a measured benchmark.
+
+## 7. Failures and customer responses
+
+| Failure | Safe handling |
+| --- | --- |
+| Provider is slow | Bound active calls and waiting work; respect actual HTTP budgets |
+| No DB connection before operation starts | Bounded acquisition failure; no provider call, same operation identity |
+| Browser/Future wait expires | Do not assume cancellation; preserve the running task’s permit until exit |
+| Provider accepts, response is lost | UNKNOWN/checking response; authoritative lookup by original reference |
+| Process crashes or result persistence fails | Reconcile the durable claim before another payment operation |
+| Duplicate checkout or changed payload | Return existing state or reject conflict; never trust a client-supplied customer ID |
+| Several replicas saturate the provider | Coordinate global budgets or partition quotas; one JVM semaphore is insufficient |
+
+Protect order ownership at every boundary. Redact payment data and secrets. Verify asynchronous provider callbacks using their provider-specific signature, timestamp and account rules. A bulkhead does not provide authentication or durable idempotency.
+
+## 8. Run the examples and tests
+
+```powershell
+javac --add-modules jdk.httpserver -d .cache/episode016/java public/blog/episodes/016/examples/*.java
+java -cp .cache/episode016/java PaymentBulkheadTest
+java --add-modules jdk.httpserver -cp .cache/episode016/java DeadlinePaymentClientTest
+node --test tests/capacity-lesson.test.ts
+```
+
+The Java tests exercise active/waiting bounds, failed operations, expired waits, interruption, caller wait timeout and a real local HTTP deadline followed by original-reference lookup. They are correctness tests, not performance measurements. The SQL and Spring wiring are teaching assets; no live payment, production database or provider sandbox transaction is claimed.
+
+## 9. Interview questions
+
+**Do virtual threads make each call faster?** No. They can improve the efficiency of blocking concurrency; another bottleneck still determines completion time.
+
+**Why bound waiters as well as active calls?** An unlimited waiting room retains unlimited work even when threads are cheap. Bound count and waiting time, then apply backpressure upstream.
+
+**Can a per-pod semaphore guarantee a provider-global limit?** No. Replicas multiply local budgets, and remote work may survive local timeouts. Global coordination and provider contracts are separate concerns.
+
+**Can a timeout prove payment failure?** No. Preserve the existing identity, show uncertainty honestly and reconcile before another payment operation.
+
+**Why not keep the DB transaction open while authorizing?** It retains scarce connections during a remote wait and can exhaust the pool. Use short durable claims and persist/reconcile the result separately.
+
+## 10. Exercises and takeaway
+
+1. Set demand to 500 and DB pool to 20. Explain which queries run and which wait, without inventing throughput.
+2. Set active calls to 20 and waiting room to 10. Account for all demand as active, waiting or not admitted. Decide what response is safe for a not-started attempt versus an uncertain one.
+3. Crash after provider acceptance. Describe how the original reference survives, how a stale claim is discovered, and why lease expiry does not prove a failed payment.
+
+**Cheaper threads are not extra capacity. Bound work, preserve payment identity, and recover uncertainty honestly.**
+
+## Official technical references
+
+- [Java 21 virtual threads](https://docs.oracle.com/en/java/javase/21/core/virtual-threads.html)
+- [JEP 444: virtual threads](https://openjdk.org/jeps/444)
+- [Java 21 HttpRequest timeout contract](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpRequest.Builder.html#timeout(java.time.Duration))
+- [Spring Boot virtual-thread configuration](https://docs.spring.io/spring-boot/reference/features/spring-application.html#features.spring-application.virtual-threads)
+- [HikariCP configuration](https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby)

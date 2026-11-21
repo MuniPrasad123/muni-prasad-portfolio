@@ -1,0 +1,1 @@
+PASS: 8 scenarios, timeout/permit/retry safety, sliders, playback/reset, keyboard, reduced motion, quiz, zero WCAG A/AA lab violations, original lab, preserved route, desktop/mobile overflow and auto-height.

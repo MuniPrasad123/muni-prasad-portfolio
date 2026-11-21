@@ -4,4 +4,4 @@ spring:
       enabled: true
   datasource:
     hikari:
-      maximum-pool-size: 20
+      maximum-pool-size: 20 # illustrative, benchmark before sizing

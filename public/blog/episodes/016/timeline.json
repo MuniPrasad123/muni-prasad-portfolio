@@ -1,0 +1,347 @@
+{
+  "fps": 30,
+  "durationInFrames": 2509,
+  "voice": "en-IN-PrabhatNeural",
+  "scenes": [
+    {
+      "title": "Checkout is still spinning",
+      "label": "ASHA'S CHECKOUT",
+      "seconds": 11,
+      "voice": "Asha taps Place Order during a sale. Checkout keeps spinning, then times out. Her payment may already have succeeded.",
+      "phase": "customer",
+      "status": "Payment outcome uncertain",
+      "note": "A timeout is not proof of failure.",
+      "from": 0,
+      "frames": 334,
+      "audio": "blog/episodes/016/speech/scene-1.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.75,
+          "text": "Asha taps Place Order during a sale."
+        },
+        {
+          "start": 3.575,
+          "end": 6.1375,
+          "text": "Checkout keeps spinning, then times out."
+        },
+        {
+          "start": 7.0125,
+          "end": 9.625,
+          "text": "Her payment may already have succeeded."
+        }
+      ]
+    },
+    {
+      "title": "Cheap waiting is not extra capacity",
+      "label": "WHAT VIRTUAL THREADS CHANGE",
+      "seconds": 10,
+      "voice": "Java twenty one virtual threads make blocking waits cheaper. They do not make the payment provider faster.",
+      "phase": "threads",
+      "status": "Many tasks \u00b7 same dependency limits",
+      "note": "Efficient waiting does not add database connections.",
+      "from": 334,
+      "frames": 300,
+      "audio": "blog/episodes/016/speech/scene-2.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 3.4875,
+          "text": "Java twenty one virtual threads make blocking waits"
+        },
+        {
+          "start": 3.4875,
+          "end": 3.9625,
+          "text": "cheaper."
+        },
+        {
+          "start": 4.85,
+          "end": 7.575,
+          "text": "They do not make the payment provider faster."
+        }
+      ]
+    },
+    {
+      "title": "The queue moves downstream",
+      "label": "THE REAL BOTTLENECK",
+      "seconds": 11,
+      "voice": "Five hundred waiting requests cannot use a database pool with twenty connections at once. The queue simply moves downstream.",
+      "phase": "overload",
+      "status": "500 requests \u2192 20 connections",
+      "note": "Illustrative counts, not benchmark measurements.",
+      "from": 634,
+      "frames": 330,
+      "audio": "blog/episodes/016/speech/scene-3.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 3.475,
+          "text": "Five hundred waiting requests cannot use a database"
+        },
+        {
+          "start": 3.4875,
+          "end": 6.1625,
+          "text": "pool with twenty connections at once."
+        },
+        {
+          "start": 7.0375,
+          "end": 9.1,
+          "text": "The queue simply moves downstream."
+        }
+      ]
+    },
+    {
+      "title": "One durable payment identity",
+      "label": "MAKE RETRIES PAYMENT-SAFE",
+      "seconds": 12,
+      "voice": "First, save one durable payment attempt. Repeated clicks reuse the same reference. Never create another charge just because checkout timed out.",
+      "phase": "identity",
+      "status": "Same customer + key \u2192 same attempt",
+      "note": "Reject the same key with a different request payload.",
+      "from": 964,
+      "frames": 384,
+      "audio": "blog/episodes/016/speech/scene-4.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.9625,
+          "text": "First, save one durable payment attempt."
+        },
+        {
+          "start": 3.8625,
+          "end": 6.4,
+          "text": "Repeated clicks reuse the same reference."
+        },
+        {
+          "start": 7.275,
+          "end": 10.925,
+          "text": "Never create another charge just because checkout timed"
+        },
+        {
+          "start": 10.925,
+          "end": 11.275,
+          "text": "out."
+        }
+      ]
+    },
+    {
+      "title": "Bound calls and waiting work",
+      "label": "BULKHEAD + BACKPRESSURE",
+      "seconds": 12,
+      "voice": "Then bound active calls and waiting work. A bulkhead protects the provider. Work not started gets an honest busy response.",
+      "phase": "bounded",
+      "status": "Active cap + bounded queue",
+      "note": "A local semaphore is not a global provider quota.",
+      "from": 1348,
+      "frames": 360,
+      "audio": "blog/episodes/016/speech/scene-5.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.9375,
+          "text": "Then bound active calls and waiting work."
+        },
+        {
+          "start": 3.85,
+          "end": 5.7625,
+          "text": "A bulkhead protects the provider."
+        },
+        {
+          "start": 6.6625,
+          "end": 9.9875,
+          "text": "Work not started gets an honest busy response."
+        }
+      ]
+    },
+    {
+      "title": "UNKNOWN needs reconciliation",
+      "label": "REAL DEADLINES \u00b7 HONEST STATUS",
+      "seconds": 13,
+      "voice": "Set real network deadlines. If payment is uncertain, keep the original reference and reconcile. A timeout is not proof of cancellation.",
+      "phase": "recovery",
+      "status": "UNKNOWN \u2192 query original reference",
+      "note": "Do not blindly authorize or capture a second payment.",
+      "from": 1708,
+      "frames": 390,
+      "audio": "blog/episodes/016/speech/scene-6.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.225,
+          "text": "Set real network deadlines."
+        },
+        {
+          "start": 3.1,
+          "end": 6.7625,
+          "text": "If payment is uncertain, keep the original reference"
+        },
+        {
+          "start": 6.8375,
+          "end": 7.85,
+          "text": "and reconcile."
+        },
+        {
+          "start": 8.6875,
+          "end": 11.3125,
+          "text": "A timeout is not proof of cancellation."
+        }
+      ]
+    },
+    {
+      "title": "A reliable checkout outcome",
+      "label": "CUSTOMER PROTECTED",
+      "seconds": 13,
+      "voice": "Now checkout reports a reliable status. Virtual threads improve waiting efficiency. Capacity limits, backpressure and payment safe recovery protect the customer.",
+      "phase": "confirmed",
+      "status": "Confirmed after authoritative lookup",
+      "note": "Short transactions \u00b7 bounded capacity \u00b7 safe recovery",
+      "from": 2098,
+      "frames": 411,
+      "audio": "blog/episodes/016/speech/scene-7.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.7125,
+          "text": "Now checkout reports a reliable status."
+        },
+        {
+          "start": 3.5875,
+          "end": 6.5625,
+          "text": "Virtual threads improve waiting efficiency."
+        },
+        {
+          "start": 7.425,
+          "end": 10.975,
+          "text": "Capacity limits, backpressure and payment safe recovery"
+        },
+        {
+          "start": 10.9875,
+          "end": 12.175,
+          "text": "protect the customer."
+        }
+      ]
+    }
+  ],
+  "cues": [
+    {
+      "start": 0.1,
+      "end": 2.75,
+      "text": "Asha taps Place Order during a sale."
+    },
+    {
+      "start": 3.575,
+      "end": 6.1375,
+      "text": "Checkout keeps spinning, then times out."
+    },
+    {
+      "start": 7.0125,
+      "end": 9.625,
+      "text": "Her payment may already have succeeded."
+    },
+    {
+      "start": 11.233333333333333,
+      "end": 14.620833333333334,
+      "text": "Java twenty one virtual threads make blocking waits"
+    },
+    {
+      "start": 14.620833333333334,
+      "end": 15.095833333333333,
+      "text": "cheaper."
+    },
+    {
+      "start": 15.983333333333333,
+      "end": 18.708333333333332,
+      "text": "They do not make the payment provider faster."
+    },
+    {
+      "start": 21.233333333333334,
+      "end": 24.608333333333334,
+      "text": "Five hundred waiting requests cannot use a database"
+    },
+    {
+      "start": 24.620833333333334,
+      "end": 27.295833333333334,
+      "text": "pool with twenty connections at once."
+    },
+    {
+      "start": 28.170833333333334,
+      "end": 30.233333333333334,
+      "text": "The queue simply moves downstream."
+    },
+    {
+      "start": 32.233333333333334,
+      "end": 35.09583333333333,
+      "text": "First, save one durable payment attempt."
+    },
+    {
+      "start": 35.99583333333333,
+      "end": 38.53333333333333,
+      "text": "Repeated clicks reuse the same reference."
+    },
+    {
+      "start": 39.40833333333333,
+      "end": 43.05833333333334,
+      "text": "Never create another charge just because checkout timed"
+    },
+    {
+      "start": 43.05833333333334,
+      "end": 43.40833333333333,
+      "text": "out."
+    },
+    {
+      "start": 45.03333333333333,
+      "end": 47.87083333333333,
+      "text": "Then bound active calls and waiting work."
+    },
+    {
+      "start": 48.78333333333333,
+      "end": 50.69583333333333,
+      "text": "A bulkhead protects the provider."
+    },
+    {
+      "start": 51.59583333333333,
+      "end": 54.920833333333334,
+      "text": "Work not started gets an honest busy response."
+    },
+    {
+      "start": 57.03333333333333,
+      "end": 59.15833333333333,
+      "text": "Set real network deadlines."
+    },
+    {
+      "start": 60.03333333333333,
+      "end": 63.69583333333333,
+      "text": "If payment is uncertain, keep the original reference"
+    },
+    {
+      "start": 63.77083333333333,
+      "end": 64.78333333333333,
+      "text": "and reconcile."
+    },
+    {
+      "start": 65.62083333333334,
+      "end": 68.24583333333334,
+      "text": "A timeout is not proof of cancellation."
+    },
+    {
+      "start": 70.03333333333333,
+      "end": 72.64583333333334,
+      "text": "Now checkout reports a reliable status."
+    },
+    {
+      "start": 73.52083333333334,
+      "end": 76.49583333333334,
+      "text": "Virtual threads improve waiting efficiency."
+    },
+    {
+      "start": 77.35833333333333,
+      "end": 80.90833333333333,
+      "text": "Capacity limits, backpressure and payment safe recovery"
+    },
+    {
+      "start": 80.92083333333333,
+      "end": 82.10833333333333,
+      "text": "protect the customer."
+    }
+  ]
+}

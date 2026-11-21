@@ -1,0 +1,97 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.425,
+    "text": "Five"
+  },
+  {
+    "start": 0.425,
+    "end": 0.8125,
+    "text": "hundred"
+  },
+  {
+    "start": 0.8125,
+    "end": 1.2625,
+    "text": "waiting"
+  },
+  {
+    "start": 1.2625,
+    "end": 1.9,
+    "text": "requests"
+  },
+  {
+    "start": 1.9125,
+    "end": 2.35,
+    "text": "cannot"
+  },
+  {
+    "start": 2.35,
+    "end": 2.7,
+    "text": "use"
+  },
+  {
+    "start": 2.75,
+    "end": 2.825,
+    "text": "a"
+  },
+  {
+    "start": 2.8375,
+    "end": 3.475,
+    "text": "database"
+  },
+  {
+    "start": 3.4875,
+    "end": 3.9,
+    "text": "pool"
+  },
+  {
+    "start": 4.0125,
+    "end": 4.275,
+    "text": "with"
+  },
+  {
+    "start": 4.35,
+    "end": 4.725,
+    "text": "twenty"
+  },
+  {
+    "start": 4.725,
+    "end": 5.4125,
+    "text": "connections"
+  },
+  {
+    "start": 5.475,
+    "end": 5.6875,
+    "text": "at"
+  },
+  {
+    "start": 5.6875,
+    "end": 6.1625,
+    "text": "once"
+  },
+  {
+    "start": 7.0375,
+    "end": 7.125,
+    "text": "The"
+  },
+  {
+    "start": 7.125,
+    "end": 7.4125,
+    "text": "queue"
+  },
+  {
+    "start": 7.4125,
+    "end": 7.8625,
+    "text": "simply"
+  },
+  {
+    "start": 7.8625,
+    "end": 8.25,
+    "text": "moves"
+  },
+  {
+    "start": 8.3,
+    "end": 9.1,
+    "text": "downstream"
+  }
+]

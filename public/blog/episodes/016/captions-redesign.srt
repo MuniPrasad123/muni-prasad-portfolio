@@ -1,0 +1,95 @@
+1
+00:00:00,100 --> 00:00:02,750
+Asha taps Place Order during a sale.
+
+2
+00:00:03,575 --> 00:00:06,138
+Checkout keeps spinning, then times out.
+
+3
+00:00:07,012 --> 00:00:09,625
+Her payment may already have succeeded.
+
+4
+00:00:11,233 --> 00:00:14,621
+Java twenty one virtual threads make blocking waits
+
+5
+00:00:14,621 --> 00:00:15,096
+cheaper.
+
+6
+00:00:15,983 --> 00:00:18,708
+They do not make the payment provider faster.
+
+7
+00:00:21,233 --> 00:00:24,608
+Five hundred waiting requests cannot use a database
+
+8
+00:00:24,621 --> 00:00:27,296
+pool with twenty connections at once.
+
+9
+00:00:28,171 --> 00:00:30,233
+The queue simply moves downstream.
+
+10
+00:00:32,233 --> 00:00:35,096
+First, save one durable payment attempt.
+
+11
+00:00:35,996 --> 00:00:38,533
+Repeated clicks reuse the same reference.
+
+12
+00:00:39,408 --> 00:00:43,058
+Never create another charge just because checkout timed
+
+13
+00:00:43,058 --> 00:00:43,408
+out.
+
+14
+00:00:45,033 --> 00:00:47,871
+Then bound active calls and waiting work.
+
+15
+00:00:48,783 --> 00:00:50,696
+A bulkhead protects the provider.
+
+16
+00:00:51,596 --> 00:00:54,921
+Work not started gets an honest busy response.
+
+17
+00:00:57,033 --> 00:00:59,158
+Set real network deadlines.
+
+18
+00:01:00,033 --> 00:01:03,696
+If payment is uncertain, keep the original reference
+
+19
+00:01:03,771 --> 00:01:04,783
+and reconcile.
+
+20
+00:01:05,621 --> 00:01:08,246
+A timeout is not proof of cancellation.
+
+21
+00:01:10,033 --> 00:01:12,646
+Now checkout reports a reliable status.
+
+22
+00:01:13,521 --> 00:01:16,496
+Virtual threads improve waiting efficiency.
+
+23
+00:01:17,358 --> 00:01:20,908
+Capacity limits, backpressure and payment safe recovery
+
+24
+00:01:20,921 --> 00:01:22,108
+protect the customer.

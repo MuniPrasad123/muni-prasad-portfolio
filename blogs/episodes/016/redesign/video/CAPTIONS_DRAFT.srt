@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:11,000
+Customer: Payment uncertain
+
+2
+00:00:11,000 --> 00:00:22,000
+Cheap threads ≠ extra provider capacity
+
+3
+00:00:22,000 --> 00:00:33,000
+Queue moves downstream
+
+4
+00:00:33,000 --> 00:00:45,000
+One logical attempt · durable idempotency
+
+5
+00:00:45,000 --> 00:00:57,000
+Bulkhead protects provider
+
+6
+00:00:57,000 --> 00:01:09,000
+UNKNOWN → Reconcile → Confirm
+
+7
+00:01:09,000 --> 00:01:22,000
+Efficient threads + bounded capacity + safe recovery

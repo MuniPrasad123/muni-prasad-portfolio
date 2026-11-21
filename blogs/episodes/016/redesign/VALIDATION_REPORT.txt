@@ -1,0 +1,9 @@
+Java compile exit: 0
+
+Java test: 0
+PASS: saturation rejects; permit released
+
+Browser lab: not independently browser-tested
+PostgreSQL: schema not executed
+Video: no newly rendered MP4 or Indian-accent audio; storyboard and captions only
+Deployment: none

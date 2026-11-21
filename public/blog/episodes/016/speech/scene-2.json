@@ -1,0 +1,87 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.4625,
+    "text": "Java"
+  },
+  {
+    "start": 0.4625,
+    "end": 0.8875,
+    "text": "twenty"
+  },
+  {
+    "start": 0.8875,
+    "end": 1.175,
+    "text": "one"
+  },
+  {
+    "start": 1.175,
+    "end": 1.7875,
+    "text": "virtual"
+  },
+  {
+    "start": 1.7875,
+    "end": 2.225,
+    "text": "threads"
+  },
+  {
+    "start": 2.275,
+    "end": 2.6,
+    "text": "make"
+  },
+  {
+    "start": 2.6,
+    "end": 3.1125,
+    "text": "blocking"
+  },
+  {
+    "start": 3.1125,
+    "end": 3.4875,
+    "text": "waits"
+  },
+  {
+    "start": 3.4875,
+    "end": 3.9625,
+    "text": "cheaper"
+  },
+  {
+    "start": 4.85,
+    "end": 5.025,
+    "text": "They"
+  },
+  {
+    "start": 5.0375,
+    "end": 5.1875,
+    "text": "do"
+  },
+  {
+    "start": 5.25,
+    "end": 5.55,
+    "text": "not"
+  },
+  {
+    "start": 5.55,
+    "end": 5.8625,
+    "text": "make"
+  },
+  {
+    "start": 5.8625,
+    "end": 6.0125,
+    "text": "the"
+  },
+  {
+    "start": 6.0125,
+    "end": 6.4625,
+    "text": "payment"
+  },
+  {
+    "start": 6.4625,
+    "end": 7.0375,
+    "text": "provider"
+  },
+  {
+    "start": 7.0375,
+    "end": 7.575,
+    "text": "faster"
+  }
+]

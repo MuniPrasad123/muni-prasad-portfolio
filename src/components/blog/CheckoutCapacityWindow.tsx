@@ -1,0 +1,17 @@
+import Image from 'next/image'
+import { PracticeFrame } from './PracticeFrame'
+import styles from './CheckoutCapacityWindow.module.css'
+
+export function CheckoutCapacityContext(){return <section className={styles.context} aria-labelledby="capacity-customer-title">
+  <p className={styles.eyebrow}>Illustrative flash-sale incident · Asha’s checkout</p>
+  <h2 id="capacity-customer-title">“Checkout timed out. Did my payment go through?”</h2>
+  <div className={styles.cards}><div><span>📱 What Asha sees</span><strong>Place Order → loading… → timeout</strong><p>The order is not confirmed on screen. Pressing the button again feels like the only option.</p></div><div><span>🏦 What may already have happened</span><strong>The provider may have authorized payment.</strong><p>A lost or slow response does not establish a failed payment. A new attempt could create another authorization.</p></div></div>
+  <p><b>Safe customer response:</b> “We’re checking your payment.” Keep the original reference, prevent a second provider operation, and reconcile before confirming or declaring failure.</p>
+  <div className={styles.rule}><b>Virtual threads reduce the cost of waiting.</b><span>They do not create database connections, provider slots or CPU capacity.</span></div>
+</section>}
+
+export function CheckoutCapacityWindow({originalLab}:{originalLab:string}){return <>
+  <section className={styles.architecture} aria-labelledby="capacity-architecture-title"><h2 id="capacity-architecture-title">Before and after: move the limit, not the risk</h2><div className={styles.paths}><div><h3>Before · no admission boundary</h3><p>Checkout → many virtual threads → database/provider queue</p><strong>Cheap waiting; finite connections and provider work.</strong></div><div><h3>After · explicit protection</h3><p>Durable identity → bounded active + waiting work → real HTTP deadlines</p><strong>UNKNOWN → lookup original reference → verified outcome.</strong></div></div><p>Database operations use short transactions. The provider call runs outside that transaction. Only a verified confirmation may create a confirmation/fulfillment outbox intent.</p><details><summary>View the redesign package’s architecture poster</summary><Image src="/blog/episodes/016/customer-poster.svg" alt="Customer request passes through virtual threads and a bounded bulkhead to the payment provider; cheap threads do not enlarge provider or database capacity." width={1200} height={675}/></details></section>
+  <section id="interactive-lab" className="lesson-panel"><h2>Follow Asha’s checkout through overload and recovery</h2><p>Change demand, provider slots, waiting-room size and the DB pool. Then compare eight scenarios and the same payment identity through each step.</p><a className="text-link" href="/blog/episodes/016/capacity-lab.html" target="_blank" rel="noreferrer">Open customer-first capacity lab ↗</a><PracticeFrame title="Episode 016 checkout capacity and payment-safe recovery lab" src="/blog/episodes/016/capacity-lab.html"/></section>
+  <details id="original-capacity-lab" className="lesson-panel"><summary>Open the original side-by-side simulation</summary><p>The original experiment selector, sliders, Previous/Next, autoplay, motion pause and quiz remain available.</p><a className="text-link" href={originalLab} target="_blank" rel="noreferrer">Open original lab ↗</a><PracticeFrame title="Episode 016 original comparison lab" src={originalLab}/></details>
+</>}

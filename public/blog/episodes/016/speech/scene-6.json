@@ -1,0 +1,107 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.4,
+    "text": "Set"
+  },
+  {
+    "start": 0.4375,
+    "end": 0.8375,
+    "text": "real"
+  },
+  {
+    "start": 0.8375,
+    "end": 1.4625,
+    "text": "network"
+  },
+  {
+    "start": 1.525,
+    "end": 2.225,
+    "text": "deadlines"
+  },
+  {
+    "start": 3.1,
+    "end": 3.2625,
+    "text": "If"
+  },
+  {
+    "start": 3.2875,
+    "end": 3.775,
+    "text": "payment"
+  },
+  {
+    "start": 3.8375,
+    "end": 4.0125,
+    "text": "is"
+  },
+  {
+    "start": 4.075,
+    "end": 4.8125,
+    "text": "uncertain"
+  },
+  {
+    "start": 5.1125,
+    "end": 5.375,
+    "text": "keep"
+  },
+  {
+    "start": 5.3875,
+    "end": 5.5625,
+    "text": "the"
+  },
+  {
+    "start": 5.65,
+    "end": 6.1875,
+    "text": "original"
+  },
+  {
+    "start": 6.1875,
+    "end": 6.7625,
+    "text": "reference"
+  },
+  {
+    "start": 6.8375,
+    "end": 7.0875,
+    "text": "and"
+  },
+  {
+    "start": 7.0875,
+    "end": 7.85,
+    "text": "reconcile"
+  },
+  {
+    "start": 8.6875,
+    "end": 8.7375,
+    "text": "A"
+  },
+  {
+    "start": 8.7375,
+    "end": 9.2875,
+    "text": "timeout"
+  },
+  {
+    "start": 9.35,
+    "end": 9.525,
+    "text": "is"
+  },
+  {
+    "start": 9.525,
+    "end": 9.8125,
+    "text": "not"
+  },
+  {
+    "start": 9.8125,
+    "end": 10.2125,
+    "text": "proof"
+  },
+  {
+    "start": 10.2625,
+    "end": 10.4875,
+    "text": "of"
+  },
+  {
+    "start": 10.5,
+    "end": 11.3125,
+    "text": "cancellation"
+  }
+]

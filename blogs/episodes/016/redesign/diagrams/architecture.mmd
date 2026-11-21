@@ -1,0 +1,10 @@
+flowchart TD
+  U[Customer / Checkout] --> G[API Gateway: auth + rate limits]
+  G --> I[Durable idempotency / order intent]
+  I --> A{Payment bulkhead permit?}
+  A -- no --> B[Fast busy response / bounded retry guidance]
+  A -- yes --> P[Payment provider with configured HTTP deadlines]
+  P -->|confirmed| C[Persist confirmed payment + order state]
+  P -->|timeout / uncertain| R[Persist UNKNOWN; reconcile by provider reference]
+  C --> O[Outbox for notifications]
+  R --> O

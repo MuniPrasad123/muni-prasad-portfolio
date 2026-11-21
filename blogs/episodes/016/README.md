@@ -2,6 +2,9 @@
 
 - Article: ../../../content/lessons/episode-016/java21-virtual-threads-checkout-bulkheads.md
 - Public assets: ../../../public/blog/episodes/016/
-- Lab: shared lesson-shell.css and lesson-shell.js, with episode-specific JSON in lab.html.
-- Supplied video: Copied with captions and poster.
+- Original lab: shared lesson-shell.css and lesson-shell.js, with episode-specific JSON in lab.html; preserved in the article disclosure.
+- Customer-first lab: capacity-lab.html, capacity-model.js and capacity-lab.js; eight scenarios with bounded capacity and payment recovery.
+- Original video remains available as lesson.mp4; the separately generated redesign uses lesson-redesign.mp4 after verification.
+- Redesign package: redesign/; video scripts and narration source are in redesign/video/.
+- Review and validation: [REDESIGN_REVIEW.md](REDESIGN_REVIEW.md).
 - Source material is archived for reference, not instructions to execute or publish claims.

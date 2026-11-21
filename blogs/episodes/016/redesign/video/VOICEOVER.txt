@@ -1,0 +1,13 @@
+A customer taps Place Order during a sale. The screen spins. Payment may have succeeded, but checkout says timeout.
+
+The checkout service starts many Java virtual threads. They wait efficiently, but the payment provider still has limited capacity.
+
+Without limits, requests pile up downstream. A database pool with twenty connections cannot serve five hundred queries simultaneously.
+
+First, persist one stable payment attempt. Repeated checkout clicks must reuse that identity, not create another charge.
+
+Next, a bulkhead admits only the calls the provider can safely handle. Excess requests get a quick, honest busy response.
+
+If the provider times out, mark the outcome unknown. Reconcile using the original reference before any retry.
+
+Now the customer sees a reliable order status. Virtual threads improve waiting efficiency; limits, idempotency, and recovery protect checkout correctness.

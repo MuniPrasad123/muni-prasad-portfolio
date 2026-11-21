@@ -1,0 +1,102 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.3625,
+    "text": "Then"
+  },
+  {
+    "start": 0.3625,
+    "end": 0.725,
+    "text": "bound"
+  },
+  {
+    "start": 0.8,
+    "end": 1.2375,
+    "text": "active"
+  },
+  {
+    "start": 1.2375,
+    "end": 1.7375,
+    "text": "calls"
+  },
+  {
+    "start": 1.825,
+    "end": 2.075,
+    "text": "and"
+  },
+  {
+    "start": 2.075,
+    "end": 2.5375,
+    "text": "waiting"
+  },
+  {
+    "start": 2.5375,
+    "end": 2.9375,
+    "text": "work"
+  },
+  {
+    "start": 3.85,
+    "end": 3.8875,
+    "text": "A"
+  },
+  {
+    "start": 3.9125,
+    "end": 4.4375,
+    "text": "bulkhead"
+  },
+  {
+    "start": 4.4375,
+    "end": 5.0,
+    "text": "protects"
+  },
+  {
+    "start": 5.0,
+    "end": 5.125,
+    "text": "the"
+  },
+  {
+    "start": 5.125,
+    "end": 5.7625,
+    "text": "provider"
+  },
+  {
+    "start": 6.6625,
+    "end": 6.9875,
+    "text": "Work"
+  },
+  {
+    "start": 7.05,
+    "end": 7.35,
+    "text": "not"
+  },
+  {
+    "start": 7.35,
+    "end": 7.8625,
+    "text": "started"
+  },
+  {
+    "start": 7.8625,
+    "end": 8.225,
+    "text": "gets"
+  },
+  {
+    "start": 8.3,
+    "end": 8.4875,
+    "text": "an"
+  },
+  {
+    "start": 8.575,
+    "end": 8.9375,
+    "text": "honest"
+  },
+  {
+    "start": 8.975,
+    "end": 9.3375,
+    "text": "busy"
+  },
+  {
+    "start": 9.3375,
+    "end": 9.9875,
+    "text": "response"
+  }
+]

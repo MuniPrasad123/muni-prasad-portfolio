@@ -1,0 +1,19 @@
+{
+  "durationSeconds": 83.648,
+  "sizeBytes": 6512899,
+  "narrationRmsDb": -17.86,
+  "peakDb": -2.12,
+  "captionCues": 24,
+  "voice": "en-IN-PrabhatNeural",
+  "captionTiming": "TTS spoken-word metadata; punctuation restored from exact script",
+  "streams": [
+    {
+      "type": "video",
+      "codec": "h264"
+    },
+    {
+      "type": "audio",
+      "codec": "aac"
+    }
+  ]
+}

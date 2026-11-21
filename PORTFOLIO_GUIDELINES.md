@@ -20,6 +20,13 @@ These preferences were requested by the owner. Apply them to future work in this
 - Proofread spelling, grammar, terminology, and consistency between the article, UI labels, and simulation.
 - Example: a delayed PAID event does not mean the payment is delayed. In the Kafka ordering lesson, checkout has already confirmed payment; a separate tracking read model can later regress because it processes an old notification after a newer one.
 
+## Architecture in Motion narration and delivery standard
+
+- For Episode 016 and upcoming episodes, lead with what the customer sees, then the normal workflow, failure sequence, root cause, protection and recovery. Preserve accurate existing content, canonical URLs, comments and working interactions.
+- Produce original animated vertical 9:16 explainers, normally 60–90 seconds, with a natural, professional **Indian male English** voice. Clearly disclose synthetic narration when used; do not substitute a different accent or a robotic voice and claim the standard is met.
+- Include moving architecture components/request packets and readable visible English subtitles synchronized to the actual speech. Verify the rendered MP4's audio/video streams, audible non-silent narration, caption timing, content and visual legibility. Do not call a silent storyboard a narrated video or claim completion when generation fails.
+- Preserve existing playable media until its replacement is verified. Show article and video previews and test results before deployment. Deploy, commit or push only within the owner's current authorization; a prior episode's publishing approval is not standing approval for a later episode.
+
 ## Simulation design
 
 - Use the navy simulation palette demonstrated in the Saga reference: a gradient from #102137 to #0b1729, #0a192a inner panels, soft blue borders, teal actions, warm gold highlights, and readable off-white text. Keep the surrounding portfolio emerald and gold.
