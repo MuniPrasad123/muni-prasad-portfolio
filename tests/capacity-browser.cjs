@@ -14,7 +14,7 @@ const review='.cache/episode016/review';
  async function choose(mode){await page.evaluate(mode=>document.querySelector(`[data-mode="${mode}"]`).click(),mode)}
  const metrics=()=>page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('#metrics>div')].map(d=>[d.querySelector('dt').textContent,d.querySelector('dd').textContent])));
  async function finish(){for(let n=0;n<12;n++){if(await page.evaluate(()=>document.getElementById('next').disabled))return;await click('next')}throw Error('Unfinished scenario')}
- await page.setViewport({width:1100,height:1000,deviceScaleFactor:1});await open('/blog/episodes/016/capacity-lab.html');
+ await page.setViewport({width:1100,height:1000,deviceScaleFactor:1});await open('/blog/episodes/016/advanced-capacity-lab.html');
  const modes=await page.evaluate(()=>[...document.querySelectorAll('[data-mode]')].map(b=>b.dataset.mode));assert.equal(modes.length,9);
  for(const mode of modes){await choose(mode);await finish();const m=await metrics();
  if(['safe','unknown','busy','restart'].includes(mode)){assert.equal(m['Asha’s payment status'],'CONFIRMED');assert.equal(m['Asha’s provider calls'],'1');assert.equal(m['Confirmation outbox intents'],'1')}

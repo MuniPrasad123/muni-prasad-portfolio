@@ -191,7 +191,9 @@ The [PostgreSQL schema](/blog/episodes/016/examples/schema.sql) defines the oper
 
 ## 6. Try the failure and recovery lab
 
-The new lab separates **burst-capacity comparisons** from **Asha’s one payment attempt**. Its moving packets are visual replays and never create additional work. Inputs reset the teaching state; Previous, Next, Reset, Play/Pause, speed, motion pause and reduced-motion support work independently.
+Start with the **four-checkout visual experiment** above. Both servers receive the same four distinct requests, A–D, and have two operating-system threads. Move through six steps and compare the occupied carriers, calls awaiting payment responses, requests waiting to start and completed checkouts. Switch provider capacity from four to two to see the next bottleneck. This is a constructed sequence, not a timed performance measurement.
+
+The [advanced lab](/blog/episodes/016/advanced-capacity-lab.html) retains the demand sliders and nine scenarios below. It separates **burst-capacity comparisons** from **Asha’s one payment attempt**. Its moving packets are visual replays and never create additional work. Inputs reset the teaching state; Previous, Next, Reset, Play/Pause, speed, motion pause and reduced-motion support remain available.
 
 | Scenario | What to inspect |
 | --- | --- |
