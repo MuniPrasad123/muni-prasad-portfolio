@@ -5,8 +5,8 @@ folder: "API security"
 date: "2026-11-05"
 description: "Alice signs in and opens Bob’s order by changing the order ID. Follow the leak, fix the lookup, and verify that each shopper can still see their own orders."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "API security"]
-cover: "/blog/episodes/010/cover.svg"
-coverAlt: "JWT and Object-Level Authorization in Spring Boot: Protecting Customer Orders"
+cover: "/blog/thumbnails/episode-010.svg"
+coverAlt: "A valid JWT is followed by an ownership check before order access is allowed."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 010"

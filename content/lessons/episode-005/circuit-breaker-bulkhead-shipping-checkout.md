@@ -5,8 +5,8 @@ folder: "Resilience & API protection"
 date: "2026-11-03"
 description: "Shoppers cannot finish checkout because a slow shipping provider ties up application workers."
 tags: ["Java", "Spring Boot", "Microservices", "System design", "E-commerce"]
-cover: "/blog/circuit-breaker/cover.svg"
-coverAlt: "Circuit Breakers and Bulkheads in Spring Boot: Protecting Checkout from Slow Services"
+cover: "/blog/thumbnails/episode-005.svg"
+coverAlt: "A bulkhead isolates shipping calls and a circuit breaker limits repeated failures."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 005"

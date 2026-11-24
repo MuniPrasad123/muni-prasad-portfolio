@@ -5,8 +5,8 @@ slug: "java-deadlocks-thread-dump-checkout"
 folder: "Java & JVM reliability"
 date: "2026-11-14"
 tags: ["Java 21","Spring Boot","JVM","Concurrency"]
-cover: "/blog/episodes/019/cover.svg"
-coverAlt: "Java Deadlocks and Thread Dumps: Diagnosing Checkout That Stops Making Progress"
+cover: "/blog/thumbnails/episode-019.svg"
+coverAlt: "Two Java threads wait for locks held by each other, forming a deadlock cycle."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 019"

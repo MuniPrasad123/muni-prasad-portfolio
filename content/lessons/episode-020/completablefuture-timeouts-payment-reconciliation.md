@@ -5,8 +5,8 @@ slug: "completablefuture-timeouts-payment-reconciliation"
 folder: "Payments & inventory correctness"
 date: "2026-11-14"
 tags: ["Java 21","Spring Boot","Concurrency","Payments"]
-cover: "/blog/episodes/020/cover.svg"
-coverAlt: "CompletableFuture Timeouts: Why Cancelling a Future Does Not Cancel a Payment"
+cover: "/blog/thumbnails/episode-020.svg"
+coverAlt: "A local future times out while remote payment processing can continue and needs reconciliation."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 020"

@@ -5,8 +5,8 @@ folder: "Caching & database performance"
 date: "2026-11-05"
 description: "Shoppers wait for order history as orders grow. Learn how query shape, composite indexes, EXPLAIN, and keyset pagination reduce unnecessary database work."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "PostgreSQL"]
-cover: "/blog/episodes/009/cover.svg"
-coverAlt: "PostgreSQL Indexing and Keyset Pagination: Fixing Slow Order History"
+cover: "/blog/thumbnails/episode-009.svg"
+coverAlt: "An indexed customer query uses a cursor to fetch the next order-history page."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 009"

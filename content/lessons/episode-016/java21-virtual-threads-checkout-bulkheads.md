@@ -6,8 +6,8 @@ folder: "Java & JVM reliability"
 date: "2026-11-14"
 updated: "2026-11-21"
 tags: ["Java 21","Spring Boot","Concurrency","System design"]
-cover: "/blog/episodes/016/cover.svg"
-coverAlt: "Java 21 Virtual Threads: Protecting Checkout When Downstream Capacity Is Limited"
+cover: "/blog/thumbnails/episode-016.svg"
+coverAlt: "A virtual thread pauses during supported I/O so its carrier can run another request; downstream limits still apply."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 016"

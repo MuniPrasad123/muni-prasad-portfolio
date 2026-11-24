@@ -6,8 +6,8 @@ folder: "Payments & inventory correctness"
 date: "2026-11-14"
 updated: "2026-11-20"
 tags: ["Java","Spring Boot","Payments","PostgreSQL","E-commerce"]
-cover: "/blog/episodes/015/cover.svg"
-coverAlt: "Payment Webhook Idempotency: Preventing Duplicate Emails and Fulfillment"
+cover: "/blog/thumbnails/episode-015.svg"
+coverAlt: "An inbox and state guard deduplicate payment webhooks before outbox-driven effects."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 015"

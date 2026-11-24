@@ -5,8 +5,8 @@ folder: "Kafka & distributed workflows"
 date: "2026-11-03"
 description: "One poison event can delay healthy orders. Learn bounded retries, dead-letter triage, idempotent processing and the ordering trade-off with an interactive Kafka failure lab."
 tags: ["Java 21", "Spring Boot", "Kafka", "PostgreSQL", "Distributed systems", "E-commerce"]
-cover: "/blog/kafka-retries/cover.svg"
-coverAlt: "Kafka main-topic events route through bounded retries or dead-letter triage."
+cover: "/blog/thumbnails/episode-007.svg"
+coverAlt: "A failed Kafka event follows bounded retries and then dead-letter investigation."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 007"

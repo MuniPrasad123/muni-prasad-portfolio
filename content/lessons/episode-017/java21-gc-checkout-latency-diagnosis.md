@@ -6,8 +6,8 @@ folder: "Java & JVM reliability"
 date: "2026-11-14"
 updated: "2026-11-25"
 tags: ["Java 21","Spring Boot","JVM","Performance"]
-cover: "/blog/episodes/017/cover-search.svg"
-coverAlt: "Slow product search: diagnose the delay and evaluate Java 21 Generational ZGC"
+cover: "/blog/thumbnails/episode-017.svg"
+coverAlt: "Product search creates temporary objects; a young collection reclaims unreachable objects while live objects remain."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 017"

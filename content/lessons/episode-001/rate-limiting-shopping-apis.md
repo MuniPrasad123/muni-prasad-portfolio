@@ -6,8 +6,8 @@ folder: "Resilience & API protection"
 date: "2026-10-26"
 updated: "2026-10-27"
 tags: ["Java", "Microservices", "System design", "E-commerce"]
-cover: "/blog/rate-limiting/cover.svg"
-coverAlt: "Eight shopping requests reach a gateway: five are accepted and three are rate limited."
+cover: "/blog/thumbnails/episode-001.svg"
+coverAlt: "A gateway limits incoming shopping requests before they reach the service."
 draft: false
 sample: true
 level: "Architecture in Motion · Episode 001"

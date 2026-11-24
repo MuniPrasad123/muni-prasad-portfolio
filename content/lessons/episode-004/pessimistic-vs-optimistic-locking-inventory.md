@@ -5,8 +5,8 @@ folder: "Payments & inventory correctness"
 date: "2026-10-30"
 description: "Two shoppers try to reserve the last item. Compare row locks, version checks, and atomic SQL updates with a four-mode interactive race simulator."
 tags: ["Java 21", "Spring Boot", "PostgreSQL", "JPA", "Concurrency", "Oracle ATG", "E-commerce"]
-cover: "/blog/locking/cover.svg"
-coverAlt: "Pessimistic and optimistic locking compared with an atomic guarded inventory update."
+cover: "/blog/thumbnails/episode-004.svg"
+coverAlt: "Concurrent shoppers share a guarded inventory update for one remaining item."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 004"

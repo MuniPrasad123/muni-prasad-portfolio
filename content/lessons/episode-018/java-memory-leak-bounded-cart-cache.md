@@ -5,8 +5,8 @@ slug: "java-memory-leak-bounded-cart-cache"
 folder: "Java & JVM reliability"
 date: "2026-11-14"
 tags: ["Java 21","Spring Boot","JVM","Caching"]
-cover: "/blog/episodes/018/cover.svg"
-coverAlt: "Java Memory Leaks: Finding Retained Cart Sessions and Bounding Cache Growth"
+cover: "/blog/thumbnails/episode-018.svg"
+coverAlt: "Heap evidence reveals retained cart sessions and guides bounded cache retention."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 018"

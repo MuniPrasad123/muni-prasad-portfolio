@@ -5,8 +5,8 @@ folder: "Caching & database performance"
 date: "2026-11-03"
 description: "A popular product’s cache expires. Many shoppers load the same product at once, overloading PostgreSQL and slowing the storefront."
 tags: ["Java", "Spring Boot", "Microservices", "System design", "E-commerce"]
-cover: "/blog/cache-stampede/cover.svg"
-coverAlt: "Redis Cache Stampede in Spring Boot: Protecting PostgreSQL When Hot Keys Expire"
+cover: "/blog/thumbnails/episode-006.svg"
+coverAlt: "Many cache misses are coordinated through one refresh instead of flooding the database."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 006"

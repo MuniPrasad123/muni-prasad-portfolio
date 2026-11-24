@@ -12,8 +12,8 @@ tags:
   - Spring Boot
   - Microservices
   - Kubernetes
-cover: /blog/episodes/013/cover.svg
-coverAlt: 'Kubernetes Checkout Failures: Readiness, Graceful Shutdown and Idempotency'
+cover: "/blog/thumbnails/episode-013.svg"
+coverAlt: "A Kubernetes instance becomes unready, drains traffic and then stops safely."
 draft: false
 sample: false
 level: Architecture in Motion · Episode 013

@@ -6,8 +6,8 @@ date: "2026-10-29"
 updated: "2026-10-29"
 description: "The gateway authorizes a payment but checkout never receives the response. Explore how stable keys, database uniqueness and reconciliation make retries safer."
 tags: ["Java 21", "Spring Boot", "PostgreSQL", "Payments", "Distributed systems", "E-commerce"]
-cover: "/blog/payment-idempotency/cover.svg"
-coverAlt: "One stable payment key connects a PostgreSQL claim to gateway authorization and reconciliation."
+cover: "/blog/thumbnails/episode-003.svg"
+coverAlt: "A stable attempt key protects payment retries while uncertain results are reconciled."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 003"

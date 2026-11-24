@@ -5,8 +5,8 @@ folder: "Kafka & distributed workflows"
 date: "2026-11-05"
 description: "A payment authorization succeeds but inventory reservation fails. Learn durable Saga steps, compensation, idempotency, and recovery that gives the shopper a clear order status."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "Microservices"]
-cover: "/blog/episodes/008/cover.svg"
-coverAlt: "Saga Pattern in Spring Boot: Recovering Failed Checkout Steps"
+cover: "/blog/thumbnails/episode-008.svg"
+coverAlt: "A failed payment triggers compensation of a completed stock reservation."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 008"

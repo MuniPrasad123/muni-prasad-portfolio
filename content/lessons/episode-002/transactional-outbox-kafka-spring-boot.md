@@ -5,8 +5,8 @@ slug: "transactional-outbox-kafka-spring-boot"
 folder: "Kafka & distributed workflows"
 date: "2026-10-27"
 tags: ["Java", "Spring Boot", "Kafka", "PostgreSQL", "Distributed systems", "E-commerce"]
-cover: "/blog/outbox/cover.svg"
-coverAlt: "PostgreSQL commits order and outbox together; CDC relays to Kafka and independent consumers."
+cover: "/blog/thumbnails/episode-002.svg"
+coverAlt: "An order and event commit together before a relay delivers the event to Kafka."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 002"

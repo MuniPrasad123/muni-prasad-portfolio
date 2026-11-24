@@ -5,8 +5,8 @@ slug: "java21-sealed-events-safe-order-transitions"
 folder: "Java & JVM reliability"
 date: "2026-11-14"
 tags: ["Java 21","Spring Boot","Kafka","System design"]
-cover: "/blog/episodes/021/cover.svg"
-coverAlt: "Java 21 Sealed Events and Records: Making Cancellation and Fulfillment Explicit"
+cover: "/blog/thumbnails/episode-021.svg"
+coverAlt: "Explicit Java event types guide legal cancellation and fulfillment state transitions."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 021"

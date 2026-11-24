@@ -6,8 +6,8 @@ folder: "Kafka & distributed workflows"
 date: "2026-11-14"
 updated: "2026-11-19"
 tags: ["Java","Spring Boot","Kafka","PostgreSQL","Distributed systems"]
-cover: "/blog/episodes/014/cover.svg"
-coverAlt: "CQRS and Eventual Consistency: Explaining Delayed Order Status After Payment"
+cover: "/blog/thumbnails/episode-014.svg"
+coverAlt: "A confirmed payment is written first and a separate order-status read model catches up later."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 014"

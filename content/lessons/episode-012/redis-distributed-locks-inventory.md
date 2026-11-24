@@ -6,8 +6,8 @@ date: "2026-11-05"
 updated: "2026-11-14"
 description: "Two shoppers try to reserve the last pair of sneakers. Watch an expired Redis lease let an old worker resume, then see how atomic stock checks and fencing prevent unsafe writes."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "Redis", "PostgreSQL"]
-cover: "/blog/episodes/012/cover.svg"
-coverAlt: "Redis coordinates checkout workers; PostgreSQL validates inventory reservations"
+cover: "/blog/thumbnails/episode-012.svg"
+coverAlt: "A database validates a fencing token so a stale distributed-lock holder cannot write."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 012"

@@ -6,8 +6,8 @@ date: "2026-11-05"
 updated: "2026-11-12"
 description: "Payment succeeds and checkout confirms the order, but a delayed Kafka event later makes tracking move from Shipped back to Paid. Learn why this happens and how version and state checks prevent it."
 tags: ["Java", "Spring Boot", "System design", "E-commerce", "Kafka"]
-cover: "/blog/episodes/011/cover.svg"
-coverAlt: "Kafka Ordering and Version Gates: Keeping Order Status Consistent"
+cover: "/blog/thumbnails/episode-011.svg"
+coverAlt: "A version guard rejects a stale event instead of regressing a newer paid order status."
 draft: false
 sample: false
 level: "Architecture in Motion · Episode 011"
