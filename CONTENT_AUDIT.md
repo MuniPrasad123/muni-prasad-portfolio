@@ -1,8 +1,9 @@
 # Portfolio content audit — 25 October 2026
 
 ## Sources and precedence
+- Owner update, 25 November 2026: use 6+ payment/checkout workflows and a team of 5–8 engineers throughout the active portfolio.
 - Latest owner-authored brief: attachment `07d2a141-a89f-4963-b49e-92ef7e8101cc/Pasted text.txt`, plus the owner's section 18 instructions.
-- Latest resume: `public/resume/muni-prasad-senior-software-engineer.pdf`; extracted and reviewed during this update. Career chronology, education, the 10+ years / 4+ workflows / 5–6 engineers figures, general technology inventory, and independent project purposes come from this PDF.
+- Latest resume: `public/resume/muni-prasad-senior-software-engineer.pdf`; extracted and reviewed during this update. Career chronology, education, the original experience/workflow/team figures, general technology inventory, and independent project purposes come from this PDF.
 - Owner's explicit Kafka and PostgreSQL descriptions support the new Bed Bath & Beyond case studies.
 - Owner's MuniAI and HelpCorner descriptions support their specific stacks and HelpCorner AWS component responsibilities.
 - Current local implementation, original repository content, and supplied screenshots establish the portfolio's breadth and emerald/gold design.
@@ -22,7 +23,7 @@
 
 ## Claims corrected or constrained
 - Removed the conflicting 98% payment-failure reduction, uptime/volume figures, client totals, project totals, and technology-count marketing claims from the active site.
-- Retained the three metrics with clear scope: 10+ years of software engineering, 4+ payment/checkout workflows at Bed Bath & Beyond, and 5–6 engineers led and mentored.
+- Retained the three metrics with clear scope: 10+ years of software engineering, 6+ payment/checkout workflows at Bed Bath & Beyond, and 5–8 engineers led and mentored. The workflow and team counts were updated directly by the owner on 25 November 2026 and supersede the older resume figures.
 - Corrected employer/client treatment, including “Engagement through TCS” for Ilabz. No combined 2013–2023 role is used.
 - ATG/JBoss upgrades remain with the Six-Sigma engagement supported by the latest resume.
 - Java 21 is specific to MuniAI. OpenAI retrieval/voice features are implemented descriptions for DharmaAI; custom RAG and agents remain roadmap work.

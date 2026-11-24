@@ -3,6 +3,7 @@ import { articleSummaries } from '@/lib/blog'
 import { ArrowUpRight } from 'lucide-react'
 import { careerHistory, pillars, portfolioProjects, siteFacts, personProfile } from '@/data/site'
 import { KoiAnimation } from '@/components/site/KoiAnimation'
+import { BlogHighlights } from '@/components/site/BlogHighlights'
 
 export const metadata = { title: 'Muni Prasad K | Senior Java Backend Engineer | Java, Spring Boot, Microservices & Oracle ATG Commerce', description: personProfile.summary, alternates: { canonical: '/' } }
 
@@ -24,6 +25,7 @@ export default function HomePage() {
       <div className="facts-grid">{siteFacts.map(fact=><div className="fact" key={fact.label}><strong>{fact.value}</strong><span className="fact-label">{fact.label}</span></div>)}</div>
     </section>
     <nav className="journey-links" aria-label="Choose your path"><Link href="#experience"><span>For recruiters</span>Experience → work → contact <ArrowUpRight size={16}/></Link><Link href="/expertise"><span>For engineering managers</span>Capabilities → case studies <ArrowUpRight size={16}/></Link></nav>
+    <BlogHighlights articles={articles}/>
     <section id="about" className="content-section about-section">
       <div className="section-heading"><div><div className="eyebrow"><span className="eyebrow-line"/>About me</div><h2>Backend engineering with<br/><em>enterprise commerce depth.</em></h2></div></div>
       <div className="about-layout">

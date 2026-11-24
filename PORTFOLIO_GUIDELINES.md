@@ -17,6 +17,7 @@ These preferences were requested by the owner. Apply them to future work in this
 4. Show how each part of the solution prevents or recovers the failure, including trade-offs and what happens if recovery cannot complete.
 5. Connect code and diagrams to that explanation. Keep technical claims accurate and label simulations and illustrative designs clearly. Do not imply an example is a real employer incident.
 - Use concept-first article titles that tell readers what they will learn.
+- Vary the real-world examples instead of repeatedly opening with “checkout stopped.” Use product search, catalogue pages, inventory, reports, background jobs or other suitable workflows. State the concrete problem, the specific Java/framework feature being evaluated, how it can help, and what evidence would demonstrate an actual improvement. Distinguish an educational redesign from a measured production speedup.
 - Proofread spelling, grammar, terminology, and consistency between the article, UI labels, and simulation.
 - Example: a delayed PAID event does not mean the payment is delayed. In the Kafka ordering lesson, checkout has already confirmed payment; a separate tracking read model can later regress because it processes an old notification after a newer one.
 

@@ -1,0 +1,377 @@
+{
+  "fps": 30,
+  "durationInFrames": 2684,
+  "voice": "en-IN-PrabhatNeural",
+  "scenes": [
+    {
+      "title": "Why does product search sometimes pause?",
+      "label": "A SHOPPER WAITS FOR RESULTS",
+      "seconds": 8,
+      "voice": "A shopper searches for running shoes. Results arrive late. Is the database slow, or is our Java service struggling with memory? Measure before guessing.",
+      "phase": "customer",
+      "note": "A slow search is a symptom. Identify the bottleneck.",
+      "from": 0,
+      "frames": 406,
+      "audio": "blog/episodes/017/speech-search/scene-1.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.2625,
+          "text": "A shopper searches for running shoes."
+        },
+        {
+          "start": 3.15,
+          "end": 4.475,
+          "text": "Results arrive late."
+        },
+        {
+          "start": 5.3875,
+          "end": 7.9875,
+          "text": "Is the database slow, or is our Java"
+        },
+        {
+          "start": 7.9875,
+          "end": 9.8125,
+          "text": "service struggling with memory?"
+        },
+        {
+          "start": 10.7,
+          "end": 12.1,
+          "text": "Measure before guessing."
+        }
+      ]
+    },
+    {
+      "title": "Search creates short-lived objects",
+      "label": "HEAP AND REACHABILITY",
+      "seconds": 8,
+      "voice": "Search builds temporary product summaries. Many become unreachable after a response. Garbage collection reclaims them. Useful objects, such as a live catalogue cache, must remain.",
+      "phase": "heap",
+      "note": "Reachable is not the same as young. Age alone does not make garbage.",
+      "from": 406,
+      "frames": 479,
+      "audio": "blog/episodes/017/speech-search/scene-2.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.65,
+          "text": "Search builds temporary product summaries."
+        },
+        {
+          "start": 3.5125,
+          "end": 6.4,
+          "text": "Many become unreachable after a response."
+        },
+        {
+          "start": 7.2625,
+          "end": 9.2875,
+          "text": "Garbage collection reclaims them."
+        },
+        {
+          "start": 10.15,
+          "end": 13.5875,
+          "text": "Useful objects, such as a live catalogue cache,"
+        },
+        {
+          "start": 13.7375,
+          "end": 14.5875,
+          "text": "must remain."
+        }
+      ]
+    },
+    {
+      "title": "2,000 ms search. 300 ms pause.",
+      "label": "COMPARE SAME-SERVER EVIDENCE",
+      "seconds": 8,
+      "voice": "A two second search with a three hundred millisecond pause is not entirely a garbage collection problem. Compare database and inventory waits on the same timeline.",
+      "phase": "timeline",
+      "note": "Illustrative intervals, not a measured performance result.",
+      "from": 885,
+      "frames": 390,
+      "audio": "blog/episodes/017/speech-search/scene-3.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.45,
+          "text": "A two second search with a three hundred"
+        },
+        {
+          "start": 2.45,
+          "end": 6.2,
+          "text": "millisecond pause is not entirely a garbage collection"
+        },
+        {
+          "start": 6.2125,
+          "end": 6.7375,
+          "text": "problem."
+        },
+        {
+          "start": 7.6125,
+          "end": 10.9875,
+          "text": "Compare database and inventory waits on the same"
+        },
+        {
+          "start": 10.9875,
+          "end": 11.6,
+          "text": "timeline."
+        }
+      ]
+    },
+    {
+      "title": "Profile before changing the collector",
+      "label": "REMOVE PROVEN REDUNDANT WORK",
+      "seconds": 8,
+      "voice": "Use Java Flight Recorder to find allocation hotspots. Remove repeated serialization and bound caches. Preserve correct product prices and availability, then repeat the same workload.",
+      "phase": "fix",
+      "note": "Do not change business results to reduce allocations.",
+      "from": 1275,
+      "frames": 475,
+      "audio": "blog/episodes/017/speech-search/scene-4.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 3.9875,
+          "text": "Use Java Flight Recorder to find allocation hotspots."
+        },
+        {
+          "start": 4.85,
+          "end": 8.2,
+          "text": "Remove repeated serialization and bound caches."
+        },
+        {
+          "start": 9.0875,
+          "end": 12.8125,
+          "text": "Preserve correct product prices and availability, then"
+        },
+        {
+          "start": 12.8125,
+          "end": 14.4,
+          "text": "repeat the same workload."
+        }
+      ]
+    },
+    {
+      "title": "Java 21 adds Generational ZGC",
+      "label": "YOUNG AND OLD GENERATIONS",
+      "seconds": 8,
+      "voice": "Java twenty one adds Generational ZGC. It collects young objects separately from longer lived objects. This can reduce allocation stalls compared with non generational ZGC.",
+      "phase": "generational",
+      "note": "G1 also has generations. This feature extends ZGC.",
+      "from": 1750,
+      "frames": 465,
+      "audio": "blog/episodes/017/speech-search/scene-5.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 3.0625,
+          "text": "Java twenty one adds Generational ZGC."
+        },
+        {
+          "start": 3.95,
+          "end": 7.325,
+          "text": "It collects young objects separately from longer lived"
+        },
+        {
+          "start": 7.4125,
+          "end": 8.0,
+          "text": "objects."
+        },
+        {
+          "start": 8.875,
+          "end": 12.6875,
+          "text": "This can reduce allocation stalls compared with non"
+        },
+        {
+          "start": 12.6875,
+          "end": 14.0875,
+          "text": "generational ZGC."
+        }
+      ]
+    },
+    {
+      "title": "Test the benefit. Keep correct results.",
+      "label": "VALIDATE THE WHOLE SEARCH SERVICE",
+      "seconds": 8,
+      "voice": "Most ZGC work runs concurrently. Compare tail latency, errors, CPU, and memory before choosing it. This lesson teaches the method; it does not claim a measured speedup.",
+      "phase": "validate",
+      "note": "Less GC overhead is useful only if the full workload improves.",
+      "from": 2215,
+      "frames": 469,
+      "audio": "blog/episodes/017/speech-search/scene-6.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.7875,
+          "text": "Most ZGC work runs concurrently."
+        },
+        {
+          "start": 3.6625,
+          "end": 8.2,
+          "text": "Compare tail latency, errors, CPU, and memory before"
+        },
+        {
+          "start": 8.2125,
+          "end": 8.9,
+          "text": "choosing it."
+        },
+        {
+          "start": 9.7875,
+          "end": 12.6125,
+          "text": "This lesson teaches the method; it does not"
+        },
+        {
+          "start": 12.6875,
+          "end": 14.2,
+          "text": "claim a measured speedup."
+        }
+      ]
+    }
+  ],
+  "cues": [
+    {
+      "start": 0.1,
+      "end": 2.2625,
+      "text": "A shopper searches for running shoes."
+    },
+    {
+      "start": 3.15,
+      "end": 4.475,
+      "text": "Results arrive late."
+    },
+    {
+      "start": 5.3875,
+      "end": 7.9875,
+      "text": "Is the database slow, or is our Java"
+    },
+    {
+      "start": 7.9875,
+      "end": 9.8125,
+      "text": "service struggling with memory?"
+    },
+    {
+      "start": 10.7,
+      "end": 12.1,
+      "text": "Measure before guessing."
+    },
+    {
+      "start": 13.633333333333333,
+      "end": 16.183333333333334,
+      "text": "Search builds temporary product summaries."
+    },
+    {
+      "start": 17.045833333333334,
+      "end": 19.933333333333334,
+      "text": "Many become unreachable after a response."
+    },
+    {
+      "start": 20.795833333333334,
+      "end": 22.820833333333333,
+      "text": "Garbage collection reclaims them."
+    },
+    {
+      "start": 23.683333333333334,
+      "end": 27.120833333333334,
+      "text": "Useful objects, such as a live catalogue cache,"
+    },
+    {
+      "start": 27.270833333333336,
+      "end": 28.120833333333334,
+      "text": "must remain."
+    },
+    {
+      "start": 29.6,
+      "end": 31.95,
+      "text": "A two second search with a three hundred"
+    },
+    {
+      "start": 31.95,
+      "end": 35.7,
+      "text": "millisecond pause is not entirely a garbage collection"
+    },
+    {
+      "start": 35.7125,
+      "end": 36.2375,
+      "text": "problem."
+    },
+    {
+      "start": 37.1125,
+      "end": 40.4875,
+      "text": "Compare database and inventory waits on the same"
+    },
+    {
+      "start": 40.4875,
+      "end": 41.1,
+      "text": "timeline."
+    },
+    {
+      "start": 42.6,
+      "end": 46.4875,
+      "text": "Use Java Flight Recorder to find allocation hotspots."
+    },
+    {
+      "start": 47.35,
+      "end": 50.7,
+      "text": "Remove repeated serialization and bound caches."
+    },
+    {
+      "start": 51.5875,
+      "end": 55.3125,
+      "text": "Preserve correct product prices and availability, then"
+    },
+    {
+      "start": 55.3125,
+      "end": 56.9,
+      "text": "repeat the same workload."
+    },
+    {
+      "start": 58.43333333333334,
+      "end": 61.395833333333336,
+      "text": "Java twenty one adds Generational ZGC."
+    },
+    {
+      "start": 62.28333333333334,
+      "end": 65.65833333333333,
+      "text": "It collects young objects separately from longer lived"
+    },
+    {
+      "start": 65.74583333333334,
+      "end": 66.33333333333334,
+      "text": "objects."
+    },
+    {
+      "start": 67.20833333333334,
+      "end": 71.02083333333334,
+      "text": "This can reduce allocation stalls compared with non"
+    },
+    {
+      "start": 71.02083333333334,
+      "end": 72.42083333333333,
+      "text": "generational ZGC."
+    },
+    {
+      "start": 73.93333333333332,
+      "end": 76.62083333333332,
+      "text": "Most ZGC work runs concurrently."
+    },
+    {
+      "start": 77.49583333333332,
+      "end": 82.03333333333333,
+      "text": "Compare tail latency, errors, CPU, and memory before"
+    },
+    {
+      "start": 82.04583333333333,
+      "end": 82.73333333333333,
+      "text": "choosing it."
+    },
+    {
+      "start": 83.62083333333332,
+      "end": 86.44583333333333,
+      "text": "This lesson teaches the method; it does not"
+    },
+    {
+      "start": 86.52083333333333,
+      "end": 88.03333333333333,
+      "text": "claim a measured speedup."
+    }
+  ]
+}

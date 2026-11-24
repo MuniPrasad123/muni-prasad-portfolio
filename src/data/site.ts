@@ -68,8 +68,8 @@ export const profiles = [
 export const skillGroups = skillCategories
 export const siteFacts = [
   { label: 'Software engineering', value: '10+ years' },
-  { label: 'Payment & checkout workflows', value: '4+' },
-  { label: 'Engineers led and mentored', value: '5–6' },
+  { label: 'Payment & checkout workflows', value: '6+' },
+  { label: 'Engineers led and mentored', value: '5–8' },
 ]
 export const personProfile = profile
 

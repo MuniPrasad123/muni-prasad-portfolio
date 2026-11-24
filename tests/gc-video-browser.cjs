@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-require-imports -- Isolated media validation. */
 const fs=require('node:fs'),assert=require('node:assert/strict'),{openBrowser}=require('@remotion/renderer');
-const timeline=require('../public/blog/episodes/017/timeline-redesign.json');
+const timeline=require('../public/blog/episodes/017/timeline-search.json');
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{const browser=await openBrowser('chrome');try{
  const page=await browser.newPage({context:()=>null,logLevel:'error',indent:false,pageIndex:0,onBrowserLog:null,onLog:()=>{}});
  await page.setViewport({width:1440,height:1000,deviceScaleFactor:1});await page.goto({url:'http://localhost:3002/blog/java21-gc-checkout-latency-diagnosis',timeout:120000});
- assert.equal(await page.evaluate(()=>document.querySelector('video').getAttribute('src')),'/blog/episodes/017/lesson-redesign.mp4');
+ assert.equal(await page.evaluate(()=>document.querySelector('h1').textContent),'Java 21 Generational ZGC: Diagnosing Slow Product Search');
+ assert.match(await page.evaluate(()=>document.getElementById('gc-customer-title').textContent),/searching for shoes/);
+ assert.equal(await page.evaluate(()=>document.querySelector('video').getAttribute('src')),'/blog/episodes/017/lesson-search.mp4');
  for(let n=0;n<100;n++){if(await page.evaluate(()=>document.querySelector('video').readyState>=1))break;await wait(100)}
- const media=await page.evaluate(()=>{const v=document.querySelector('video');return {duration:v.duration,controls:v.controls,track:v.querySelector('track').getAttribute('src'),error:v.error?.message}});assert.ok(media.duration>=60&&media.duration<=90,JSON.stringify(media));assert.equal(media.controls,true);assert.equal(media.error,undefined);assert.match(media.track,/captions-redesign.vtt/);
+ const media=await page.evaluate(()=>{const v=document.querySelector('video');return {duration:v.duration,controls:v.controls,track:v.querySelector('track').getAttribute('src'),error:v.error?.message}});assert.ok(media.duration>=60&&media.duration<=90,JSON.stringify(media));assert.equal(media.controls,true);assert.equal(media.error,undefined);assert.match(media.track,/captions-search.vtt/);
  await page.evaluate(()=>{const v=document.querySelector('video');v.muted=true;v.textTracks[0].mode='hidden';[...document.querySelectorAll('#lesson-video button')].find(b=>b.textContent==='Play video').click()});await wait(800);assert.ok(await page.evaluate(()=>document.querySelector('video').currentTime>0));await page.evaluate(()=>document.querySelector('video').pause());
  await page.evaluate(()=>document.querySelectorAll('.video-chapters button')[4].click());await wait(300);assert.ok(await page.evaluate(()=>document.querySelector('video').currentTime)>=timeline.scenes[4].from/30-.1);await page.evaluate(()=>document.querySelector('video').pause());
  for(let n=0;n<50;n++){if(await page.evaluate(()=>document.querySelector('video').textTracks[0].cues?.length>0))break;await wait(100)}assert.equal(await page.evaluate(()=>document.querySelector('video').textTracks[0].cues.length),timeline.cues.length);

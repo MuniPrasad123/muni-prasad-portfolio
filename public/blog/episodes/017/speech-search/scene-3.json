@@ -1,0 +1,132 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.2125,
+    "text": "A"
+  },
+  {
+    "start": 0.2375,
+    "end": 0.3875,
+    "text": "two"
+  },
+  {
+    "start": 0.3875,
+    "end": 0.85,
+    "text": "second"
+  },
+  {
+    "start": 0.85,
+    "end": 1.275,
+    "text": "search"
+  },
+  {
+    "start": 1.4125,
+    "end": 1.6375,
+    "text": "with"
+  },
+  {
+    "start": 1.6375,
+    "end": 1.7125,
+    "text": "a"
+  },
+  {
+    "start": 1.7125,
+    "end": 2.075,
+    "text": "three"
+  },
+  {
+    "start": 2.075,
+    "end": 2.45,
+    "text": "hundred"
+  },
+  {
+    "start": 2.45,
+    "end": 3.25,
+    "text": "millisecond"
+  },
+  {
+    "start": 3.2625,
+    "end": 3.675,
+    "text": "pause"
+  },
+  {
+    "start": 3.8125,
+    "end": 3.975,
+    "text": "is"
+  },
+  {
+    "start": 3.975,
+    "end": 4.2625,
+    "text": "not"
+  },
+  {
+    "start": 4.325,
+    "end": 4.9875,
+    "text": "entirely"
+  },
+  {
+    "start": 5.0625,
+    "end": 5.1625,
+    "text": "a"
+  },
+  {
+    "start": 5.1625,
+    "end": 5.6875,
+    "text": "garbage"
+  },
+  {
+    "start": 5.7,
+    "end": 6.2,
+    "text": "collection"
+  },
+  {
+    "start": 6.2125,
+    "end": 6.7375,
+    "text": "problem"
+  },
+  {
+    "start": 7.6125,
+    "end": 8.125,
+    "text": "Compare"
+  },
+  {
+    "start": 8.125,
+    "end": 8.8125,
+    "text": "database"
+  },
+  {
+    "start": 8.9,
+    "end": 9.15,
+    "text": "and"
+  },
+  {
+    "start": 9.2125,
+    "end": 9.85,
+    "text": "inventory"
+  },
+  {
+    "start": 9.85,
+    "end": 10.2625,
+    "text": "waits"
+  },
+  {
+    "start": 10.35,
+    "end": 10.5,
+    "text": "on"
+  },
+  {
+    "start": 10.5,
+    "end": 10.6125,
+    "text": "the"
+  },
+  {
+    "start": 10.6125,
+    "end": 10.9875,
+    "text": "same"
+  },
+  {
+    "start": 10.9875,
+    "end": 11.6,
+    "text": "timeline"
+  }
+]

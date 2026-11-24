@@ -1,0 +1,115 @@
+1
+00:00:00,100 --> 00:00:02,262
+A shopper searches for running shoes.
+
+2
+00:00:03,150 --> 00:00:04,475
+Results arrive late.
+
+3
+00:00:05,388 --> 00:00:07,988
+Is the database slow, or is our Java
+
+4
+00:00:07,988 --> 00:00:09,812
+service struggling with memory?
+
+5
+00:00:10,700 --> 00:00:12,100
+Measure before guessing.
+
+6
+00:00:13,633 --> 00:00:16,183
+Search builds temporary product summaries.
+
+7
+00:00:17,046 --> 00:00:19,933
+Many become unreachable after a response.
+
+8
+00:00:20,796 --> 00:00:22,821
+Garbage collection reclaims them.
+
+9
+00:00:23,683 --> 00:00:27,121
+Useful objects, such as a live catalogue cache,
+
+10
+00:00:27,271 --> 00:00:28,121
+must remain.
+
+11
+00:00:29,600 --> 00:00:31,950
+A two second search with a three hundred
+
+12
+00:00:31,950 --> 00:00:35,700
+millisecond pause is not entirely a garbage collection
+
+13
+00:00:35,712 --> 00:00:36,238
+problem.
+
+14
+00:00:37,112 --> 00:00:40,488
+Compare database and inventory waits on the same
+
+15
+00:00:40,488 --> 00:00:41,100
+timeline.
+
+16
+00:00:42,600 --> 00:00:46,488
+Use Java Flight Recorder to find allocation hotspots.
+
+17
+00:00:47,350 --> 00:00:50,700
+Remove repeated serialization and bound caches.
+
+18
+00:00:51,588 --> 00:00:55,312
+Preserve correct product prices and availability, then
+
+19
+00:00:55,312 --> 00:00:56,900
+repeat the same workload.
+
+20
+00:00:58,433 --> 00:01:01,396
+Java twenty one adds Generational ZGC.
+
+21
+00:01:02,283 --> 00:01:05,658
+It collects young objects separately from longer lived
+
+22
+00:01:05,746 --> 00:01:06,333
+objects.
+
+23
+00:01:07,208 --> 00:01:11,021
+This can reduce allocation stalls compared with non
+
+24
+00:01:11,021 --> 00:01:12,421
+generational ZGC.
+
+25
+00:01:13,933 --> 00:01:16,621
+Most ZGC work runs concurrently.
+
+26
+00:01:17,496 --> 00:01:22,033
+Compare tail latency, errors, CPU, and memory before
+
+27
+00:01:22,046 --> 00:01:22,733
+choosing it.
+
+28
+00:01:23,621 --> 00:01:26,446
+This lesson teaches the method; it does not
+
+29
+00:01:26,521 --> 00:01:28,033
+claim a measured speedup.

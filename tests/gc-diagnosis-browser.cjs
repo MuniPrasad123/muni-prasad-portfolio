@@ -7,7 +7,7 @@ async function open(path){await page.goto({url:base+path,timeout:120000})}
 const click=id=>page.evaluate(id=>document.getElementById(id).click(),id);
 const metrics=()=>page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('#metrics>div')].map(d=>[d.querySelector('dt').textContent,d.querySelector('dd').textContent])));
 await page.setViewport({width:1100,height:1100,deviceScaleFactor:1});await open('/blog/episodes/017/diagnosis-lab.html');
-assert.deepEqual(await metrics(),{'Whole request':'2000 ms','Matching pause overlap':'300 ms','Payment-response wait':'900 ms','Combined interval coverage':'1200 ms'});
+assert.deepEqual(await metrics(),{'Whole request':'2000 ms','Matching pause overlap':'300 ms','Inventory-response wait':'900 ms','Combined interval coverage':'1200 ms'});
 for(const mode of ['pause','provider','overlap','healthy','wrongServer']){await page.evaluate(mode=>{const s=document.getElementById('scenario');s.value=mode;s.dispatchEvent(new Event('change'))},mode);const m=await metrics();
 if(mode==='overlap'){assert.equal(m['Combined interval coverage'],'1700 ms');assert.match(await page.evaluate(()=>document.getElementById('verdict').textContent),/not 2,000/)}
 if(mode==='wrongServer'){assert.equal(m['Matching pause overlap'],'0 ms');assert.match(await page.evaluate(()=>document.getElementById('instance').textContent),/Different JVMs/)}

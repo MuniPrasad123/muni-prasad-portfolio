@@ -1,6 +1,13 @@
 'use client'
 
-import { useReducedMotion } from 'framer-motion'
+import { useSyncExternalStore } from 'react'
+
+function subscribeMotion(notify:()=>void) {
+  const query=window.matchMedia('(prefers-reduced-motion: reduce)')
+  query.addEventListener('change',notify)
+  return ()=>query.removeEventListener('change',notify)
+}
+const getMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 type FishProps = { className: string; path: string; duration: string; delay: string; initial: string; width: number; reduced: boolean }
 
@@ -28,7 +35,7 @@ function LeafImpact({ x, y, duration, delay }: { x: number; y: number; duration:
 }
 
 export function KoiAnimation() {
-  const reduced = useReducedMotion() === true
+  const reduced = useSyncExternalStore(subscribeMotion,getMotion,()=>true)
   return <div className="banner-fish-scene" aria-hidden="true">
     <svg className="banner-fish-art" viewBox="0 0 1400 780" preserveAspectRatio="xMidYMid slice" focusable="false">
       <defs>
