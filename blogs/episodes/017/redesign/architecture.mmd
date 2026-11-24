@@ -1,0 +1,10 @@
+flowchart TD
+ C[Shopper] --> G[Gateway] --> J[Java 21 checkout]
+ J --> D[Database]
+ J --> P[Payment provider]
+ J --> H[Heap and GC]
+ H --> E[Correlated evidence timeline]
+ J --> E
+ D --> E
+ P --> E
+ E --> V[Profile change validate]

@@ -1,0 +1,122 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.6375,
+    "text": "Validate"
+  },
+  {
+    "start": 0.675,
+    "end": 0.975,
+    "text": "tail"
+  },
+  {
+    "start": 1.025,
+    "end": 1.7375,
+    "text": "latency"
+  },
+  {
+    "start": 1.95,
+    "end": 2.4125,
+    "text": "errors"
+  },
+  {
+    "start": 2.625,
+    "end": 3.1875,
+    "text": "memory"
+  },
+  {
+    "start": 3.4125,
+    "end": 3.6375,
+    "text": "and"
+  },
+  {
+    "start": 3.6375,
+    "end": 4.225,
+    "text": "CPU"
+  },
+  {
+    "start": 5.15,
+    "end": 5.425,
+    "text": "Keep"
+  },
+  {
+    "start": 5.4375,
+    "end": 5.625,
+    "text": "the"
+  },
+  {
+    "start": 5.7,
+    "end": 6.2375,
+    "text": "original"
+  },
+  {
+    "start": 6.2375,
+    "end": 6.6625,
+    "text": "payment"
+  },
+  {
+    "start": 6.725,
+    "end": 7.425,
+    "text": "identity"
+  },
+  {
+    "start": 7.5875,
+    "end": 7.8375,
+    "text": "and"
+  },
+  {
+    "start": 7.8375,
+    "end": 8.5625,
+    "text": "reconcile"
+  },
+  {
+    "start": 8.6375,
+    "end": 9.2625,
+    "text": "uncertain"
+  },
+  {
+    "start": 9.2625,
+    "end": 9.925,
+    "text": "outcomes"
+  },
+  {
+    "start": 10.8,
+    "end": 10.85,
+    "text": "A"
+  },
+  {
+    "start": 10.85,
+    "end": 11.3875,
+    "text": "timeout"
+  },
+  {
+    "start": 11.4625,
+    "end": 11.6375,
+    "text": "is"
+  },
+  {
+    "start": 11.6375,
+    "end": 11.925,
+    "text": "not"
+  },
+  {
+    "start": 11.925,
+    "end": 12.3375,
+    "text": "proof"
+  },
+  {
+    "start": 12.4,
+    "end": 12.6125,
+    "text": "of"
+  },
+  {
+    "start": 12.6125,
+    "end": 13.0,
+    "text": "failed"
+  },
+  {
+    "start": 13.0125,
+    "end": 13.5125,
+    "text": "payment"
+  }
+]

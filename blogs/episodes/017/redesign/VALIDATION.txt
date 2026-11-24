@@ -1,0 +1,20 @@
+Java sample compiled and ran successfully. Video probe: {
+    "programs": [
+
+    ],
+    "stream_groups": [
+
+    ],
+    "streams": [
+        {
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+        }
+    ],
+    "format": {
+        "duration": "72.000000"
+    }
+}
+
+No narration. Browser and Micrometer integration not tested. No benchmarks.

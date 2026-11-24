@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:12,000
+Asha presses Place Order. Most shoppers finish quickly, but her screen freezes. A timeout does not tell her whether payment succeeded.
+
+2
+00:00:12,000 --> 00:00:24,000
+Think of the heap as a workbench. Cart calculations create temporary objects. Garbage collection clears objects that are no longer reachable.
+
+3
+00:00:24,000 --> 00:00:36,000
+Some collection phases pause application threads. But a slow payment provider or database can cause the same customer symptom.
+
+4
+00:00:36,000 --> 00:00:48,000
+Compare request traces with garbage collection logs on the same server. Check CPU and dependency waits. An overlap is evidence, not proof of the whole delay.
+
+5
+00:00:48,000 --> 00:01:00,000
+Use Java Flight Recorder to locate allocation hotspots. Remove repeated serialization, keep summaries compact, and bound caches without changing business calculations.
+
+6
+00:01:00,000 --> 00:01:12,000
+Repeat the same workload and compare tail latency, throughput, memory and CPU. Reconcile uncertain payments. Tune the JVM only after the evidence supports the change.

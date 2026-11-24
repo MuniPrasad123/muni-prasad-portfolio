@@ -1,0 +1,1 @@
+PASS: 5 evidence cases, same-JVM filtering, interval union, six-step navigation, autoplay/pause, keyboard, heap reachability, allocation isolation, quiz, reduced motion, zero lab WCAG A/AA violations, original lab, canonical URL, mobile and auto-height.

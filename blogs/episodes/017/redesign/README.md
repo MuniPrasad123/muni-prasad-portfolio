@@ -1,0 +1,1 @@
+Episode 017 redesign. Start with ARTICLE.md or open index.html locally. preview.mp4 and highlights.gif are silent illustrative animations. Voiceover, storyboard and draft captions are provided separately. Java example is a teaching example, not a benchmark. MetricsExample.java requires Micrometer. No database schema is required for this JVM lesson. No deployment performed.

@@ -33,6 +33,7 @@ These preferences were requested by the owner. Apply them to future work in this
 - Use the navy simulation palette demonstrated in the Saga reference: a gradient from #102137 to #0b1729, #0a192a inner panels, soft blue borders, teal actions, warm gold highlights, and readable off-white text. Keep the surrounding portfolio emerald and gold.
 - Prefer compact controls above a two-column desktop layout: architecture and current-step explanation on one side; customer-visible state and event trace on the other. Stack naturally on mobile without tiny text or horizontal overflow.
 - Use meaningful component icons, clickable explanations, and a clear highlight for the components involved in each step.
+- Name the actor in every waiting/processing label: our Java request can await a response while an external payment service continues processing. Use concrete resource states or timeline intervals to make the difference visible; do not imply correlation alone establishes causation or invent before/after performance gains.
 - Include purposeful GIF-like event movement and receiver feedback. Clearly distinguish a visual replay from actual simulation processing; animation loops must not increment business counters.
 - Provide working Next, Previous, Reset, autoplay/pause, and motion pause controls where applicable. Honor reduced-motion preferences.
 - Keep the progress indicator, counters, event labels, outcomes, and chronological trace synchronized with the current step. Explain why each event is applied, held, ignored, or rejected.

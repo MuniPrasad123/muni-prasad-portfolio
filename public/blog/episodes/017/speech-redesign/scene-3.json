@@ -1,0 +1,137 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.35,
+    "text": "This"
+  },
+  {
+    "start": 0.425,
+    "end": 1.025,
+    "text": "example"
+  },
+  {
+    "start": 1.025,
+    "end": 1.525,
+    "text": "request"
+  },
+  {
+    "start": 1.6,
+    "end": 1.9625,
+    "text": "takes"
+  },
+  {
+    "start": 1.9625,
+    "end": 2.075,
+    "text": "two"
+  },
+  {
+    "start": 2.075,
+    "end": 2.65,
+    "text": "seconds"
+  },
+  {
+    "start": 3.525,
+    "end": 3.7375,
+    "text": "An"
+  },
+  {
+    "start": 3.8375,
+    "end": 4.575,
+    "text": "overlapping"
+  },
+  {
+    "start": 4.575,
+    "end": 4.9,
+    "text": "pause"
+  },
+  {
+    "start": 4.9,
+    "end": 5.4375,
+    "text": "lasts"
+  },
+  {
+    "start": 5.5,
+    "end": 5.8125,
+    "text": "three"
+  },
+  {
+    "start": 5.8125,
+    "end": 6.1875,
+    "text": "hundred"
+  },
+  {
+    "start": 6.1875,
+    "end": 7.125,
+    "text": "milliseconds"
+  },
+  {
+    "start": 8.0,
+    "end": 8.1125,
+    "text": "The"
+  },
+  {
+    "start": 8.1125,
+    "end": 8.4875,
+    "text": "bank"
+  },
+  {
+    "start": 8.55,
+    "end": 8.925,
+    "text": "also"
+  },
+  {
+    "start": 8.95,
+    "end": 9.3125,
+    "text": "takes"
+  },
+  {
+    "start": 9.3125,
+    "end": 9.7625,
+    "text": "time"
+  },
+  {
+    "start": 10.625,
+    "end": 10.725,
+    "text": "Do"
+  },
+  {
+    "start": 10.85,
+    "end": 11.125,
+    "text": "not"
+  },
+  {
+    "start": 11.15,
+    "end": 11.5625,
+    "text": "blame"
+  },
+  {
+    "start": 11.5625,
+    "end": 11.7125,
+    "text": "the"
+  },
+  {
+    "start": 11.7375,
+    "end": 12.3125,
+    "text": "entire"
+  },
+  {
+    "start": 12.3125,
+    "end": 12.7125,
+    "text": "delay"
+  },
+  {
+    "start": 12.8,
+    "end": 13.0,
+    "text": "on"
+  },
+  {
+    "start": 13.0,
+    "end": 13.55,
+    "text": "garbage"
+  },
+  {
+    "start": 13.55,
+    "end": 14.1,
+    "text": "collection"
+  }
+]

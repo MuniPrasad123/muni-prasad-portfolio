@@ -1,3 +1,4 @@
+import { GcDiagnosisComposition } from './GcDiagnosisExplainer'
 import { VirtualThreadsComposition } from './VirtualThreadsExplainer'
 import React from 'react'
 import { AbsoluteFill, Composition, Still, interpolate, registerRoot, useCurrentFrame, useVideoConfig } from 'remotion'
@@ -14,5 +15,5 @@ function Layout({ scene, index, title, progress = 1 }: { scene: Scene; index: nu
 function Lesson(props: Props) { const frame=useCurrentFrame(),{durationInFrames}=useVideoConfig();const sceneLength=durationInFrames/props.scenes.length;const index=Math.min(props.scenes.length-1,Math.floor(frame/sceneLength));return <Layout scene={props.scenes[index]} index={index} title={props.title} progress={interpolate(frame%sceneLength,[0,45],[0,1],{extrapolateRight:'clamp'})}/> }
 function Carousel(props: Props) {const index=Math.min(props.slide,props.scenes.length-1);return <Layout scene={props.scenes[index]} index={index} title={props.title}/>}
 function Thumbnail(props: Props) {return <AbsoluteFill style={{background:'#08251a',color:'#f5f1e7',padding:70,justifyContent:'center',fontFamily:'Arial',border:'10px solid #e7c779'}}><div style={{fontSize:25,color:'#e7c779'}}>MUNI PRASAD K · ENGINEERING JOURNAL</div><div style={{fontSize:72,marginTop:40}}>{props.title}</div><div style={{fontSize:26,marginTop:36}}>Read the idea. Try the model. Explore the trade-offs.</div></AbsoluteFill>}
-function Root(){return <><VirtualThreadsComposition/><WebhookComposition/><CqrsComposition/><Composition id="Lesson" component={Lesson} width={1080} height={1920} fps={30} durationInFrames={1350} defaultProps={defaults}/><Still id="Carousel" component={Carousel} width={1080} height={1350} defaultProps={defaults}/><Still id="Thumbnail" component={Thumbnail} width={1200} height={630} defaultProps={defaults}/></>}
+function Root(){return <><GcDiagnosisComposition/><VirtualThreadsComposition/><WebhookComposition/><CqrsComposition/><Composition id="Lesson" component={Lesson} width={1080} height={1920} fps={30} durationInFrames={1350} defaultProps={defaults}/><Still id="Carousel" component={Carousel} width={1080} height={1350} defaultProps={defaults}/><Still id="Thumbnail" component={Thumbnail} width={1200} height={630} defaultProps={defaults}/></>}
 registerRoot(Root)

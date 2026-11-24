@@ -34,3 +34,5 @@
 .webhook-article .page-hero{display:block;padding-top:42px;padding-bottom:26px}.webhook-article .page-hero h1{font-size:clamp(32px,3.3vw,48px);line-height:1.12;max-width:100%}.webhook-article .page-hero p{max-width:850px}.webhook-article .article-byline{margin:16px 0}.webhook-article #interactive-lab{scroll-margin-top:90px}
 /* Episode 016 keeps Asha's checkout problem close to the title. */
 .capacity-article .page-hero{display:block;padding-top:42px;padding-bottom:26px}.capacity-article .page-hero h1{font-size:clamp(32px,3.3vw,48px);line-height:1.12;max-width:100%}.capacity-article .page-hero p{max-width:850px}.capacity-article .article-byline{margin:16px 0}.capacity-article #interactive-lab{scroll-margin-top:90px}
+
+.gc-article .page-hero{display:block;padding-top:42px;padding-bottom:26px}.gc-article .page-hero h1{font-size:clamp(32px,3.3vw,48px);line-height:1.12;max-width:100%}.gc-article .page-hero p{max-width:850px}.gc-article .article-byline{margin:16px 0}.gc-article #interactive-lab{scroll-margin-top:90px}

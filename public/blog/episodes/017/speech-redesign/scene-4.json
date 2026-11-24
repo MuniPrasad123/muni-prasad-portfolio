@@ -1,0 +1,112 @@
+[
+  {
+    "start": 0.1,
+    "end": 0.4375,
+    "text": "Match"
+  },
+  {
+    "start": 0.4625,
+    "end": 0.9375,
+    "text": "request"
+  },
+  {
+    "start": 1.0,
+    "end": 1.5375,
+    "text": "traces"
+  },
+  {
+    "start": 1.675,
+    "end": 1.8875,
+    "text": "and"
+  },
+  {
+    "start": 1.8875,
+    "end": 2.2125,
+    "text": "pause"
+  },
+  {
+    "start": 2.2125,
+    "end": 2.6875,
+    "text": "logs"
+  },
+  {
+    "start": 2.7,
+    "end": 2.9125,
+    "text": "from"
+  },
+  {
+    "start": 2.9125,
+    "end": 3.0125,
+    "text": "the"
+  },
+  {
+    "start": 3.0125,
+    "end": 3.35,
+    "text": "same"
+  },
+  {
+    "start": 3.35,
+    "end": 3.8375,
+    "text": "server"
+  },
+  {
+    "start": 4.7125,
+    "end": 4.9625,
+    "text": "Check"
+  },
+  {
+    "start": 5.0,
+    "end": 5.45,
+    "text": "payment"
+  },
+  {
+    "start": 5.45,
+    "end": 5.9125,
+    "text": "waits"
+  },
+  {
+    "start": 6.1375,
+    "end": 6.7375,
+    "text": "database"
+  },
+  {
+    "start": 6.7875,
+    "end": 7.2875,
+    "text": "spans"
+  },
+  {
+    "start": 7.5625,
+    "end": 7.75,
+    "text": "and"
+  },
+  {
+    "start": 7.75,
+    "end": 8.3,
+    "text": "CPU"
+  },
+  {
+    "start": 8.3,
+    "end": 8.75,
+    "text": "before"
+  },
+  {
+    "start": 8.75,
+    "end": 9.3875,
+    "text": "deciding"
+  },
+  {
+    "start": 9.3875,
+    "end": 9.6875,
+    "text": "what"
+  },
+  {
+    "start": 9.6875,
+    "end": 9.8125,
+    "text": "to"
+  },
+  {
+    "start": 9.8125,
+    "end": 10.2375,
+    "text": "fix"
+  }
+]

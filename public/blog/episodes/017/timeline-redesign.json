@@ -1,0 +1,347 @@
+{
+  "fps": 30,
+  "durationInFrames": 2522,
+  "voice": "en-IN-PrabhatNeural",
+  "scenes": [
+    {
+      "title": "Checkout froze. Did payment succeed?",
+      "label": "ASHA'S CHECKOUT",
+      "seconds": 8,
+      "voice": "Asha taps Place Order. Checkout stalls. She cannot tell whether payment succeeded. A slow request alone does not prove garbage collection caused it.",
+      "phase": "customer",
+      "note": "Customer symptom first. Diagnose the cause before changing flags.",
+      "from": 0,
+      "frames": 412,
+      "audio": "blog/episodes/017/speech-redesign/scene-1.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 1.75,
+          "text": "Asha taps Place Order."
+        },
+        {
+          "start": 2.625,
+          "end": 3.625,
+          "text": "Checkout stalls."
+        },
+        {
+          "start": 4.4875,
+          "end": 7.1125,
+          "text": "She cannot tell whether payment succeeded."
+        },
+        {
+          "start": 8.0125,
+          "end": 11.025,
+          "text": "A slow request alone does not prove garbage"
+        },
+        {
+          "start": 11.0375,
+          "end": 12.1875,
+          "text": "collection caused it."
+        }
+      ]
+    },
+    {
+      "title": "The heap is Java's workbench",
+      "label": "WHAT GARBAGE COLLECTION DOES",
+      "seconds": 8,
+      "voice": "The Java heap holds objects. Garbage collection reclaims unreachable objects. Some phases pause application threads; other phases run alongside them.",
+      "phase": "heap",
+      "note": "Reachable objects stay. Unreachable objects can be reclaimed.",
+      "from": 412,
+      "frames": 408,
+      "audio": "blog/episodes/017/speech-redesign/scene-2.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.0625,
+          "text": "The Java heap holds objects."
+        },
+        {
+          "start": 2.925,
+          "end": 6.1125,
+          "text": "Garbage collection reclaims unreachable objects."
+        },
+        {
+          "start": 6.9875,
+          "end": 10.9125,
+          "text": "Some phases pause application threads; other phases run"
+        },
+        {
+          "start": 10.9875,
+          "end": 12.0875,
+          "text": "alongside them."
+        }
+      ]
+    },
+    {
+      "title": "2,000 ms request. 300 ms pause.",
+      "label": "FOLLOW THE TIMELINE",
+      "seconds": 8,
+      "voice": "This example request takes two seconds. An overlapping pause lasts three hundred milliseconds. The bank also takes time. Do not blame the entire delay on garbage collection.",
+      "phase": "timeline",
+      "note": "Constructed evidence on one server; no benchmark claim.",
+      "from": 820,
+      "frames": 468,
+      "audio": "blog/episodes/017/speech-redesign/scene-3.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 2.65,
+          "text": "This example request takes two seconds."
+        },
+        {
+          "start": 3.525,
+          "end": 7.125,
+          "text": "An overlapping pause lasts three hundred milliseconds."
+        },
+        {
+          "start": 8.0,
+          "end": 9.7625,
+          "text": "The bank also takes time."
+        },
+        {
+          "start": 10.625,
+          "end": 13.55,
+          "text": "Do not blame the entire delay on garbage"
+        },
+        {
+          "start": 13.55,
+          "end": 14.1,
+          "text": "collection."
+        }
+      ]
+    },
+    {
+      "title": "An overlap is a clue, not a verdict",
+      "label": "COMPARE THE EVIDENCE",
+      "seconds": 8,
+      "voice": "Match request traces and pause logs from the same server. Check payment waits, database spans, and CPU before deciding what to fix.",
+      "phase": "evidence",
+      "note": "Intervals can overlap. Do not add the same time twice.",
+      "from": 1288,
+      "frames": 353,
+      "audio": "blog/episodes/017/speech-redesign/scene-4.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 3.0125,
+          "text": "Match request traces and pause logs from the"
+        },
+        {
+          "start": 3.0125,
+          "end": 3.8375,
+          "text": "same server."
+        },
+        {
+          "start": 4.7125,
+          "end": 8.75,
+          "text": "Check payment waits, database spans, and CPU before"
+        },
+        {
+          "start": 8.75,
+          "end": 10.2375,
+          "text": "deciding what to fix."
+        }
+      ]
+    },
+    {
+      "title": "Fix proven redundant work",
+      "label": "PROFILE, CHANGE, REPEAT",
+      "seconds": 8,
+      "voice": "Use Java Flight Recorder to find allocation hotspots. Remove redundant work without changing order totals. Compare the same workload before choosing another collector.",
+      "phase": "fix",
+      "note": "Fewer unnecessary objects; unchanged business calculations.",
+      "from": 1641,
+      "frames": 431,
+      "audio": "blog/episodes/017/speech-redesign/scene-5.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 3.9875,
+          "text": "Use Java Flight Recorder to find allocation hotspots."
+        },
+        {
+          "start": 4.85,
+          "end": 8.35,
+          "text": "Remove redundant work without changing order totals."
+        },
+        {
+          "start": 9.225,
+          "end": 12.375,
+          "text": "Compare the same workload before choosing another"
+        },
+        {
+          "start": 12.375,
+          "end": 12.8875,
+          "text": "collector."
+        }
+      ]
+    },
+    {
+      "title": "Responsive checkout. Correct payment.",
+      "label": "VALIDATE AND RECOVER",
+      "seconds": 8,
+      "voice": "Validate tail latency, errors, memory, and CPU. Keep the original payment identity and reconcile uncertain outcomes. A timeout is not proof of failed payment.",
+      "phase": "safe",
+      "note": "Confirm only after an authoritative payment result.",
+      "from": 2072,
+      "frames": 450,
+      "audio": "blog/episodes/017/speech-redesign/scene-6.mp3",
+      "cues": [
+        {
+          "start": 0.1,
+          "end": 4.225,
+          "text": "Validate tail latency, errors, memory, and CPU."
+        },
+        {
+          "start": 5.15,
+          "end": 9.2625,
+          "text": "Keep the original payment identity and reconcile uncertain"
+        },
+        {
+          "start": 9.2625,
+          "end": 9.925,
+          "text": "outcomes."
+        },
+        {
+          "start": 10.8,
+          "end": 13.5125,
+          "text": "A timeout is not proof of failed payment."
+        }
+      ]
+    }
+  ],
+  "cues": [
+    {
+      "start": 0.1,
+      "end": 1.75,
+      "text": "Asha taps Place Order."
+    },
+    {
+      "start": 2.625,
+      "end": 3.625,
+      "text": "Checkout stalls."
+    },
+    {
+      "start": 4.4875,
+      "end": 7.1125,
+      "text": "She cannot tell whether payment succeeded."
+    },
+    {
+      "start": 8.0125,
+      "end": 11.025,
+      "text": "A slow request alone does not prove garbage"
+    },
+    {
+      "start": 11.0375,
+      "end": 12.1875,
+      "text": "collection caused it."
+    },
+    {
+      "start": 13.833333333333332,
+      "end": 15.795833333333333,
+      "text": "The Java heap holds objects."
+    },
+    {
+      "start": 16.65833333333333,
+      "end": 19.84583333333333,
+      "text": "Garbage collection reclaims unreachable objects."
+    },
+    {
+      "start": 20.72083333333333,
+      "end": 24.645833333333332,
+      "text": "Some phases pause application threads; other phases run"
+    },
+    {
+      "start": 24.72083333333333,
+      "end": 25.820833333333333,
+      "text": "alongside them."
+    },
+    {
+      "start": 27.433333333333334,
+      "end": 29.98333333333333,
+      "text": "This example request takes two seconds."
+    },
+    {
+      "start": 30.85833333333333,
+      "end": 34.45833333333333,
+      "text": "An overlapping pause lasts three hundred milliseconds."
+    },
+    {
+      "start": 35.33333333333333,
+      "end": 37.09583333333333,
+      "text": "The bank also takes time."
+    },
+    {
+      "start": 37.95833333333333,
+      "end": 40.88333333333333,
+      "text": "Do not blame the entire delay on garbage"
+    },
+    {
+      "start": 40.88333333333333,
+      "end": 41.43333333333333,
+      "text": "collection."
+    },
+    {
+      "start": 43.03333333333333,
+      "end": 45.94583333333333,
+      "text": "Match request traces and pause logs from the"
+    },
+    {
+      "start": 45.94583333333333,
+      "end": 46.77083333333333,
+      "text": "same server."
+    },
+    {
+      "start": 47.64583333333333,
+      "end": 51.68333333333333,
+      "text": "Check payment waits, database spans, and CPU before"
+    },
+    {
+      "start": 51.68333333333333,
+      "end": 53.170833333333334,
+      "text": "deciding what to fix."
+    },
+    {
+      "start": 54.800000000000004,
+      "end": 58.6875,
+      "text": "Use Java Flight Recorder to find allocation hotspots."
+    },
+    {
+      "start": 59.550000000000004,
+      "end": 63.050000000000004,
+      "text": "Remove redundant work without changing order totals."
+    },
+    {
+      "start": 63.925000000000004,
+      "end": 67.075,
+      "text": "Compare the same workload before choosing another"
+    },
+    {
+      "start": 67.075,
+      "end": 67.5875,
+      "text": "collector."
+    },
+    {
+      "start": 69.16666666666666,
+      "end": 73.29166666666666,
+      "text": "Validate tail latency, errors, memory, and CPU."
+    },
+    {
+      "start": 74.21666666666667,
+      "end": 78.32916666666667,
+      "text": "Keep the original payment identity and reconcile uncertain"
+    },
+    {
+      "start": 78.32916666666667,
+      "end": 78.99166666666666,
+      "text": "outcomes."
+    },
+    {
+      "start": 79.86666666666666,
+      "end": 82.57916666666667,
+      "text": "A timeout is not proof of failed payment."
+    }
+  ]
+}

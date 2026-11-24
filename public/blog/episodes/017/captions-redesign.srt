@@ -1,0 +1,103 @@
+1
+00:00:00,100 --> 00:00:01,750
+Asha taps Place Order.
+
+2
+00:00:02,625 --> 00:00:03,625
+Checkout stalls.
+
+3
+00:00:04,488 --> 00:00:07,112
+She cannot tell whether payment succeeded.
+
+4
+00:00:08,012 --> 00:00:11,025
+A slow request alone does not prove garbage
+
+5
+00:00:11,038 --> 00:00:12,188
+collection caused it.
+
+6
+00:00:13,833 --> 00:00:15,796
+The Java heap holds objects.
+
+7
+00:00:16,658 --> 00:00:19,846
+Garbage collection reclaims unreachable objects.
+
+8
+00:00:20,721 --> 00:00:24,646
+Some phases pause application threads; other phases run
+
+9
+00:00:24,721 --> 00:00:25,821
+alongside them.
+
+10
+00:00:27,433 --> 00:00:29,983
+This example request takes two seconds.
+
+11
+00:00:30,858 --> 00:00:34,458
+An overlapping pause lasts three hundred milliseconds.
+
+12
+00:00:35,333 --> 00:00:37,096
+The bank also takes time.
+
+13
+00:00:37,958 --> 00:00:40,883
+Do not blame the entire delay on garbage
+
+14
+00:00:40,883 --> 00:00:41,433
+collection.
+
+15
+00:00:43,033 --> 00:00:45,946
+Match request traces and pause logs from the
+
+16
+00:00:45,946 --> 00:00:46,771
+same server.
+
+17
+00:00:47,646 --> 00:00:51,683
+Check payment waits, database spans, and CPU before
+
+18
+00:00:51,683 --> 00:00:53,171
+deciding what to fix.
+
+19
+00:00:54,800 --> 00:00:58,688
+Use Java Flight Recorder to find allocation hotspots.
+
+20
+00:00:59,550 --> 00:01:03,050
+Remove redundant work without changing order totals.
+
+21
+00:01:03,925 --> 00:01:07,075
+Compare the same workload before choosing another
+
+22
+00:01:07,075 --> 00:01:07,588
+collector.
+
+23
+00:01:09,167 --> 00:01:13,292
+Validate tail latency, errors, memory, and CPU.
+
+24
+00:01:14,217 --> 00:01:18,329
+Keep the original payment identity and reconcile uncertain
+
+25
+00:01:18,329 --> 00:01:18,992
+outcomes.
+
+26
+00:01:19,867 --> 00:01:22,579
+A timeout is not proof of failed payment.

@@ -1,0 +1,1 @@
+PASS: actual redesigned MP4 loads, duration within 60–90 seconds, controls/play/pause/chapter seek and aligned VTT cues.
